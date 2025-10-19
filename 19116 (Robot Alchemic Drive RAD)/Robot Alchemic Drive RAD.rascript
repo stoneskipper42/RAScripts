@@ -1,0 +1,1819 @@
+// Robot Alchemic Drive: RAD
+// #ID = 19116
+
+/*
+// $27E5E4: [32-bit] Pointer to doubly linked list of global variables.
+//          +0x5c - Variables linked list (first element)
+//          Stored in a 32-byte struct
+//          +0x00=Pointer to previous element
+//          +0x04=Pointer to next element
+//          +0x08=Unclear, value between 0x01 and 0x11
+//          +0x0c=Unclear, same as value in +0x08
+//          +0x10=Pointer
+//          ++0x0=Description of variable as a SJIS array (usually in Japanese)
+//          +0x14=Pointer
+//          ++0x0=Pointer
+//          +++0x0=Pointer
+//          ++++0x0=BAB::C_Buffer<char> (in ASCII)
+//          +0x14=Pointer
+//          ++0x0=Pointer
+//          +++0x0=Pointer
+//          ++++0x0=BAB::C_Buffer<char> (in ASCII)
+//          +0x1c=Variable value
+//          
+//          ==1st layer==
+//          ++0x04
+//          
+//          ==Main character number==
+//          ++0x1c
+//          0x0=Naoto
+//          0x1=Ryo
+//          0x2=Yui
+//          
+//          ==2nd layer==
+//          +++0x04
+//          
+//          ==Initial robot==
+//          +++0x1c
+//          
+//          ==3rd layer==
+//          ++++0x04
+//          
+//          ==Control type==
+//          ++++0x1c
+//          0x0=Easy Mode
+//          0x1= Normal Mode
+//          
+//          ==4th layer==
+//          +++++0x04
+//          
+//          ==Ellen favor flag==
+//          +++++0x1c
+//          0x03>=Unlock Ellen ending (if Nanaho favor <=3)
+//          0x02>=Unlock Sayou ending (if Nanaho favor <=3 and player=Yui)
+//          
+//          ==5th layer==
+//          ++++++0x04
+//          
+//          ==Nanaho favor flag==
+//          ++++++0x1c
+//          0x04>=Unlock Nanaho ending
+//          0x03<=Unlock Ellen ending (if Ellen favor >=3) or Sayou ending (if Ellen favor <=2 and player=Yui)
+//          
+//          +0x58 - Variables linked list (last element)
+//          
+//          ==98th layer==
+//          ++0x00
+//          
+//          ==Language==
+//          ++0x1c
+//          0x00=Japanese
+//          0x01=English
+//          
+//          ==97th layer==
+//          +++0x00
+//          
+//          ==SYSTEM-boot_game_data_num==
+//          +++0x1c
+//          
+//          ==96th layer==
+//          ++++0x00
+//          
+//          ==Game mode==
+//          ++++0x1c
+//          0x1=Replaying mission through challenge mode
+//          0x2=Training mission
+//          0x0=Menu screen, story mode, etc
+//          
+//          ==95th layer==
+//          +++++0x00
+//          
+//          ==SYSTEM-vs_map==
+//          +++++0x1c
+*/
+
+// NOTABLE MEMORY ADDRESSES //
+
+// Build array of doublely linked global variables. Variable data can be accessed by calling globalVar("var_name")
+variables = ["main_character_number",
+"initial_robot",
+"control_type",
+"ellen_favor_flag",
+"nanao_favor_flag",
+"nanao_economic_flag",
+"keiko_flag",
+"banhara_death_flag",
+"misaki_heavy_industries_flag",
+"nanao_amulet_flag",
+"work",
+"temporary_event",
+"current_scenario",
+"after_the_day_of_the_gods_destruction",
+"number_of_continues",
+"current_robot",
+"map_type",
+"amount_of_damage",
+"collapse_senjo_city_hall",
+"collapse_misaki_heavy_industries_headquarters_building",
+"collapse_misaki_heavy_industries_senjo_factory",
+"collapse_misaki_heavy_industries_research_institute",
+"collapse_senjo_hospital",
+"collapse_tsukioka_industries_headquarters",
+"collapse_evacuation_guidance_team_headquarters",
+"collapse_stadium",
+"collapse_senjo_station",
+"collapse_civilization_preservation_foundation",
+"collapse_minami_senjo_station",
+"collapse_supermarket",
+"collapse_bakery",
+"collapse_coffee_shop",
+"collapse_observatory",
+"collapse_bnn_senjo_branch",
+"collapse_nanaho_s_house",
+"collapse_kaoruko_s_apartment",
+"collapse_nanaho_s_apartment",
+"collapse_otawara_trading",
+"collapse_ellen_s_apartment",
+"collapse_banbara_s_apartment",
+"collapse_tokyo_metropolitan_government_building",
+"collapse_school",
+"collapse_yaoya",
+"building_collapse_point",
+"frost_beam",
+"hero_money",
+"hero_shield",
+"hero_booster",
+"hero_drive",
+"hero_grenade",
+"vvl_armor_reinforcement",
+"vvl_gigantic_booster",
+"vvl_dual_knuckle",
+"vvl_dive",
+"vvl_wavel_missile",
+"vvl_pyro_burner",
+"vvl_gravity_zero",
+"vvl_divine_upper",
+"vvl_blast_hook",
+"lio_armor_reinforcement",
+"lio_gigantic_boomerang",
+"lio_horobi",
+"lio_sky_torpedo",
+"lio_aerial_missile",
+"lio_divine_laser",
+"lio_gravity_zero",
+"glg_armor_reinforcement",
+"glg_machine_cannon",
+"glg_all_shots_fired",
+"glg_gaia_axe",
+"glg_iron_tusk",
+"glg_detonator",
+"glg_shoulder_missile",
+"glg_leg_missile",
+"glg_gravity_zero",
+"glg_machine_cannon_ammo_count",
+"vvl_available_genesis_mode",
+"vvl_available_genesis_cry",
+"lio_available_reinforcement",
+"glg_available_reinforcement",
+"battle_map_number",
+"match_1p_main_character_number",
+"match_2p_main_character_number",
+"match_1p_control_type",
+"match_2p_control_type",
+"match_1p_current_robot",
+"match_2p_current_robot",
+"mc_lastaccess",
+"system_lastaccessdataindex",
+"system_is_stereo",
+"system_is_vibration",
+"system_is_monitor_vibration",
+"system_is_animated_gore",
+"system_vs_robo",
+"system_vs_map",
+"game_mode",
+"system_boot_game_data_num",
+"language"]
+
+head = dword(dword(0x27E5E4)+0x5c)
+nodes = {}
+curr = head
+for variable in variables
+{
+  nodes[variable] = curr
+  curr = dword(curr + 0x4) // or whatever offset for next
+}
+
+function globalVar(var_name){
+    return dword(nodes[var_name]+0x1c)
+}
+
+
+// General Information
+screenIndex1 = dword(0x248044)
+screenIndex2 = dword(0x28e2b8)
+screenIndex3 = dword(0x248040)
+screenIndex4 = dword(0x28e2a0)
+saveData = dword(dword(0x0027e5f4)+0x48)
+dialogueIndexAddress = 0x2823c0
+currentPilot = globalVar("main_character_number")
+initialRobot = globalVar("initial_robot")
+currentRobot = globalVar("current_robot")
+currentScenario = globalVar("current_scenario")
+mapType = globalVar("map_type")
+gameMode = globalVar("game_mode")
+
+
+// Character pointers
+characterDataArray = dword(dword(0x0027e5e0)+0xc)
+heroPointer = dword(characterDataArray+0x4)
+robotPointer = dword(characterDataArray+0x8)
+allyPointer = dword(characterDataArray+0xc) // Valdor in mission 24
+enemyPointer = dword(characterDataArray+0x10)
+enemy2Pointer = dword(characterDataArray+0x14)
+enemy3Pointer = dword(characterDataArray+0x18)
+enemy4Pointer = dword(characterDataArray+0x1c)
+
+
+function inMission() => heroIsPresent()
+function heroAppears() => characterDataArray!=0 && heroPointer!=0 && prev(heroPointer)==0
+function heroIsPresent() => heroPointer!=0 && characterDataArray!=0
+function robotIsPresent() => robotPointer!=0 && characterDataArray!=0
+function allyIsPresent() => allyPointer!=0 && characterDataArray!=0
+function enemyIsPresent() => enemyPointer!=0 && characterDataArray!=0
+function enemy2IsPresent() => enemy2Pointer!=0 && characterDataArray!=0
+function enemy3IsPresent() => enemy3Pointer!=0 && characterDataArray!=0
+function enemy4IsPresent() => enemy4Pointer!=0 && characterDataArray!=0
+
+
+// City damage
+cityDamage = dword(dword(0x0027e610)+0x6bc)
+function senjouPeaceAward() => cityDamage <= 0x46
+function constructionMinisterAward() => cityDamage >= 0x47 && cityDamage <= 0x8c
+function misakiHqDestroyed() => globalVar("collapse_misaki_heavy_industries_headquarters_building")==1
+function misakiFactoryDestroyed() =>  globalVar("collapse_misaki_heavy_industries_senjo_factory")==1
+function senjoHospitalDestroyed() => globalVar("collapse_senjo_hospital")==1
+function senjoCityHallDestroyed() => globalVar("collapse_senjo_city_hall")==1
+function observatoryDestroyed() => globalVar("collapse_observatory")==1
+function bnnSenjoBranchDestroyed() => globalVar("collapse_bnn_senjo_branch")==1
+function schoolDestroyed() => globalVar("collapse_school")==1
+
+
+
+// ADDRESS VALUES //
+// Expected values for global var list
+values = {
+ "main_character_number": {
+     0: "Naoto",
+     1: "Ryo",
+     2: "Yui"
+ },
+ "initial_robot": {
+ //
+     0: "Vavel",
+     1: "Gllang",
+     2: "Laguiole"
+ },
+ "control_type": {
+     0: "Easy",
+     1: "Normal"
+ },
+ "nanao_economic_flag": {
+    // Starts at zero
+    // Goes up every time Nanao's workplace is destoyed
+    // Does down if competetor's workplaces are destroyed (Otawara in ep31, Otawara/Supermarket in ep32)
+    // Can go negative    
+ },
+ "keiko_flag":{
+    // Starts at zero
+    // Goes up every time Keiko's apartment is destroyed
+ },
+ "banhara_death_flag": {
+    // Set to true if Mika Banhara's helicopter is destroyed in ep51
+    // If not set, epilogue mentions Mika Banhara going on to be a major media personality
+ },
+ "misaki_heavy_industries_flag": {
+    // Once it hits (or exceeds) 0x9, Tomoe's post-misison report mentions that Misaki has broken off his engagement with Ellen, and triggers up to two post-mission events 
+    // In first event the protag discusses the breakup with Ellen (only shown if the protag is Naoto or Ryo)
+    // In the second event the protag discusses the breakup with Misaki
+    // Epilogue will ALWAYS say "desperately trying to rebuild", even at 0
+    8: "Ellen and Misaki ending",
+    9: "Ellen-only ending"
+ },
+ "nanao_amulet_flag": { //Episode 9 only?
+   0: "Pendant not found",
+   1: "Pendant recovered"  
+ },
+ "current_scenario": {
+  //Current episode
+  //Stays at 1 on the main menu screen
+  //Does not differentiate between 15a/15b, 18a/18b, 19a/19b missions, but can be inferred based on inital robot
+  //During story mode, stays on previous episode during Intermission screen, updates to next episode after selecting "Next mission" 
+  //During challenge mode, updates to selected episode once it has been selected from the list
+    1: "Meganite Awakening",
+    2: "Capital Crisis-1",
+    3: "Capital Crisis-2",
+    4: "Drill-1",
+    5: "Drill-2",
+    6: "Waterfront Showdown",
+    7: "Phantom System",
+    8: "Senjo's Protector",
+    9: "Bay Area Defense",
+    10: "Blast Furnace",
+    11: "First Memory",
+    12: "Evacuation Exercise",
+    13: "E.G.G.",
+    14: "Inferno",
+    15: "The Mobile Fortress OR Airborne Dominator", // Airborne Dominator if initial_robot=1 (Gllang), The Mobile Fortress otherwise
+    16: "Ellen and Nanao",
+    17: "A Family Rival",
+    18: "Airborne Dominator OR The Complete - 1", // Airborne Dominator if initial_robot=0 (Vavel), The Complete - 1 otherwise
+    19: "Centurion OR The Complete - 2", // Centurion if initial_robot=0 (Vavel), The Complete - 2 otherwise
+    20: "A Day at School",
+    21: "Nanao's Water Soup",
+    22: "Meganite Memories",
+    23: "Bus stop",
+    24: "The Dark One",
+    25: "Ellen Bulnose",
+    26: "Volgara Mystery",
+    27: "Fortress",
+    28: "Voices Unheard",
+    29: "Close Combat",
+    30: "Rat Race",
+    31: "Defend & Destroy",
+    32: "Yaoya Imperiled",
+    33: "Mt. Chihaya Storming",
+    34: "Second Memory",
+    35: "The Black Meganite",
+    36: "The Hero Alone",
+    37: "Third Memory",
+    38: "Genesis",
+    39: "Dantarion",
+    40: "Valhalla Dawning",
+    41: "Four Warlords",
+    42: "Spectral Visitation",
+    43: "Bird's Eye News",
+    44: "Live Action News",
+    45: "Off the Air",
+    46: "Chemical Warfare",
+    47: "Windborne Darkness",
+    48: "Lifesaver Express",
+    49: "Higher Ground - 1",
+    50: "Higher Ground - 2",
+    51: "The Fall of Senjo",
+    52: "Mt. Chichaya Showdown",
+    53: "Meganite Future",
+    201: "Training 2: Heavy Arms Training",
+    300: "Training 1: Dantarion's Assault",
+    700: "Versus Mode"
+ },
+ "after_the_day_of_the_gods_destruction":{
+    // Activates at start of episode 41
+    // Indicates whether starting Meganite's ultimate mode is available
+    // For Vavel, indicates whether Genesis Cry is available?
+    0: "Ultimate mode not available",
+    1: "Ultimate available"
+ },
+ "number_of_continues":{
+    // Tallies the number of times "Retry" has been selected for a mission
+    // Starts at 0 when a mission is first attempted
+    // Shows 1 during loading screens and cutscenes
+ },
+ "current_robot": {
+    // 
+     0: "Vavel",
+     1: "Gllang",
+     2: "Laguiole"
+ },
+ "work": {
+    //Unclear; may reference last announced level of financial impact for MHI?
+     0: "No announcements made",
+     1: "bit0: MHI has rebuilt, lost 30b yen (vhh-49)",
+     2: "bit1: MHI rebuilt, lost 500b yen",
+     3: "bit2: Bulnose cancelled plans to partner with MHI"
+ },
+ "temporary_event": {
+     //Bitfield that determines what post-mission events have been displayed
+     "bit0": "Nanao commented on bakery's destruction", // 1st time bakery is destroyed between ep 10 and 30 (vev-1)
+     "bit1": "Nanao mentioned getting a job at the cafe", // 2nd time bakery is destroyed between ep 10 and 30 (vev-2)
+     "bit2": "Nanao mentioned getting a job as a dancer", // 3rd time bakery is destroyed between ep 10 and 30 (vev-6)
+     "bit3": "Nanao met with Misaki", // 4th time bakery is destroyed between ep 10 and 30 (vev-8)
+     "bit4": "Misaki donated 100b yen", // 5th time bakery is destroyed between ep 10 and 30 (vev-24)
+     "bit7": "Couldn't protect Misaki's company", //First time Misaki HQ is destroyed? (vev-66)
+     "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After Misaki finance >= 9 - Naoto/Ryo only (vev-71)
+     "bit9": "Misaki discussed his broken engagement with protag", // After Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
+     "bit12": "Keiko found living in CFP HQ", //Keiko's apartment destroyed (vev-129)
+     "bit13": "Keiko living in CPF HQ again", //Keiko's apartment destroyed 2nd time (vev-137)
+     "bit14": "Keiko living in CFP HQ - don't try anything funny" //Keiko's apartment destroyed 3rd time (vev-154)
+ },
+ "map_type": {
+     0: "No map loaded",
+     1: "Senjo New City Center",
+     2: "Downtown Senjo",
+     3: "Senjo Port",
+     4: "Mount Chihaya",
+     5: "Volgara Territory",
+     6: "Rome",
+     7: "Toyko"
+ },
+ "amount_of_damage":{
+    //???
+ },
+ "building_collapse_point":{
+    //Amount of damage done to the city, calculated after the mission ends
+    //Affects Senjo Peace Award and Construction Minister Award
+    //Affects how much damage Tomoe announces during the post-mission news report
+    //0x00=Below one billion yen (senjou peace award)
+    //0x46=Below one billion yen (senjou peace award)
+    //0x47=Apprx two billion yen (construction minister)
+    //0x6e=Apprx two billion yen (construction minister)
+    //0x6f=Apprx five billion yen (construction minister)
+    //0x8c=Apprx five billion yen (construction minister)
+    //0x8e=Apprx five billion yen (no award)
+    //0xa0=Apprx five billion yen (no award)
+    //0xa1=Apprx ten billion yen (no award)
+    //0xb0=Apprx ten billion yen (no award)
+    //0xf0=Apprx twenty billion yen (no award)
+    //0x118=???
+    //0x180=Exceed thirty billion yen
+    //0x200=Exceed fifty billion yen
+    //0x600=Exceed one hundred billion yen
+    //0x1000=Exceed one hundred billion yen
+ },
+ "hero_money":{
+    // Amount of money currently held in 100 billion yen
+    // eg, 305 = 30,500,000,000 yen
+},
+"hero_shield":{
+    // Upgrade affecting hero's max health
+    0: "No shield",
+    1: "Personal Shield",
+    2: "Perfect Shield",
+    3: "Nova Shield",
+    "max":3
+},
+"hero_booster":{
+    // Upgrade affecting hero's walk/run speed
+    0: "No Booster",
+    1: "Gravity Booster",
+    2: "Perfect Booster",
+    3: "Nova Booster",
+    "max":3
+},
+"hero_drive":{
+    // Upgrade affecting hero's walk/run speed
+    0: "No Booster",
+    1: "Gravity Drive",
+    2: "Perfect Booster",
+    3: "Nova Booster",
+    "max":3
+},
+"hero_grenade":{
+    // Upgrade affecting hero's grenade damage
+    // Cannot use grenades at level 0
+    0: "No Grenades",
+    1: "Hand Grenade",
+    2: "Power Grenade",
+    3: "Nova Grenade",
+    "max":3
+},
+"vvl_armor_reinforcement":{
+    "max":5
+},
+"vvl_gigantic_booster":{
+    "max":1
+},
+"vvl_dual_knuckle":{
+    "max":1
+},
+"vvl_dive":{
+    // Angelic Fall upgrade is only available after mission 40, and only if Vavel was the starting meganite
+    1: "Meteor Dive",
+    2: "Angelic fall",
+    "max":2
+},
+"vvl_wavel_missile":{
+    "max":5
+},
+"vvl_pyro_burner":{
+    "max":5
+},
+"vvl_gravity_zero":{
+    "max":1
+},
+"vvl_divine_upper":{
+    "max":1
+},
+"vvl_blast_hook":{
+    "max":1
+},
+"lio_armor_reinforcement":{
+    "max":5
+},
+"lio_gigantic_boomerang":{
+    "max":1
+},
+"lio_horobi":{
+    // Annihilator upgrade
+    // Only available after mission 40, and only if Laguiole was the starting meganite
+    "max":1
+},
+"lio_sky_torpedo":{
+    "max":5
+},
+"lio_aerial_missile":{
+    "max":5
+},
+"lio_divine_laser":{
+    0: "Nova Laser",
+    1: "Divine Laser",
+    "max":1
+},
+"lio_gravity_zero":{
+    "max":1
+},
+"glg_armor_reinforcement":{
+    "max":5
+},
+"glg_machine_cannon":{
+    0: "30mm Rapid Cannon",
+    1: "40mm Rapid Cannon",
+    2: "50mm Rapid Cannon",
+    "max": 2
+},
+"glg_all_shots_fired":{
+    // Fire All Ordinance
+    "max":1
+},
+"glg_gaia_axe":{
+    // Gaia Axe
+    "max":1
+},
+"glg_iron_tusk":{
+    // Iron Tusk
+    "max":1
+},
+"glg_detonator":{
+    "max":5
+},
+"glg_shoulder_missile":{
+    "max":5
+},
+"glg_leg_missile":{
+    "max":5
+},
+"glg_gravity_zero":{
+    // Gravity Zero
+    "max":1
+},
+"glg_machine_cannon_ammo_count":{
+    "max":5
+},
+"vvl_available_genesis_mode":{
+    // Determines if square activates volcanic or genesis mode for Vavel
+    // Activates at start of episode 38
+    0: "Volcanic mode",
+    1: "Genesis mode"
+},
+"vvl_available_genesis_cry":{
+    // 
+},
+"lio_available_reinforcement":{
+    // Demon Sword Desecrator?
+},
+"glg_available_reinforcement":{
+    // Warhammer Sanctifier
+    // Activates at start of episode 41
+    0: "Sanctifier unavailable",
+    1: "Sanctifier available" 
+},
+ "system_lastaccessdataindex": {
+     0: "File01",
+     1: "File02",
+     2: "File03",
+     3: "File04",
+     4: "File05",
+     5: "File06"
+ },
+ "game_mode": {
+     0: "Story mode",
+     1: "Challenge mode",
+     2: "Training mode",
+     3: "Versus mode"
+ },
+ "language": {
+     0: "Japanese",
+     1: "English"
+ }
+}
+
+meganite_struct = {
+    "duration": { //How long character has been loaded [32-bit] (frames)
+        "offset": 0x54,
+        "size": 32
+    },
+    "max_health": { //Meganite max health [16-bit]
+        "offset": 0xb4,
+        "size": 16
+    },
+    "health": { //Meganite health [16-bit]
+        "offset": 0xb8,
+        "size": 16
+    },
+    "is_invulnerable": { //Meganite vulnerability [16-bit]
+        "offset": 0xba,
+        "size": 16,
+        "values":{
+            0xcd00: "Vulnerable",
+            0xcd01: "Invulnerable"
+        }
+    },
+    "energy": { //Meganite max energy [16-bit]
+        "offset": 0xbc,
+        "size": 16
+    },
+    "max_energy": { //Meganite max energy [16-bit]
+        "offset": 0xbe,
+        "size": 16
+    },
+    "is_attacking": { //Meganite attacking status [32-bit]
+      //Can be used in tandem with the the "Meganite last atack" to determine the current attack
+        "offset": 0x9b8,
+        "size": 32,
+        "values": {
+            0x00000000: "Not attacking",
+            0xffffffff: "Attack animation active",
+        }
+    },
+    "is_blocking": { //Blocking status [16-bit]
+        //If blocking, less damage is taken and cannot be knocked down.
+        // Not impacted by one-handed blocks
+        "offset": 0x9a4,
+        "size": 16,
+        "values": {
+            0x0000: "Not blocking",
+            0x0001: "Blocking"
+        }
+    },
+    "last_attack": { //Meganite last attack [32-bit]
+        //Set when an attack or action is made, does not change until overwritten
+        "offset": 0x9c8,
+        "size": 32,
+        "values": {
+            "All": {
+                0x0: "Jab",
+                0x1: "Hook",
+                0x2: "Uppercut",
+                0x3: "Straight",
+                0x4: "Chop",
+                0x5: "Backhand",
+                0xa: "Double punch",
+                0xb: "Double hook",
+                0xc: "Double straight",
+                //0x14: "Grand Charge",
+                //0x1e: "Crouch",
+                //0x1f: "Stand",
+                //0x20: "Jump",
+                //0x2d: "Grab",            
+            },
+            "Vavel": {
+                //0x65: "Deploy/retract Pyro Burner",
+                //0x66: "Deploy/retract Drill Gear",
+                0x68: "Harken Laser",
+                0x69: "Lava Stream",
+                0x6a: "Vavel Missile",
+                0x6b: "Divine Upper",
+                0x6c: "Pyro Burner",
+                //0x70: "Genesis Cry", // Ultimate attack
+                0x71: "Blast Hook",
+                0x74: "Angelic Fall",
+                0x75: "Gravity Zero",
+                //0x1f5: "Activate Genesis Mode",
+                0x258: "Dual Knuckle",
+                0x259: "Assault Knuckle L",
+                0x25a: "Assault Knuckle R",
+            },
+            "Laguiole": {
+                0x6a: "Thunder hand",
+                //0x65: "Deploy/retract Thunder Cannon",
+                //0x66: "Deploy/retract Thunder Hand",
+                0x67: "Nova/Divine Laser",
+                0x68: "Aerial Corridor",
+                0x69: "Gigantic Boomerang",
+                //0x6c: "Annihilator", // Ultimate attack
+                0x6f: "Gravity Zero"
+            },
+            "Gllang": {
+                //0x65: "Deploy/retract Detonator",
+                //0x66: "Deploy/retract Storm Hammer",
+                0x67: "Shoulder Missile",
+                0x68: "Leg Missile",
+                0x69: "Gaia Axe",
+                0x6a: "Gaia Buster",
+                0x6c: "Proton Beam",
+                0x6d: "30mm/40mm/50mm Cannon",
+                0x6e: "Fire All Ordnance",
+                0x6f: "Detonator",
+                //0x70: "Iron Tusk",
+                0x73: "Gravity Zero",
+            }
+        }
+    },
+    "falling_status":{
+        "offset": 0xa70,
+        "size": 32,
+        "values": {
+            0x00000000: "Falling/thrown",
+            0x00000001: "Recovery animation 1",
+            0x00000002: "Recovery animation 1",
+            0x00000003: "Recovered (standing/walking/attacking/blocking/etc)",
+            0xcdcdcdcd: "Never fallen"
+        }
+    }
+}
+
+time_leaderboard_id={
+    1: 139294,
+    3: 140761,
+    5: 140763,
+    6: 140956,
+    7: 140958,
+    8: 141087,
+    9: 141089,
+    10: 141715,
+    11: 143104,
+    13: 143106,
+    14: 143108,
+    "15a": 143110,
+    "15b or 18a": 143141
+}
+
+score_leaderboard_id={
+    1: 139295,
+    3: 140762,
+    5: 140764,
+    6: 140957,
+    7: 140959,
+    8: 141088,
+    9: 141090,
+    10: 141716,
+    11: 143105,
+    13: 143107,
+    14: 143109,
+    "15a": 143111,
+    "15b or 18a": 143142
+}
+
+highest_published_leaderboard_mission = 14
+
+// Util Functions
+function get_keys(dictionary){
+    ret_array = []
+    for key in dictionary{
+        array_push(ret_array,key)
+    }
+    return ret_array
+}
+
+function array_merge(array1,array2){
+    for val in array2{
+        array_push(array1,val)
+    }
+    return array1
+}
+
+
+// Reusable data/functions
+pilot = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        pilot[value] = word(heroPointer+meganite_struct[value]["offset"])
+    else
+        pilot[value] = dword(heroPointer+meganite_struct[value]["offset"])
+}
+
+robot = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        robot[value] = word(robotPointer+meganite_struct[value]["offset"])
+    else
+        robot[value] = dword(robotPointer+meganite_struct[value]["offset"])
+}
+
+enemy = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        enemy[value] = word(enemyPointer+meganite_struct[value]["offset"])
+    else
+        enemy[value] = dword(enemyPointer+meganite_struct[value]["offset"])
+}
+
+enemy2 = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        enemy2[value] = word(enemy2Pointer+meganite_struct[value]["offset"])
+    else
+        enemy2[value] = dword(enemy2Pointer+meganite_struct[value]["offset"])
+}
+
+enemy3 = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        enemy3[value] = word(enemy3Pointer+meganite_struct[value]["offset"])
+    else
+        enemy3[value] = dword(enemy3Pointer+meganite_struct[value]["offset"])
+}
+
+
+enemy4 = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        enemy4[value] = word(enemy4Pointer+meganite_struct[value]["offset"])
+    else
+        enemy4[value] = dword(enemy4Pointer+meganite_struct[value]["offset"])
+}
+
+//missionDuration = dword(dword(0x0027e664)+0x54) //Resets during cutscene in ep1
+missionDuration = dword(heroPointer+meganite_struct["duration"]["offset"])
+
+function robotLastAttackIs(attack) => robot["last_attack"]==attack
+
+function robotIsBlocking() => robot["is_blocking"]==0x1
+
+function robotTakesDamage() => robot["health"]<prev(robot["health"])
+                                //&& enemyIsPresent()
+function enemyTakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy["health"])-enemy["health"]>10
+                                //&& enemyIsPresent()
+function enemy2TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy2["health"])-enemy2["health"]>10
+                                //&& enemy2IsPresent()
+function enemy3TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy3["health"])-enemy3["health"]>10
+                                //&& enemy3IsPresent()
+function enemy4TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4["health"])-enemy4["health"]>10
+                                //&& enemy3IsPresent()
+
+
+function robotIsFalling() => robot["falling_status"]==0
+function enemyIsFalling() => enemy["falling_status"]==0
+function enemy2IsFalling() => enemy2["falling_status"]==0
+function enemy3IsFalling() => enemy3["falling_status"]==0
+function enemy4IsFalling() => enemy4["falling_status"]==0
+
+function enemyIsDown() => enemy["falling_status"]==0x1 || enemy["falling_status"]==0x2
+function enemy2IsDown() => enemy2["falling_status"]==0x1 || enemy2["falling_status"]==0x2
+function enemy3IsDown() => enemy3["falling_status"]==0x1 || enemy3["falling_status"]==0x2
+function enemy4IsDown() => enemy4["falling_status"]==0x1 || enemy4["falling_status"]==0x2
+
+
+//function missionStart() => screenIndex2==0x28e8d0
+function missionStart() => heroAppears()
+function missionComplete(mission_number) => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282 && all_enemies_defeated(mission_number)
+//function missionComplete() => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282
+//function missionComplete() => screenIndex1==0x12 && prev(screenIndex1)!=0x12
+function missionFailed() => prev(screenIndex3==0x34282) && screenIndex3==0x34282
+//function missionFailed() => neverscreenIndex3!=0x34282) && tally(10,screenIndex3==0x34282)
+function returnToMainMenu() => screenIndex3==0x324be && prev(screenIndex3)!=0x324be
+//function returnToMainMenu() => screenIndex1==0x31 //bad screen index; not unique, used during cutscene in ep1
+function onTitleScreen() => screenIndex3==0x32453
+//function returnToMainMenu() => screenIndex4==0x8d99
+//function returnToChallengeSelection() => screenIndex1==0x136
+function onLoadSavedGameMenu() => screenIndex3==0x3334d
+function returnToChallengeSelection() => screenIndex3==0x33aa2 && prev(screenIndex3)!=0x33aa2
+//function returnToChallengeSelection() => screenIndex4==0xa482
+
+function get_enemy_count(mission_number){
+    if(mission_number==52)  return 4
+    if(mission_number==33)  return 3
+    if(mission_number==20 || mission_number==24 || mission_number==48)    return 2
+    return 1
+}
+
+function all_enemies_defeated(mission_number){
+    if(get_enemy_count(mission_number)==3){
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(!inMission()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(!inMission()))
+        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(!inMission()))
+    }
+    if(get_enemy_count(mission_number)==2){
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && never(!inMission()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && never(!inMission()))
+    }
+    if(get_enemy_count(mission_number)==4){
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(!inMission()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(!inMission()))
+        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(!inMission()))
+        && once(enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent() && never(!inMission()))
+    }
+    return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer!=0 && never(!inMission()))
+}
+
+//TODO: Debug mission 16; flagged as failed on mission complete screen?
+// LEADERBOARD FUNCTIONS //
+function timeLeaderboard(mission_number){
+    leaderboard_id=0
+    if(mission_number=="15a"){
+        leaderboard_id=time_leaderboard_id[mission_number]
+        start = ((currentScenario==15 && currentRobot==1))
+    }else if(mission_number=="15b or 18a"){
+     //TODO: Need to figure out how to distinguish between 18a and 18b
+     // In challenge mode, initial==current so selecting laguiole in 18b looks the same as 18a
+        start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+    }else{
+        if(mission_number<=highest_published_leaderboard_mission){
+            leaderboard_id=time_leaderboard_id[mission_number]
+        }
+        start = currentScenario==mission_number
+    }
+    start = start && missionStart()
+    leaderboard(
+        "Episode "+mission_number,
+        "Successfully complete episode "+mission_number+" as fast as possible",
+        start,
+        returnToMainMenu() || returnToChallengeSelection() || missionFailed(),
+        missionComplete(mission_number),
+        missionDuration,
+        format="FRAMES",
+        lower_is_better=true,
+        id=leaderboard_id)
+}
+
+
+function scoreLeaderboard(mission_number){
+    leaderboard_id=0
+    if(mission_number=="15a"){
+        start = ((currentScenario==15 && currentRobot==1))
+    }else if(mission_number=="15b or 18a"){
+        start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+    }else{
+        if(mission_number<=highest_published_leaderboard_mission){
+            leaderboard_id=score_leaderboard_id[mission_number]
+        }
+        start = currentScenario==mission_number
+    }
+    start = start && heroAppears()
+    leaderboard(
+        "Episode "+mission_number+" - Least City Damage",
+        "Successfully complete episode "+mission_number+" with the least damage to the city",
+        start,
+        returnToMainMenu() || returnToChallengeSelection() || missionFailed(),
+        missionComplete(mission_number),
+        cityDamage,
+        format="VALUE",
+        lower_is_better=true,
+        id=leaderboard_id
+        )
+}
+
+// ACHIEVEMENT FUNCTIONS //
+
+// Void achievements for pointers to global vars, used for debugging
+function voidAch(varname)
+{   
+    achievement("[VOID] "+varname, "Pointer to "+varname, 0, globalVar(varname)==0)
+}
+
+// Upgrade Achievement Functions
+function areFullyUpgraded(upgrade_name_array){  
+    upgradeCheckArray = []
+    for upgrade_name in upgrade_name_array{
+        for upgradeLevel in range(1,values[upgrade_name]["max"]){
+            array_push(upgradeCheckArray,once(globalVar(upgrade_name)>=upgradeLevel))
+        }
+    }  
+    return upgradeCheckArray
+}
+
+function almostFullyUpgraded(upgrade_name_array){
+    upgradeDeltaTotal = 0
+    upgradeMaxTotal = 0
+    //Need to run check against ored mem(upgrade) to delta(upgrade)
+    for upgrade_name in upgrade_name_array{
+        upgradeDeltaTotal = upgradeDeltaTotal + prev(globalVar(upgrade_name))
+        upgradeMaxTotal = upgradeMaxTotal + values[upgrade_name]["max"]
+    }
+    return upgradeDeltaTotal == upgradeMaxTotal - 1
+}
+
+//TODO: Why can't this use addSource again??
+function allUpgradesAchievement(upgradeType){
+    allUpgradesAchievementDescription = "Purchase all "+upgradeType+" upgrades"
+    if(upgradeType=="Vavel"){
+        allUpgradesAchievementTitle = "The Vertical Fortress"
+        upgradeList = ["vvl_armor_reinforcement",
+                        "vvl_gigantic_booster",
+                        "vvl_dual_knuckle",
+                        "vvl_dive",
+                        "vvl_wavel_missile",
+                        "vvl_pyro_burner",
+                        "vvl_gravity_zero",
+                        "vvl_divine_upper",
+                        "vvl_blast_hook"]
+    }else if(upgradeType=="Gllang"){
+        allUpgradesAchievementTitle = "The Castlekeep"
+        upgradeList = ["glg_armor_reinforcement",
+                        "glg_machine_cannon",
+                        "glg_all_shots_fired",
+                        "glg_gaia_axe",
+                        //"glg_iron_tusk", // Gllang ultimate attack, can only be purchased if Gllang was starter
+                        "glg_detonator",
+                        "glg_shoulder_missile",
+                        "glg_leg_missile",
+                        "glg_gravity_zero",
+                        "glg_machine_cannon_ammo_count"]
+    }else if(upgradeType=="Laguiole"){
+        allUpgradesAchievementTitle = "The Airborne Dominator"
+        upgradeList = ["lio_armor_reinforcement",
+                        "lio_gigantic_boomerang",
+                        //"lio_horobi", // Laguiole ultimate attack, can only be purchased if Laguiole was starter
+                        "lio_sky_torpedo",
+                        "lio_aerial_missile",
+                        "lio_divine_laser",
+                        "lio_gravity_zero"]
+    }else if(upgradeType=="Pilot"){
+        allUpgradesAchievementTitle = "The Heir of Tsukioka"
+        upgradeList = ["hero_shield",
+                        "hero_booster",
+                        "hero_drive",
+                        "hero_grenade"]
+    }
+
+    upgradeArray = areFullyUpgraded(upgradeList)
+    upgradeArrayDelta = almostFullyUpgraded(upgradeList)
+    
+    achievement(
+        title = allUpgradesAchievementTitle,
+        description = allUpgradesAchievementDescription,
+        points = 10,
+        //trigger = allAwardsAchievementTrigger
+        trigger = almostFullyUpgraded(upgradeList)
+                    && measured(
+                        tally(length(upgradeArray),upgradeArray)
+                    )
+                    && never(onLoadSavedGameMenu()) //TODO: Need a better reset condition; values from last save are still shown on the main menu and load screens
+    )
+}
+
+
+// Mission Award Achievement Functions
+function allAwardsComplete(){
+    if(mapType==1){ // Map type is Senjo New City Center
+        return senjouPeaceAward() && misakiFactoryDestroyed == 0 && misakiHqDestroyed == 0 && senjoHospitalDestroyed == 0 && senjoCityHallDestroyed == 0
+    }else if (mapType==2){ // Map type is Downtown Senjo
+        return senjouPeaceAward() && schoolDestroyed == 0
+    }else if (mapType==3){ // Map type is Senjo Port
+        return senjouPeaceAward() && observatoryDestroyed == 0 && bnnSenjoBranchDestroyed == 0
+    }else{
+        return senjouPeaceAward()
+    }    
+}
+
+function allAwardsAchievement(achievementTitle,missionNumber,mapType){
+    if(missionNumber=="15a"){
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==15 && mapType!=7)
+    }else if(missionNumber=="15b or 18a"){
+        allAwardsAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && mapType==7)
+    }else if(missionNumber=="19a or 19b"){
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==19)
+    }else{
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==missionNumber)
+    }
+    allAwardsAchievementTrigger = allAwardsAchievementTrigger
+                                    && never(returnToMainMenu() || returnToChallengeSelection())
+                                    && never(cityDamage>=0x47)
+                                    && trigger_when(missionComplete(missionNumber))
+    if(values["map_type"][mapType]=="Senjo New City Center"){
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiHqDestroyed())
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiFactoryDestroyed())
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoHospitalDestroyed())
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoCityHallDestroyed())
+    }else if(values["map_type"][mapType]=="Downtown Senjo"){
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(schoolDestroyed())
+    }else if(values["map_type"][mapType]=="Senjo Port"){
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(observatoryDestroyed())
+        allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(bnnSenjoBranchDestroyed())
+    }
+    
+    achievement(
+        title = achievementTitle,
+        description = "Complete mission "+missionNumber+" with all possible awards and under one million damage in Story or Challenge mode",
+        points = 5,
+        trigger = allAwardsAchievementTrigger
+    )
+}
+
+
+// Mission Progression Achievement Functions
+function missionProgressionAchievement(achievementTitle,missionRangeStart,missionRangeEnd,startingMeganite){
+    missionProgressionAchievementDescription = "Complete missions "+missionRangeStart+"-"+missionRangeEnd+" in story mode"
+    if(startingMeganite==""){
+        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0)
+                                                && never(returnToMainMenu())
+                                                && trigger_when(missionComplete(missionRangeEnd))
+    }else{
+        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0 && startingMeganite==initialRobot)
+                                                && never(returnToMainMenu())
+                                                && trigger_when(missionComplete(missionRangeEnd))
+        if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Vavel"
+        if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Gllang"
+        if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Laguiole"
+    }
+    achievement(
+        title = achievementTitle,
+        description = missionProgressionAchievementDescription,
+        points = 10,
+        trigger = missionProgressionAchievementTrigger
+    )
+}
+
+
+// Event Achievement Functions
+function stringCompare(string,address){
+    if(string=="vev\1-3"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x2d,0x33]
+    }else if(string=="vev\4-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x2d,0x31]
+    }else if(string=="vev\7-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x37,0x2d,0x31]
+    }else if(string=="vev\20-4"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x34]
+    }else if(string=="vev\31-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
+    }else if(string=="vev\132-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x33,0x32,0x2d,0x31]
+    }else if(string=="vev\150-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x35,0x30,0x2d,0x31]
+    }else if(string=="vev\157-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x35,0x37,0x2D,0x31]
+    }else if(string=="vev\68-2"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
+    }else if(string=="vev\71a-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x37,0x31,0x61,0x2D,0x31]
+    }else if(string=="vev\84-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x38,0x34,0x2D,0x31]
+    }else if(string=="v58\72a-4"){
+        stringArray = [0x76,0x35,0x38,0x5C,0x37,0x32,0x61,0x2D,0x34]
+    }else if(string=="v58\49a-4"){
+        stringArray = [0x76,0x35,0x38,0x5C,0x34,0x39,0x61,0x2D,0x34]
+    }else if(string=="v58\95-4"){
+        stringArray = [0x76,0x35,0x38,0x5C,0x39,0x35,0x2D,0x34]
+    }
+    return all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
+}
+
+function postMissionEventAchievement(achievementTitle,achievementDescription,points,varName,minValue,voiceIndex){
+    if(varName=="no_ellen_or_nanao_yui"){
+        globalVarCheck = globalVar("nanao_favor_flag")<7 &&
+                            globalVar("ellen_favor_flag")<2 &&
+                            globalVar("main_character_number")==2
+    }else{
+        globalVarCheck = globalVar(varName)>=minValue    
+    }
+    dialogueCheck = stringCompare(voiceIndex,dialogueIndexAddress)
+    achievement(
+        title = achievementTitle,
+        description = achievementDescription,
+        points = points,
+        trigger = globalVarCheck && dialogueCheck
+    )
+}
+
+
+// Combat Achievement Functions
+//TODO: Need to tweak to take into account ranged attacks, may not hit until after robot's no longer "attacking"
+function attackLanded(attack_array,robot){  
+    attackLandedArray = []
+    for attack in attack_array{
+            array_push(attackLandedArray,once(
+                                            currentRobot==robot
+                                            && robotLastAttackIs(attack)
+                                            //&& enemyIsPresent()
+                                            && enemyTakesDamage()
+                                            ||
+                                            currentRobot==robot
+                                            && robotLastAttackIs(attack)
+                                            //&& enemy2IsPresent()
+                                            && enemy2TakesDamage()
+                                            ||
+                                            currentRobot==robot
+                                            && robotLastAttackIs(attack)
+                                            //&& enemy3IsPresent()
+                                            && enemy3TakesDamage()
+                                            ||
+                                            currentRobot==robot
+                                            && robotLastAttackIs(attack)
+                                            //&& enemy4IsPresent()
+                                            && enemy4TakesDamage()
+                                            )
+                                          )
+    }  
+    return attackLandedArray
+}
+
+function landAllAttacksAchievement(meganite){
+    
+    attackValueArray = get_keys(meganite_struct["last_attack"]["values"]["All"])
+    
+    if(meganite=="Vavel"){
+        achievementTitle = "Rock Em Sock Em"
+        achievementDescription = "Use all of Vavel's combat commands in a single session, not including starter-specific commands"
+        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Vavel"]))
+        landAllAttacksArray = attackLanded(attackValueArray,0)
+    }else if(meganite=="Laguiole"){
+        achievementTitle = "Bird of Prey"
+        achievementDescription = "Use all of Laguiole's combat commands in a single session, not including starter-specific commands"
+        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Laguiole"]))
+        landAllAttacksArray = attackLanded(attackValueArray,2)
+    }else if(meganite=="Gllang"){
+        achievementTitle = "Suns Out Guns Out"
+        achievementDescription = "Use all of Gllang's combat commands in a single session, not including starter-specific commands"
+        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Gllang"]))
+        landAllAttacksArray = attackLanded(attackValueArray,1)
+    }
+    achievement(
+        title = achievementTitle,
+        description = achievementDescription,
+        points = 10,
+        trigger = measured(
+                    tally(length(landAllAttacksArray),landAllAttacksArray)
+                  )
+    )
+}
+
+function blockAllAttacksAchievement(){
+// Once levels starts
+// And once robot has blocked at least one attack
+// Reset if damage is taken
+// Trigger on mission complete
+                            
+    achievement(
+        title = "Keep Those Hands Up",
+        description = "Block all damage during a mission",
+        points = 5,
+        trigger = once(missionStart())
+                    && once(robotIsPresent() && robotTakesDamage() && robotIsBlocking())
+                    && never(!inMission())
+                    && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
+                    && (
+                        (currentScenario==52 && trigger_when(missionComplete(52)))
+                        || (currentScenario==33 && trigger_when(missionComplete(33)))
+                        || (currentScenario==20 && trigger_when(missionComplete(20)))
+                        || (currentScenario==24 && trigger_when(missionComplete(24)))
+                        || (currentScenario==48 && trigger_when(missionComplete(48)))
+                        || (currentScenario!=20
+                            && currentScenario!=24
+                            && currentScenario!=33
+                            && currentScenario!=48
+                            && currentScenario!=52
+                            && trigger_when(missionComplete(1)))
+                       )
+    )
+}
+
+/*
+function oneHitKOAchievement(){
+    achievement(
+        title = "One Punch Man",
+        description = "Defeat an enemy with full health in one hit",
+        points = 5,
+        trigger = inMission() &&
+                    (
+                        (enemyIsPresent() && enemy["health"] == 0 && prev(enemy["health"]) == enemy["max_health"])
+                        || (enemy2IsPresent() && enemy2["health"] == 0 && prev(enemy2["health"]) == enemy2["max_health"])
+                        || (enemy3IsPresent() && enemy3["health"] == 0 && prev(enemy3["health"]) == enemy3["max_health"])
+                        || (enemy4IsPresent() && enemy3["health"] == 0 && prev(enemy4["health"]) == enemy4["max_health"])
+                    )
+    )
+}
+*/
+
+function attackDownedEnemyAchievement(){
+    achievement(
+        title = "Hit 'Em While They're Down",
+        description = "Hit a downed enemy three times before they get back up",
+        points = 5,
+        trigger = inMission() &&
+                    (
+                        (tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
+                        || (tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
+                        || (tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
+                        || (tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
+                    )
+    )
+}
+
+function launchAndHitEnemyAchievement(){
+    //Use gravity zero on an enemy, then hit them again on the way down
+    //Gravity Zero attack value is different for each Meganite, restricting to Vavel to limit comparisons
+    achievement(
+        title = "Keep Your Eye on the Ball",
+        description = "As Vavel, launch an enemy with Gravity Zero then hit them again before they hit the ground",
+        points = 5,
+        trigger = inMission() &&
+                    (
+                        (once(robot["last_attack"]==0x75 && enemyTakesDamage()) && robot["last_attack"]!=0x75 && enemyTakesDamage()
+                            && never(!enemyIsFalling()))
+                        || (once(robot["last_attack"]==0x75 && enemy2TakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
+                            && never(!enemy2IsFalling()))
+                        || (once(robot["last_attack"]==0x75 && enemy3TakesDamage()) && robot["last_attack"]!=0x75 && enemy3TakesDamage()
+                            && never(!enemy3IsFalling()))
+                        || (once(robot["last_attack"]==0x75 && enemy4TakesDamage()) && robot["last_attack"]!=0x75 && enemy4TakesDamage()
+                            && never(!enemy4IsFalling()))
+                    )
+    )
+}
+
+function attackFallingEnemyAchievement(){
+    achievement(
+        title = "Then You Have My Permission to Fall",
+        description = "Hit a falling enemy three times before they hit the ground",
+        points = 5,
+        trigger = inMission() &&
+                    (
+                        (tally(3,enemyTakesDamage() && enemyIsFalling() && currentRobot==2)
+                            && never(!enemyIsFalling()))
+                        || (tally(3,enemy2TakesDamage() && enemy2IsFalling() && currentRobot==2)
+                            && never(!enemy2IsFalling()))
+                        || (tally(3,enemy3TakesDamage() && enemy3IsFalling() && currentRobot==2)
+                            && never(!enemy3IsFalling()))
+                        || (tally(3,enemy4TakesDamage() && enemy4IsFalling() && currentRobot==2)
+                            && never(!enemy4IsFalling()))
+                    )
+    )
+}
+
+//TODO: Debug why "trigger when" isn't working
+function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
+    robotName = values["current_robot"][robotIndex]
+    if(attackIndex==0x70){
+        if(robotIndex==0) attackName = "Genesis Cry"
+        if(robotIndex==1) attackName = "Iron Tusk"
+    }
+    if(attackIndex==0x6c) attackName = "Annihilator"
+    if(attackIndex==0x6e) attackName = "Fire All Ordnance"
+     
+    achievement(
+        title = achTitle,
+        description = "As "+robotName+", kill a Volgara with over 1000 health using only '"+attackName+"'",
+        points = 5,
+        trigger = inMission()
+                    && currentRobot==robotIndex
+                    && never(robot["last_attack"]!=attackIndex)
+                    && (
+                        (once(enemy["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                            && trigger_when(enemy["health"]==0)
+                        )
+                        || (once(enemy2["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                            && trigger_when(enemy2["health"]==0)
+                        )
+                        || (once(enemy3["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                            && trigger_when(enemy3["health"]==0)
+                        )
+                        || (once(enemy4["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                            && trigger_when(enemy4["health"]==0)
+                        )
+                        || //If player has the capability to earn this achievment, show an indicator
+                        enemyIsPresent() && enemy["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(enemy["health"]<1000)
+                            ||
+                        enemy2IsPresent() && enemy2["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(enemy2["health"]<1000)
+                            ||
+                        enemy3IsPresent() && enemy3["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(enemy3["health"]<1000)
+                            ||
+                        enemy4IsPresent() && enemy4["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(enemy4["health"]<1000)
+                    )
+
+    )
+}
+
+
+
+
+// LEADERBOARDS //
+for mission_number in [1,3,5,6,7,8,9,10,11,13,14,"15a","15b or 18a",16,17,19]{
+    timeLeaderboard(mission_number)
+    scoreLeaderboard(mission_number)
+}
+
+for mission_number in range(20,33){
+    timeLeaderboard(mission_number)
+    scoreLeaderboard(mission_number)
+}
+
+for mission_number in range(38,49){
+    timeLeaderboard(mission_number)
+    scoreLeaderboard(mission_number)
+}
+
+
+timeLeaderboard(50)
+timeLeaderboard(51)
+scoreLeaderboard(51)
+timeLeaderboard(52)
+timeLeaderboard(53)
+scoreLeaderboard(53)
+
+
+// ACHIEVEMENTS //
+achievement("[VOID] Pilot data", "Pointer to pilot health", 0, dword(heroPointer+meganite_struct["health"]["offset"])==0)
+achievement("[VOID] Meganite data", "Pointer to meganite health", 0, robot["health"]==0)
+achievement("[VOID] Enemy data", "Pointer to enemy health", 0, enemy["health"]==0
+                                                                && enemy2["health"]==0
+                                                                && enemy3["health"]==0
+                                                                && enemy4["health"]==0)
+achievement("[VOID] City damage", "Pointer to city damage", 0, cityDamage==0)
+achievement("[VOID] Save Data","Pointer to save data", 0, dword(saveData+0xb8)==0)
+//achievement("[VOID] Mission timer","Pointer to mission timer", 0, missionDuration==0)
+//voidAch("temporary_event")
+voidAch("collapse_ellen_s_apartment")
+//voidAch("building_collapse_point")
+
+
+missionProgressionAchievement("Driller vs Driller",1,5,0)
+missionProgressionAchievement("The World Doesn't Run on Theory Alone",6,8,0)
+missionProgressionAchievement("Mechanical Gods That Descended to Earth",9,11,0)
+missionProgressionAchievement("Vavel 15",12,15,0)
+missionProgressionAchievement("Vavel 19",16,19,0)
+
+missionProgressionAchievement("Driller vs Hammer",1,5,1)
+missionProgressionAchievement("Gllang 8",6,8,1)
+missionProgressionAchievement("Gllang 11",9,11,1)
+missionProgressionAchievement("Gllang 15",12,15,1)
+missionProgressionAchievement("Gllang 19",16,19,1)
+
+missionProgressionAchievement("Driller vs Thunder",1,5,2)
+missionProgressionAchievement("Laguiole 8",6,8,2)
+missionProgressionAchievement("Laguiole 11",9,11,2)
+missionProgressionAchievement("Laguiole 15",12,15,2)
+missionProgressionAchievement("Laguiole 19",16,19,2)
+
+missionProgressionAchievement("Tag Team",20,24,"")
+missionProgressionAchievement("Regaining Control",25,30,"")
+missionProgressionAchievement("The Black Meganite",31,35,"")
+missionProgressionAchievement("Unlimited Power",35,40,"")
+missionProgressionAchievement("The Warlords",41,42,"")
+missionProgressionAchievement("Live Action News",43,45,"")
+missionProgressionAchievement("Clearing the Air",46,47,"")
+missionProgressionAchievement("Turning the Tide",48,50,"")
+missionProgressionAchievement("A New Era of Coexistence",51,53,"")
+postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_favor_flag",7,"v58\72a-4") //Me and Nanao. And the Meganites.
+postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",2,"v58\49a-4") //Me and Ellen. And the Meganites.
+postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
+
+postMissionEventAchievement("No! The Bakery!","In story mode, destroy the bakery 1 time between episodes 10 and 30",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
+postMissionEventAchievement("Time to Find Another Job","In story mode, destroy the bakery 2 times between episodes 10 and 30",5,"nanao_economic_flag",2,"vev\4-1") //Baron Cafe seeking enthusiastic workers
+postMissionEventAchievement("Can't Afford to Be Picky","In story mode, destroy the bakery 3 times between episodes 10 and 30",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
+postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, destroy the bakery 4 times between episodes 10 and 30",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
+postMissionEventAchievement("One Hundred Billion Yen","In story mode, destroy the bakery 5 times between episodes 10 and 30",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+postMissionEventAchievement("It Doesn't Bother Me at All","Destroy Keiko's apartment 1 time",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
+postMissionEventAchievement("It's Not a Big Deal at All","Destroy Keiko's apartment 2 time",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
+postMissionEventAchievement("Don't Try Anything Funny","Destroy Keiko's apartment 3 time",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+postMissionEventAchievement("We'll Rebuild","Destroy Misaki HQ",5,"misaki_heavy_industries_flag",1,"vev\68-2") //It'll take some money, but we'll find the financing somehow
+postMissionEventAchievement("Because It Was with You","Discuss Misaki's financial ruin with Ellen",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
+postMissionEventAchievement("More to Him Than Just a Spoiled Brat","Discuss Misaki's financial ruin with Misaki",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
+
+
+allAwardsAchievement("Senjo's Protector",8,1)
+allAwardsAchievement("Bay Area Defense",9,3)
+allAwardsAchievement("Blast Furnace",10,2)
+allAwardsAchievement("Flawless First Memory",11,2)
+allAwardsAchievement("E.G.G.",13,1)
+allAwardsAchievement("Inferno",14,1) //TODO: Does not appear possible ... Volgara deals 80 city damage before player gets control
+allAwardsAchievement("The Mobile Fortress","15a",1)
+allAwardsAchievement("Airborne Dominator","15b or 18a",7)
+allAwardsAchievement("Ellen and Nanao",16,2)
+allAwardsAchievement("A Family Rival",17,1)
+allAwardsAchievement("Centurion Crusher","19a or 19b",1)
+allAwardsAchievement("A Day at School",20,2)
+allAwardsAchievement("Nanao's Water Soup",21,2)
+allAwardsAchievement("Meganite Memories",22,2)
+allAwardsAchievement("Bus Stop",23,1)
+allAwardsAchievement("The Dark One",24,2)
+allAwardsAchievement("Ellen Bulnose",25,2)
+allAwardsAchievement("Volgara Mystery",26,1)
+allAwardsAchievement("Fortress",27,2)
+allAwardsAchievement("Voices Unheard",28,2)
+allAwardsAchievement("Close Combat",29,1)
+allAwardsAchievement("Rat Race",30,2)
+allAwardsAchievement("Defend & Destroy",31,2)
+allAwardsAchievement("Yaoya Imperiled",32,2)
+allAwardsAchievement("Mt. Chihaya Storming",33,4)
+allAwardsAchievement("Genesis",38,2)
+allAwardsAchievement("Dantarion",39,1)
+allAwardsAchievement("Valhalla Dawning",40,1)
+allAwardsAchievement("Baron",41,4)
+allAwardsAchievement("Spectral Visitation",42,2)
+allAwardsAchievement("Bird's Eye News",43,3)
+allAwardsAchievement("Live Action News",44,1)
+allAwardsAchievement("Off the Air",45,2)
+allAwardsAchievement("Chemical Warfare",46,2)
+allAwardsAchievement("Windborne Darkness",47,1)
+allAwardsAchievement("Lifesaver Express",48,1)
+allAwardsAchievement("Higher Ground - 1",49,3)
+allAwardsAchievement("The Fall of Senjo",51,1)
+
+allUpgradesAchievement("Vavel")
+allUpgradesAchievement("Gllang")
+allUpgradesAchievement("Laguiole")
+allUpgradesAchievement("Pilot")
+
+landAllAttacksAchievement("Vavel")
+landAllAttacksAchievement("Laguiole")
+landAllAttacksAchievement("Gllang")
+
+singleAttackAchievement("With a Rebel Yell","vvl_available_genesis_cry",0,0x70)
+singleAttackAchievement("Baby You're A Firework","glg_iron_tusk",1,0x70)
+singleAttackAchievement("Launch All Missiles!","glg_all_shots_fired",1,0x6e)
+singleAttackAchievement("Wolverine Would Be Proud","lio_horobi",2,0x6c)
+
+launchAndHitEnemyAchievement()
+attackDownedEnemyAchievement()
+attackFallingEnemyAchievement()
+blockAllAttacksAchievement()
+
+
+
+// RICH PRESENCE //
+RPvalues={
+    "game_mode":{
+        0:"Story",
+        1:"Challenge",
+        2:"Tutorial",
+        3:"Versus"
+    },
+    "mission_title":{
+        201: "Heavy Arms Training",
+        300: "Dantarion's Assault",
+        700: "Versus"
+    }
+    
+}
+
+rich_presence_conditional_display(globalVar("current_scenario")==700,
+    "{0} ({1}) is fighting {2} ({3}) in {4} (Versus)",
+    rich_presence_lookup("Robot1",globalVar("match_1p_current_robot"),values["initial_robot"],"Robot1"),
+    rich_presence_lookup("Pilot1",globalVar("match_1p_main_character_number"),values["main_character_number"],"Pilot1"),
+    rich_presence_lookup("Robot1",globalVar("match_2p_current_robot"),values["initial_robot"],"Robot2"),
+    rich_presence_lookup("Pilot1",globalVar("match_2p_main_character_number"),values["main_character_number"],"Pilot2"),
+    rich_presence_lookup("Map",globalVar("map_type"),values["map_type"],"unknown")
+    )
+
+rich_presence_conditional_display(screenIndex2==0x0028e960,
+//    "{0} is in Episode {1} Mission Briefing ({2})",
+    "{0} is in Episode {1} Mission Briefing ({2}) T:{3}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES")
+    )
+
+rich_presence_conditional_display(characterDataArray!=0 && inMission() && gameMode==2,
+//    "{0} is piloting {1} in {2} ({3})",
+    "{0} is piloting {1} in {2} ({3}) T:{4}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_lookup("Mission",currentScenario,RPvalues["mission_title"]),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES")
+    )
+
+rich_presence_conditional_display(characterDataArray!=0 && inMission() && gameMode==0,
+//    "{0} is piloting {1} in Episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
+    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
+    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
+    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
+    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_macro("Number",globalVar("keiko_flag")),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    )
+
+rich_presence_conditional_display(characterDataArray!=0 && inMission() && robotIsPresent() && enemy3IsPresent(),
+    "{0} is piloting {1} in Episode {2} ({3}) 🤖{5}/{6} 👾{7}/{8} 👾{9}/{10} 👾{11}/{12} ⏲:{13} 🏠💥:{14} DMG:{15} BCP:{16}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Robot Health",robot["health"]),
+    rich_presence_value("Robot Max Health",robot["max_health"]),
+    rich_presence_value("Enemy Health",enemy["health"]),
+    rich_presence_value("Enemy Max Health",enemy["max_health"]),
+    rich_presence_value("Enemy2 Health",enemy2["health"]),
+    rich_presence_value("Enemy2 Max Health",enemy2["max_health"]),
+    rich_presence_value("Enemy3 Health",enemy3["health"]),
+    rich_presence_value("Enemy3 Max Health",enemy3["max_health"]),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    
+    )
+rich_presence_conditional_display(characterDataArray!=0 && inMission() && robotIsPresent() && enemy2IsPresent(),
+    "{0} is piloting {1} in Episode {2} ({3}) Time:{4} 🤖{5}/{6} 👾{7}/{8} 👾{9}/{10} ⏲:{11} 🏠💥:{12} DMG:{13} BCP:{14}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Robot Health",robot["health"]),
+    rich_presence_value("Robot Max Health",robot["max_health"]),
+    rich_presence_value("Enemy Health",enemy["health"]),
+    rich_presence_value("Enemy Max Health",enemy["max_health"]),
+    rich_presence_value("Enemy2 Health",enemy2["health"]),
+    rich_presence_value("Enemy2 Max Health",enemy2["max_health"]),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    )
+
+rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent() && robotIsPresent(),
+    "{0} is piloting {1} in Episode {2} ({3}) 🤖{5}/{6} 👾{7}/{8} ⏲:{9} 🏠💥:{10}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Robot Health",robot["health"]),
+    rich_presence_value("Robot Health",robot["max_health"]),
+    rich_presence_value("Robot Health",enemy["health"]),
+    rich_presence_value("Robot Health",enemy["max_health"]),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    )
+
+    
+rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent() && robotIsPresent(),
+//    "{0} is piloting {1} in Episode {2} ({3})",
+    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} DMG:{6} BCP:{7}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Robot Health",robot["health"]),
+    rich_presence_value("Robot Health",robot["max_health"]),
+    rich_presence_value("Robot Health",enemy["health"]),
+    rich_presence_value("Robot Health",enemy["max_health"]),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    )
+rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent(),
+//    "{0} is in Episode {1} ({2})",
+    "{0} is in Episode {1} ({2}) ⏲:{3} 🏠💥:{4} DMG:{5} BCP:{6}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_macro("Number",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("Number",globalVar("amount_of_damage")),
+    rich_presence_value("Number",globalVar("building_collapse_point"))
+    )
+
+//rich_presence_display("No! The Bakery! That's where I work! ")
+
+
+rich_presence_display("Last played Episode {0} ({1}) mode:{6} T:{7} index1:{2} index2:{3} index3:{4} index4:{5} intial:{8} current:{9}",
+    rich_presence_macro("Number",globalVar("current_scenario")),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_macro("Number",screenIndex1),
+    rich_presence_macro("Number",screenIndex2),
+    rich_presence_macro("Number",screenIndex3),
+    rich_presence_macro("Number",screenIndex4),
+    rich_presence_macro("Number",gameMode),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",globalVar("initial_robot")),
+    rich_presence_value("Number",globalVar("current_robot"))
+
+    )
+
+
+//Debugging RPs//
+
+
+/*
+//Global vars debugging
+rpDisplayText = ""
+index = 0
+for index in [12,1,10,11,3,4,5,6,8,43]{ 
+    rpDisplayText = rpDisplayText + variables[index] + ": {" + index + "}, "
+}
+    
+    rich_presence_display(rpDisplayText,
+    rich_presence_macro("Number",dword(nodes["main_character_number"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["initial_robot"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["control_type"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["ellen_favor_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["nanao_favor_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["nanao_economic_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["keiko_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["banhara_death_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["misaki_heavy_industries_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["nanao_amulet_flag"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["work"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["temporary_event"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["current_scenario"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["after_the_day_of_the_gods_destruction"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["number_of_continues"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["current_robot"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["map_type"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["amount_of_damage"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_senjo_city_hall"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_misaki_heavy_industries_headquarters_building"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_misaki_heavy_industries_senjo_factory"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_misaki_heavy_industries_research_institute"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_senjo_hospital"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_tsukioka_industries_headquarters"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_evacuation_guidance_team_headquarters"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_stadium"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_senjo_station"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_civilization_preservation_foundation"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_minami_senjo_station"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_supermarket"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_bakery"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_coffee_shop"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_observatory"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_bnn_senjo_branch"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_nanaho_s_house"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_kaoruko_s_apartment"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_nanaho_s_apartment"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_otawara_trading"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_ellen_s_apartment"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_banbara_s_apartment"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_tokyo_metropolitan_government_building"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_school"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["collapse_yaoya"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["building_collapse_point"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["frost_beam"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["hero_money"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["hero_shield"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["hero_booster"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["hero_drive"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["hero_grenade"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_armor_reinforcement"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_gigantic_booster"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_dual_knuckle"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_dive"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_wavel_missile"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_pyro_burner"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_gravity_zero"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_divine_upper"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_blast_hook"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_armor_reinforcement"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_gigantic_boomerang"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_horobi"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_sky_torpedo"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_aerial_missile"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_divine_laser"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_gravity_zero"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_armor_reinforcement"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_machine_cannon"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_all_shots_fired"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_gaia_axe"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_iron_tusk"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_detonator"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_shoulder_missile"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_leg_missile"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_gravity_zero"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_machine_cannon_ammo_count"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_available_genesis_mode"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["vvl_available_genesis_cry"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["lio_available_reinforcement"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["glg_available_reinforcement"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["battle_map_number"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_1p_main_character_number"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_2p_main_character_number"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_1p_control_type"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_2p_control_type"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_1p_current_robot"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["match_2p_current_robot"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["mc_lastaccess"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_lastaccessdataindex"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_is_stereo"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_is_vibration"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_is_monitor_vibration"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_is_animated_gore"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_vs_robo"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_vs_map"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["game_mode"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["system_boot_game_data_num"]+0x1c)),
+    rich_presence_macro("Number",dword(nodes["language"]+0x1c)))
+    
+*/
+
+
+
