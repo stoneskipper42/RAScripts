@@ -615,6 +615,8 @@ meganite_struct = {
         "size": 32
     },
     "duration": { //How long character has been loaded [32-bit] (frames)
+        // Increases once per frame
+        // If using start to fast forward 
         "offset": 0x54,
         "size": 32
     },
@@ -873,6 +875,16 @@ for value in get_keys(meganite_struct)
 
 //missionDuration = dword(dword(0x0027e664)+0x54) //Resets during cutscene in ep1
 missionDuration = dword(heroPointer+meganite_struct["duration"]["offset"])
+hitCountMissionDuration = tally(0,
+            pilot["duration"]-prev(pilot["duration"])>=1,
+            pilot["duration"]-prev(pilot["duration"])>=2,
+            pilot["duration"]-prev(pilot["duration"])>=3,
+            pilot["duration"]-prev(pilot["duration"])>=4,
+            pilot["duration"]-prev(pilot["duration"])>=5,
+            pilot["duration"]-prev(pilot["duration"])>=6,
+            pilot["duration"]-prev(pilot["duration"])>=7,
+            pilot["duration"]-prev(pilot["duration"])>=8,
+            pilot["duration"]-prev(pilot["duration"])>=9)
 
 function robotLastAttackIs(attack) => robot["last_attack"]==attack
 
@@ -917,6 +929,8 @@ function onTitleScreen() => screenIndex3==0x32453
 function onLoadSavedGameMenu() => screenIndex3==0x3334d
 function returnToChallengeSelection() => screenIndex3==0x33aa2 && prev(screenIndex3)!=0x33aa2
 //function returnToChallengeSelection() => screenIndex4==0xa482
+function missionIncomplete() => missionFailed() || screenIndex3==0x33aa2
+
 
 function get_enemy_count(mission_number){
     if(mission_number==52)  return 4
@@ -927,24 +941,25 @@ function get_enemy_count(mission_number){
 
 function all_enemies_defeated(mission_number){
     if(get_enemy_count(mission_number)==3){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(!inMission()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(!inMission()))
-        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(!inMission()))
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(missionIncomplete()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(missionIncomplete()))
+        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(missionIncomplete()))
     }
     if(get_enemy_count(mission_number)==2){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && never(!inMission()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && never(!inMission()))
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && never(missionIncomplete()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && never(missionIncomplete()))
     }
     if(get_enemy_count(mission_number)==4){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(!inMission()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(!inMission()))
-        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(!inMission()))
-        && once(enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent() && never(!inMission()))
+        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(missionIncomplete()))
+        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(missionIncomplete()))
+        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(missionIncomplete()))
+        && once(enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent() && never(missionIncomplete()))
     }
-    return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer!=0 && never(!inMission()))
+    return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer!=0 && never(missionIncomplete()))
 }
 
-//TODO: Debug mission 16; flagged as failed on mission complete screen?
+
+//TODO: Debug mission 16; looks like pilot re-loads for a cutscene after the "mission complete" screen
 // LEADERBOARD FUNCTIONS //
 function timeLeaderboard(mission_number){
     leaderboard_id=0
@@ -966,13 +981,14 @@ function timeLeaderboard(mission_number){
         "Episode "+mission_number,
         "Successfully complete episode "+mission_number+" as fast as possible",
         start,
-        returnToMainMenu() || returnToChallengeSelection() || missionFailed(),
+        missionIncomplete(),
         missionComplete(mission_number),
-        missionDuration,
+        hitCountMissionDuration,
         format="FRAMES",
         lower_is_better=true,
         id=leaderboard_id)
 }
+
 
 
 function scoreLeaderboard(mission_number){
@@ -992,7 +1008,7 @@ function scoreLeaderboard(mission_number){
         "Episode "+mission_number+" - Least City Damage",
         "Successfully complete episode "+mission_number+" with the least damage to the city",
         start,
-        returnToMainMenu() || returnToChallengeSelection() || missionFailed(),
+        missionIncomplete(),
         missionComplete(mission_number),
         cityDamage,
         format="VALUE",
@@ -1420,8 +1436,6 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
 
     )
 }
-
-
 
 
 // LEADERBOARDS //
