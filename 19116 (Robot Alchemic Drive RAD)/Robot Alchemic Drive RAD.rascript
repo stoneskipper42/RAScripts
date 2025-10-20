@@ -422,22 +422,25 @@ values = {
     //Amount of damage done to the city, calculated after the mission ends
     //Affects Senjo Peace Award and Construction Minister Award
     //Affects how much damage Tomoe announces during the post-mission news report
-    //0x00=Below one billion yen (senjou peace award)
-    //0x46=Below one billion yen (senjou peace award)
-    //0x47=Apprx two billion yen (construction minister)
-    //0x6e=Apprx two billion yen (construction minister)
-    //0x6f=Apprx five billion yen (construction minister)
-    //0x8c=Apprx five billion yen (construction minister)
-    //0x8e=Apprx five billion yen (no award)
-    //0xa0=Apprx five billion yen (no award)
-    //0xa1=Apprx ten billion yen (no award)
-    //0xb0=Apprx ten billion yen (no award)
-    //0xf0=Apprx twenty billion yen (no award)
-    //0x118=???
-    //0x180=Exceed thirty billion yen
-    //0x200=Exceed fifty billion yen
-    //0x600=Exceed one hundred billion yen
-    //0x1000=Exceed one hundred billion yen
+    //0x00=000=Below one billion yen (senjou peace award)
+    //0x46=070=Below one billion yen (senjou peace award)
+    //0x47=071=Apprx two billion yen (construction minister)
+    //0x6e=110=Apprx two billion yen (construction minister)
+    //0x6f=111=Apprx five billion yen (construction minister)
+    //0x8c=140=Apprx five billion yen (construction minister)
+    //0x8d=141=Apprx five billion yen (no award)
+    //0xa0=160=Apprx five billion yen (no award)
+    //0xa1=161=Apprx ten billion yen (no award)
+    //0xbe=190=Apprx ten billion yen
+    //0xbf=191=At least ten billion yen
+    //0xdc=220=At least ten billion yen
+    //0xdd=221=Exceed twenty billion yen
+    //0x12c=300=Exceed twenty billion yen
+    //0x12d=301=Exceed thirty billion yen
+    //0x1c2=450=Exceed thirty billion yen
+    //0x1c3=451=Exceed fifty billion yen
+    //0x2bc=700=Exceed fifty billion yen
+    //0x2bd=701=Exceed one hundred billion yen
  },
  "hero_money":{
     // Amount of money currently held in 100 billion yen
