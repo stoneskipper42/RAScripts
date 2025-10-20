@@ -610,8 +610,20 @@ values = {
 }
 
 meganite_struct = {
+    "z_position": {
+        "offset": 0x14,
+        "size": 32
+    },
     "duration": { //How long character has been loaded [32-bit] (frames)
         "offset": 0x54,
+        "size": 32
+    },
+    "x_position": {
+        "offset": 0xa0,
+        "size": 32
+    },
+    "y_position": {
+        "offset": 0xa8,
         "size": 32
     },
     "max_health": { //Meganite max health [16-bit]
@@ -637,6 +649,24 @@ meganite_struct = {
     "max_energy": { //Meganite max energy [16-bit]
         "offset": 0xbe,
         "size": 16
+    },
+    "pilot_animation": {
+        "offset": 0x458,
+        "size": 32,
+        "values": {
+            0x00: "Standing",
+            0x02: "Walking",
+            0x04: "Running",
+            0x06: "Jump 1",
+            0x08: "Jump 2",
+            0x0a: "Falling 2",
+            0x0c: "Hit/thrown/lying down",
+            0x0e: "Standing back up",
+            0x1a: "Gravity drive",
+            0x1c: "Crouching/riding meganite",
+            0x20: "Holding something"
+        }
+
     },
     "is_attacking": { //Meganite attacking status [32-bit]
       //Can be used in tandem with the the "Meganite last atack" to determine the current attack
