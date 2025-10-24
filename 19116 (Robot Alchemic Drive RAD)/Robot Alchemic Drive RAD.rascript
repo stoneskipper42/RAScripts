@@ -967,8 +967,6 @@ function timeLeaderboard(mission_number){
         leaderboard_id=time_leaderboard_id[mission_number]
         start = ((currentScenario==15 && currentRobot==1))
     }else if(mission_number=="15b or 18a"){
-     //TODO: Need to figure out how to distinguish between 18a and 18b
-     // In challenge mode, initial==current so selecting laguiole in 18b looks the same as 18a
         start = ((currentScenario==15 || currentScenario==18) && mapType==7)
     }else{
         if(mission_number<=highest_published_leaderboard_mission){
