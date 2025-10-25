@@ -1309,7 +1309,7 @@ function blockAllAttacksAchievement(){
         points = 5,
         trigger = once(missionStart())
                     && once(robotIsPresent() && robotTakesDamage() && robotIsBlocking())
-                    && never(!inMission())
+                    && never(missionIncomplete())
                     && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
                     && (
                         (currentScenario==52 && trigger_when(missionComplete(52)))
