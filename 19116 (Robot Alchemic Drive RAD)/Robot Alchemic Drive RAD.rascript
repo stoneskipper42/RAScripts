@@ -967,6 +967,7 @@ function timeLeaderboard(mission_number){
         leaderboard_id=time_leaderboard_id[mission_number]
         start = ((currentScenario==15 && currentRobot==1))
     }else if(mission_number=="15b or 18a"){
+        leaderboard_id=time_leaderboard_id[mission_number]
         start = ((currentScenario==15 || currentScenario==18) && mapType==7)
     }else{
         if(mission_number<=highest_published_leaderboard_mission){
@@ -992,8 +993,10 @@ function timeLeaderboard(mission_number){
 function scoreLeaderboard(mission_number){
     leaderboard_id=0
     if(mission_number=="15a"){
+        leaderboard_id=score_leaderboard_id[mission_number]
         start = ((currentScenario==15 && currentRobot==1))
     }else if(mission_number=="15b or 18a"){
+        leaderboard_id=score_leaderboard_id[mission_number]
         start = ((currentScenario==15 || currentScenario==18) && mapType==7)
     }else{
         if(mission_number<=highest_published_leaderboard_mission){
