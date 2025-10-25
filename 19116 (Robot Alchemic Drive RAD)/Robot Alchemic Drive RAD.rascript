@@ -209,6 +209,7 @@ function globalVar(var_name){
 
 
 // General Information
+screenIndex0 = dword(0x27e9cc)
 screenIndex1 = dword(0x248044)
 screenIndex2 = dword(0x28e2b8)
 screenIndex3 = dword(0x248040)
@@ -243,6 +244,7 @@ function enemyIsPresent() => enemyPointer!=0 && characterDataArray!=0
 function enemy2IsPresent() => enemy2Pointer!=0 && characterDataArray!=0
 function enemy3IsPresent() => enemy3Pointer!=0 && characterDataArray!=0
 function enemy4IsPresent() => enemy4Pointer!=0 && characterDataArray!=0
+function ep16PostMissionCutscene() => screenIndex0==0x8
 
 
 // City damage
@@ -974,6 +976,7 @@ function timeLeaderboard(mission_number){
             leaderboard_id=time_leaderboard_id[mission_number]
         }
         start = currentScenario==mission_number
+        if(mission_number==16) start = start && !ep16PostMissionCutscene()
     }
     start = start && missionStart()
     leaderboard(
@@ -1003,6 +1006,7 @@ function scoreLeaderboard(mission_number){
             leaderboard_id=score_leaderboard_id[mission_number]
         }
         start = currentScenario==mission_number
+        if(mission_number==16) start = start && !ep16PostMissionCutscene()
     }
     start = start && heroAppears()
     leaderboard(
