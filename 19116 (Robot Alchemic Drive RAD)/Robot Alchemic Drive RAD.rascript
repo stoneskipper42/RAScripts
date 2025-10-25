@@ -1153,7 +1153,7 @@ function allAwardsAchievement(achievementTitle,missionNumber,mapType){
     
     achievement(
         title = achievementTitle,
-        description = "Complete mission "+missionNumber+" with all possible awards and under one million damage in Story or Challenge mode",
+        description = "Complete episode "+missionNumber+" with all possible awards and under one million damage in Story or Challenge mode",
         points = 5,
         trigger = allAwardsAchievementTrigger
     )
@@ -1162,7 +1162,7 @@ function allAwardsAchievement(achievementTitle,missionNumber,mapType){
 
 // Mission Progression Achievement Functions
 function missionProgressionAchievement(achievementTitle,missionRangeStart,missionRangeEnd,startingMeganite){
-    missionProgressionAchievementDescription = "Complete missions "+missionRangeStart+"-"+missionRangeEnd+" in story mode"
+    missionProgressionAchievementDescription = "Complete episodes "+missionRangeStart+"-"+missionRangeEnd+" in story mode"
     if(startingMeganite==""){
         missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0)
                                                 && never(returnToMainMenu())
