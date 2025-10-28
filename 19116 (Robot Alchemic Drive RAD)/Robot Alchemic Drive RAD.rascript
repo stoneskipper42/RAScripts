@@ -244,8 +244,11 @@ function enemyIsPresent() => enemyPointer!=0 && characterDataArray!=0
 function enemy2IsPresent() => enemy2Pointer!=0 && characterDataArray!=0
 function enemy3IsPresent() => enemy3Pointer!=0 && characterDataArray!=0
 function enemy4IsPresent() => enemy4Pointer!=0 && characterDataArray!=0
-function ep16PostMissionCutscene() => screenIndex0==0x8
 
+// Mission sub-indexes
+function ep16PostMissionCutscene() => screenIndex0==0x8
+function ep19A() => screenIndex0==0x21
+function ep19B() => screenIndex0==0x1e
 
 // City damage
 cityDamage = dword(dword(0x0027e610)+0x6bc)
@@ -781,7 +784,11 @@ time_leaderboard_id={
     13: 143106,
     14: 143108,
     "15a": 143110,
-    "15b or 18a": 143141
+    "15b or 18a": 143141,
+    16: 144125,
+    17: 144127,
+    "19a": 144129,
+    "19b": 144223
 }
 
 score_leaderboard_id={
@@ -797,10 +804,14 @@ score_leaderboard_id={
     13: 143107,
     14: 143109,
     "15a": 143111,
-    "15b or 18a": 143142
+    "15b or 18a": 143142,
+    16: 144126,
+    17: 144128,
+    "19a": 144130,
+    "19b": 144224
 }
 
-highest_published_leaderboard_mission = 14
+highest_published_leaderboard_mission = 17
 
 // Util Functions
 function get_keys(dictionary){
@@ -971,6 +982,12 @@ function timeLeaderboard(mission_number){
     }else if(mission_number=="15b or 18a"){
         leaderboard_id=time_leaderboard_id[mission_number]
         start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+    }else if(mission_number=="19a"){
+        leaderboard_id=time_leaderboard_id[mission_number]
+        start = (currentScenario==19 && ep19A())
+    }else if(mission_number=="19b"){
+        leaderboard_id=time_leaderboard_id[mission_number]
+        start = (currentScenario==19 && ep19B())
     }else{
         if(mission_number<=highest_published_leaderboard_mission){
             leaderboard_id=time_leaderboard_id[mission_number]
@@ -1001,6 +1018,12 @@ function scoreLeaderboard(mission_number){
     }else if(mission_number=="15b or 18a"){
         leaderboard_id=score_leaderboard_id[mission_number]
         start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+    }else if(mission_number=="19a"){
+        leaderboard_id=score_leaderboard_id[mission_number]
+        start = (currentScenario==19 && ep19A())
+    }else if(mission_number=="19b"){
+        leaderboard_id=score_leaderboard_id[mission_number]
+        start = (currentScenario==19 && ep19B())
     }else{
         if(mission_number<=highest_published_leaderboard_mission){
             leaderboard_id=score_leaderboard_id[mission_number]
@@ -1444,7 +1467,7 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
 
 
 // LEADERBOARDS //
-for mission_number in [1,3,5,6,7,8,9,10,11,13,14,"15a","15b or 18a",16,17,19]{
+for mission_number in [1,3,5,6,7,8,9,10,11,13,14,"15a","15b or 18a",16,17,"19a","19b"]{
     timeLeaderboard(mission_number)
     scoreLeaderboard(mission_number)
 }
