@@ -447,6 +447,12 @@ values = {
     //0x2bc=700=Exceed fifty billion yen
     //0x2bd=701=Exceed one hundred billion yen
  },
+ "frost_beam":{
+   // Indicates whether ranged weapon has been replaced with frost beam
+   // Only expected to be true in mission 14
+   0: "Frost beam disabled",
+   1: "Frost beam enabled"
+ },
  "hero_money":{
     // Amount of money currently held in 100 billion yen
     // eg, 305 = 30,500,000,000 yen
@@ -633,11 +639,16 @@ meganite_struct = {
         "offset": 0xa8,
         "size": 32
     },
-    "max_health": { //Meganite max health [16-bit]
+    "max_health": { //Starting/max health [16-bit]
         "offset": 0xb4,
         "size": 16
     },
-    "health": { //Meganite health [16-bit]
+    "min_health": { //Minimum health [16-bit]
+        // Applied in some missions when the enemy's health cannot drop below a certain level until conditions are met
+        "offset": 0xb6,
+        "size": 16
+    },
+    "health": { //Current health [16-bit]
         "offset": 0xb8,
         "size": 16
     },
@@ -676,7 +687,7 @@ meganite_struct = {
 
     },
     "is_attacking": { //Meganite attacking status [32-bit]
-      //Can be used in tandem with the the "Meganite last atack" to determine the current attack
+        //Can be used in tandem with the the "Meganite last atack" to determine the current attack
         "offset": 0x9b8,
         "size": 32,
         "values": {
