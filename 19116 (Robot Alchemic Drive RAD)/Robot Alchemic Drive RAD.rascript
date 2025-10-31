@@ -799,7 +799,9 @@ time_leaderboard_id={
     16: 144125,
     17: 144127,
     "19a": 144129,
-    "19b": 144223
+    "19b": 144223,
+    20: 144620,
+    21: 144622
 }
 
 score_leaderboard_id={
@@ -819,7 +821,9 @@ score_leaderboard_id={
     16: 144126,
     17: 144128,
     "19a": 144130,
-    "19b": 144224
+    "19b": 144224,
+    20: 144621,
+    21: 144623
 }
 
 highest_published_leaderboard_mission = 17
