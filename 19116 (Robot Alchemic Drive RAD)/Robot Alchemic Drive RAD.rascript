@@ -247,6 +247,7 @@ function enemy4IsPresent() => enemy4Pointer!=0 && characterDataArray!=0
 
 // Mission sub-indexes
 function ep16PostMissionCutscene() => screenIndex0==0x8
+function ep28PostMissionCutscene() => screenIndex0==0x6
 function ep19A() => screenIndex0==0x21
 function ep19B() => screenIndex0==0x1e
 
@@ -801,7 +802,14 @@ time_leaderboard_id={
     "19a": 144129,
     "19b": 144223,
     20: 144620,
-    21: 144622
+    21: 144622,
+    22: 144770,
+    23: 144772,
+    24: 145077,
+    25: 145977,
+    26: 145979,
+    27: 145998,
+    28: 146000
 }
 
 score_leaderboard_id={
@@ -823,10 +831,17 @@ score_leaderboard_id={
     "19a": 144130,
     "19b": 144224,
     20: 144621,
-    21: 144623
+    21: 144623,
+    22: 144771,
+    23: 144773,
+    24: 145078,
+    25: 145978,
+    26: 145980,
+    27: 145999,
+    28: 146001
 }
 
-highest_published_leaderboard_mission = 17
+highest_published_leaderboard_mission = 28
 
 // Util Functions
 function get_keys(dictionary){
@@ -987,7 +1002,6 @@ function all_enemies_defeated(mission_number){
 }
 
 
-//TODO: Debug mission 16; looks like pilot re-loads for a cutscene after the "mission complete" screen
 // LEADERBOARD FUNCTIONS //
 function timeLeaderboard(mission_number){
     leaderboard_id=0
@@ -1009,6 +1023,7 @@ function timeLeaderboard(mission_number){
         }
         start = currentScenario==mission_number
         if(mission_number==16) start = start && !ep16PostMissionCutscene()
+        if(mission_number==28) start = start && !ep28PostMissionCutscene()
     }
     start = start && missionStart()
     leaderboard(
@@ -1045,6 +1060,8 @@ function scoreLeaderboard(mission_number){
         }
         start = currentScenario==mission_number
         if(mission_number==16) start = start && !ep16PostMissionCutscene()
+        if(mission_number==28) start = start && !ep28PostMissionCutscene()
+        
     }
     start = start && heroAppears()
     leaderboard(
@@ -1171,7 +1188,13 @@ function allAwardsAchievement(achievementTitle,missionNumber,mapType){
     }else if(missionNumber=="19a or 19b"){
         allAwardsAchievementTrigger = once(missionStart() && currentScenario==19)
     }else{
-        allAwardsAchievementTrigger = once(missionStart() && currentScenario==missionNumber)
+        if(missionNumber==16){
+            allAwardsAchievementTrigger = once(missionStart() && !ep16PostMissionCutscene() && currentScenario==missionNumber)
+        }else if(missionNumber==28){
+            allAwardsAchievementTrigger = once(missionStart() && !ep28PostMissionCutscene() && currentScenario==missionNumber)
+        }else{
+            allAwardsAchievementTrigger = once(missionStart() && currentScenario==missionNumber)
+        }
     }
     allAwardsAchievementTrigger = allAwardsAchievementTrigger
                                     && never(returnToMainMenu() || returnToChallengeSelection())
