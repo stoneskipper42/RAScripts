@@ -1084,7 +1084,7 @@ function scoreLeaderboard(mission_number){
 // Void achievements for pointers to global vars, used for debugging
 function voidAch(varname)
 {   
-    achievement("[VOID] "+varname, "Pointer to "+varname, 0, globalVar(varname)==0)
+    achievement("[VOID] "+varname, "Pointer to "+varname, 0, globalVar(varname)==0x9999999)
 }
 
 // Upgrade Achievement Functions
@@ -1536,18 +1536,24 @@ scoreLeaderboard(53)
 
 
 // ACHIEVEMENTS //
-achievement("[VOID] Pilot data", "Pointer to pilot health", 0, dword(heroPointer+meganite_struct["health"]["offset"])==0)
-achievement("[VOID] Meganite data", "Pointer to meganite health", 0, robot["health"]==0)
-achievement("[VOID] Enemy data", "Pointer to enemy health", 0, enemy["health"]==0
-                                                                && enemy2["health"]==0
-                                                                && enemy3["health"]==0
-                                                                && enemy4["health"]==0)
-achievement("[VOID] City damage", "Pointer to city damage", 0, cityDamage==0)
-achievement("[VOID] Save Data","Pointer to save data", 0, dword(saveData+0xb8)==0)
-//achievement("[VOID] Mission timer","Pointer to mission timer", 0, missionDuration==0)
+achievement("[VOID] Pilot data", "Pointer to pilot health", 0, pilot["health"]==0x9999)
+achievement("[VOID] Meganite data", "Pointer to meganite health", 0, robot["health"]==0x9999)
+achievement("[VOID] Enemy data", "Pointer to enemy health", 0, enemy["health"]==0x9999
+                                                                && enemy2["health"]==0x9999
+                                                                && enemy3["health"]==0x9999
+                                                                && enemy4["health"]==0x9999)
+achievement("[VOID] City damage", "Pointer to city damage", 0, cityDamage==0x9999)
+achievement("[VOID] Save Data","Pointer to save data", 0, dword(saveData+0xb8)==0x9999)
+//achievement("[VOID] Mission timer","Pointer to mission timer", 0, missionDuration==9999)
 //voidAch("temporary_event")
 voidAch("collapse_ellen_s_apartment")
 //voidAch("building_collapse_point")
+achievement("[VOID] Ellen favor +1", "Ellen favor increase by 1", 0, globalVar("ellen_favor_flag")==prev(globalVar("ellen_favor_flag"))+1)
+achievement("[VOID] Ellen favor +2", "Ellen favor increase by 2", 0, globalVar("ellen_favor_flag")==prev(globalVar("ellen_favor_flag"))+2)
+achievement("[VOID] Ellen favor +3", "Ellen favor increase by 2", 0, globalVar("ellen_favor_flag")==prev(globalVar("ellen_favor_flag"))+3)
+achievement("[VOID] Nanao favor +1", "Nanao favor increase by 1", 0, globalVar("nanao_favor_flag")==prev(globalVar("nanao_favor_flag"))+1)
+achievement("[VOID] Nanao favor +2", "Nanao favor increase by 2", 0, globalVar("nanao_favor_flag")==prev(globalVar("nanao_favor_flag"))+2)
+achievement("[VOID] Nanao favor +3", "Nanao favor increase by 2", 0, globalVar("nanao_favor_flag")==prev(globalVar("nanao_favor_flag"))+3)
 
 
 missionProgressionAchievement("Driller vs Driller",1,5,0)
