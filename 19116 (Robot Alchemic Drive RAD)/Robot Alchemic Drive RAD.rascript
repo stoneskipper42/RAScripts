@@ -1372,10 +1372,10 @@ function blockAllAttacksAchievement(){
                             
     achievement(
         title = "Keep Those Hands Up",
-        description = "Block all damage during a mission",
+        description = "Block at least three attacks and take no unblocked damage during a mission",
         points = 5,
         trigger = once(missionStart())
-                    && once(robotIsPresent() && robotTakesDamage() && robotIsBlocking())
+                    && measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())))
                     && never(missionIncomplete())
                     && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
                     && (
