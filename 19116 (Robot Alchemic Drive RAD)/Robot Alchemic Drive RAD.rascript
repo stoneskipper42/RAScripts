@@ -407,6 +407,8 @@ values = {
      "bit7": "Couldn't protect Misaki's company", //First time Misaki HQ is destroyed? (vev-66)
      "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After Misaki finance >= 9 - Naoto/Ryo only (vev-71)
      "bit9": "Misaki discussed his broken engagement with protag", // After Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
+     "bit10": "Misaki discussed MHI's destruction after the broken engagement", // After Misaki finance >= 10
+     "bit11": "Misaki remains positive about MHI's destruction", // After Misaki finance >= 11
      "bit12": "Keiko found living in CFP HQ", //Keiko's apartment destroyed (vev-129)
      "bit13": "Keiko living in CPF HQ again", //Keiko's apartment destroyed 2nd time (vev-137)
      "bit14": "Keiko living in CFP HQ - don't try anything funny" //Keiko's apartment destroyed 3rd time (vev-154)
@@ -1257,18 +1259,22 @@ function stringCompare(string,address){
         stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x34]
     }else if(string=="vev\31-1"){
         stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
-    }else if(string=="vev\132-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x33,0x32,0x2d,0x31]
-    }else if(string=="vev\150-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x35,0x30,0x2d,0x31]
-    }else if(string=="vev\157-1"){
-        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x35,0x37,0x2D,0x31]
     }else if(string=="vev\68-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
     }else if(string=="vev\71a-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x37,0x31,0x61,0x2D,0x31]
     }else if(string=="vev\84-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x38,0x34,0x2D,0x31]
+    }else if(string=="vev\113-1"){
+        stringArray = [0x76,0x35,0x38,0x5C,0x31,0x31,0x33,0x2D,0x31]
+    }else if(string=="vev\125-3"){
+        stringArray = [0x76,0x35,0x38,0x5C,0x31,0x32,0x35,0x2D,0x33]
+    }else if(string=="vev\132-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x33,0x32,0x2d,0x31]
+    }else if(string=="vev\150-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x35,0x30,0x2d,0x31]
+    }else if(string=="vev\157-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x35,0x37,0x2D,0x31]
     }else if(string=="v58\72a-4"){
         stringArray = [0x76,0x35,0x38,0x5C,0x37,0x32,0x61,0x2D,0x34]
     }else if(string=="v58\49a-4"){
@@ -1580,12 +1586,16 @@ postMissionEventAchievement("Time to Find Another Job","In story mode, destroy t
 postMissionEventAchievement("Can't Afford to Be Picky","In story mode, destroy the bakery 3 times between episodes 10 and 30",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
 postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, destroy the bakery 4 times between episodes 10 and 30",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
 postMissionEventAchievement("One Hundred Billion Yen","In story mode, destroy the bakery 5 times between episodes 10 and 30",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+
 postMissionEventAchievement("It Doesn't Bother Me at All","Destroy Keiko's apartment 1 time",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
 postMissionEventAchievement("It's Not a Big Deal at All","Destroy Keiko's apartment 2 time",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
 postMissionEventAchievement("Don't Try Anything Funny","Destroy Keiko's apartment 3 time",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+
 postMissionEventAchievement("We'll Rebuild","Destroy Misaki HQ",5,"misaki_heavy_industries_flag",1,"vev\68-2") //It'll take some money, but we'll find the financing somehow
 postMissionEventAchievement("Because It Was with You","Discuss Misaki's financial ruin with Ellen",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
 postMissionEventAchievement("More to Him Than Just a Spoiled Brat","Discuss Misaki's financial ruin with Misaki",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
+postMissionEventAchievement("I'll Do What I Can","Discuss rebuilding MHI with Misaki",10,"misaki_heavy_industries_flag",10,"vev\113-1") //I'll do what I can, the only way I know how
+postMissionEventAchievement("Still Have a Part To Play","Tell Misaki the world is about to end",11,"misaki_heavy_industries_flag",11,"vev\125-3") //MHI still has a part to play
 
 
 allAwardsAchievement("Senjo's Protector",8,1)
