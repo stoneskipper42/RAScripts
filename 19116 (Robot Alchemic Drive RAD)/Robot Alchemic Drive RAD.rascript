@@ -811,7 +811,13 @@ time_leaderboard_id={
     25: 145977,
     26: 145979,
     27: 145998,
-    28: 146000
+    28: 146000,
+    29: 146025,
+    30: 146027,
+    31: 146389,
+    32: 146391,
+    33: 146393,
+    38: 146395
 }
 
 score_leaderboard_id={
@@ -840,10 +846,16 @@ score_leaderboard_id={
     25: 145978,
     26: 145980,
     27: 145999,
-    28: 146001
+    28: 146001,
+    29: 146026,
+    30: 146028,
+    31: 146390,
+    32: 146392,
+    33: 146394,
+    38: 146396
 }
 
-highest_published_leaderboard_mission = 28
+highest_published_leaderboard_mission = 38
 
 // Util Functions
 function get_keys(dictionary){
