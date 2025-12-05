@@ -1306,6 +1306,21 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
     )
 }
 
+// Mission-specific Achievements
+function destroyedNoSatellitesAchievement(){
+// Once level 42 starts
+// Reset if first satellite is destroyed
+// Trigger on mission complete
+    achievement(
+        title = "Bomberman",
+        description = "Complete episode 42 without destroying any satellite machines ",
+        points = 5,
+        trigger = once(missionStart())
+                    && never(missionIncomplete())
+                    && never(satelliteDestroyed())
+                    && trigger_when(missionComplete(1))
+    )
+}
 
 // Event Achievement Functions
 function stringCompare(string,address){
@@ -1694,8 +1709,9 @@ allAwardsAchievement("Genesis",38,2)
 allAwardsAchievement("Dantarion",39,1)
 allAwardsAchievement("Valhalla Dawning",40,1)
 allAwardsAchievement("Baron",41,4)
-allAwardsAchievement("Spectral Visitation",42,2)
 allAwardsAchievement("Bird's Eye News",43,3) //TODO: May not be possible ... volgara appears to beeline towards the tower and uses rocket punch
+destroyedNoSatellitesAchievement()
+//allAwardsAchievement("[VOID] Spectral Visitation",42,2) //TODO: Likely impossible, effectively invincible until all satellites are destroyed
 allAwardsAchievement("Live Action News",44,1)
 allAwardsAchievement("Off the Air",45,2)
 allAwardsAchievement("Chemical Warfare",46,2)
