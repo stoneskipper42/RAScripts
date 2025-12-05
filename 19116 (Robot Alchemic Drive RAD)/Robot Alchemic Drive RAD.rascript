@@ -233,6 +233,7 @@ enemyPointer = dword(characterDataArray+0x10)
 enemy2Pointer = dword(characterDataArray+0x14)
 enemy3Pointer = dword(characterDataArray+0x18)
 enemy4Pointer = dword(characterDataArray+0x1c)
+satellitePointer = dword(characterDataArray+0x20)
 
 
 function inMission() => heroIsPresent()
@@ -244,6 +245,13 @@ function enemyIsPresent() => enemyPointer!=0 && characterDataArray!=0
 function enemy2IsPresent() => enemy2Pointer!=0 && characterDataArray!=0
 function enemy3IsPresent() => enemy3Pointer!=0 && characterDataArray!=0
 function enemy4IsPresent() => enemy4Pointer!=0 && characterDataArray!=0
+function satelliteIsPresent() => satellitePointer!=0 && characterDataArray!=0
+function enemyDestroyed() => enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent()
+function enemy2Destroyed() => enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent()
+function enemy3Destroyed() => enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent()
+function enemy4Destroyed() => enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent()
+function satelliteDestroyed() => satellite["health"]==0 && prev(satellite["health"])>0 && satellitePointer==prev(satellitePointer) && satelliteIsPresent()
+
 
 // Mission sub-indexes
 function ep16PostMissionCutscene() => screenIndex0==0x8
@@ -958,6 +966,15 @@ for value in get_keys(meganite_struct)
         enemy4[value] = dword(enemy4Pointer+meganite_struct[value]["offset"])
 }
 
+satellite = {}
+for value in get_keys(meganite_struct)
+{
+    if(meganite_struct[value]["size"]==16)
+        satellite[value] = word(satellitePointer+meganite_struct[value]["offset"])
+    else
+        satellite[value] = dword(satellitePointer+meganite_struct[value]["offset"])
+}
+
 //missionDuration = dword(dword(0x0027e664)+0x54) //Resets during cutscene in ep1
 missionDuration = dword(heroPointer+meganite_struct["duration"]["offset"])
 hitCountMissionDuration = tally(0,
@@ -1025,22 +1042,25 @@ function get_enemy_count(mission_number){
 }
 
 function all_enemies_defeated(mission_number){
-    if(get_enemy_count(mission_number)==3){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(missionIncomplete()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(missionIncomplete()))
-        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(missionIncomplete()))
-    }
-    if(get_enemy_count(mission_number)==2){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && never(missionIncomplete()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && never(missionIncomplete()))
-    }
     if(get_enemy_count(mission_number)==4){
-        return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent() && never(missionIncomplete()))
-        && once(enemy2["health"]==0 && prev(enemy2["health"])>0 && enemy2Pointer==prev(enemy2Pointer) && enemy2IsPresent() && never(missionIncomplete()))
-        && once(enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent() && never(missionIncomplete()))
-        && once(enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent() && never(missionIncomplete()))
+        return once(enemyDestroyed() && never(missionIncomplete()))
+        && once(enemy2Destroyed() && never(missionIncomplete()))
+        && once(enemy3Destroyed() && never(missionIncomplete()))
+        && once(enemy4Destroyed() && never(missionIncomplete()))
     }
-    return once(enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer!=0 && never(missionIncomplete()))
+    
+    if(get_enemy_count(mission_number)==3){
+        return once(enemyDestroyed() && never(missionIncomplete()))
+        && once(enemy2Destroyed() && never(missionIncomplete()))
+        && once(enemy3Destroyed() && never(missionIncomplete()))
+    }
+
+    if(get_enemy_count(mission_number)==2){
+        return once(enemyDestroyed() && never(missionIncomplete()))
+        && once(enemy2Destroyed() && never(missionIncomplete()))
+    }
+    
+    return once(enemyDestroyed() && never(missionIncomplete()))
 }
 
 
