@@ -1307,6 +1307,22 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
 }
 
 // Mission-specific Achievements
+function assistanceNotRequiredAchievement(){
+// Once level 24 starts
+// Reset if Valdor appears
+// Trigger Volgara destruction
+    achievement(
+        title = "Assistance Not Required",
+        description = "In episode 24, destroy a volgara before Valdor arrives",
+        points = 5,
+        trigger = once(missionStart() && currentScenario==24)
+                    && never(missionIncomplete())
+                    && never(allyIsPresent())
+                    && trigger_when(enemyDestroyed() || enemy2Destroyed())
+    )
+}
+
+
 function destroyedNoSatellitesAchievement(){
 // Once level 42 starts
 // Reset if first satellite is destroyed
@@ -1695,7 +1711,8 @@ allAwardsAchievement("A Day at School",20,2)
 allAwardsAchievement("Nanao's Water Soup",21,2)
 allAwardsAchievement("Meganite Memories",22,2)
 allAwardsAchievement("Bus Stop",23,1)
-allAwardsAchievement("The Dark One",24,2) //TODO: Not likely to be possible; Valdor appears independent of damage taken, and he keeps using rocket fist
+//allAwardsAchievement("[VOID] The Dark One",24,2) //TODO: Not likely to be possible; Valdor appears independent of damage taken, and he keeps using rocket fist
+assistanceNotRequiredAchievement()
 allAwardsAchievement("Ellen Bulnose",25,2)
 allAwardsAchievement("Volgara Mystery",26,1)
 allAwardsAchievement("Fortress",27,2)
