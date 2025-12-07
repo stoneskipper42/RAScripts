@@ -1331,7 +1331,7 @@ function destroyedNoSatellitesAchievement(){
         title = "Bomberman",
         description = "Complete episode 42 without destroying any satellite machines ",
         points = 5,
-        trigger = once(missionStart())
+        trigger = once(missionStart() && currentScenario==42)
                     && never(missionIncomplete())
                     && never(satelliteDestroyed())
                     && trigger_when(missionComplete(1))
