@@ -220,7 +220,6 @@ currentPilot = globalVar("main_character_number")
 initialRobot = globalVar("initial_robot")
 currentRobot = globalVar("current_robot")
 currentScenario = globalVar("current_scenario")
-mapType = globalVar("map_type")
 gameMode = globalVar("game_mode")
 
 
@@ -422,14 +421,32 @@ values = {
      "bit14": "Keiko living in CFP HQ - don't try anything funny" //Keiko's apartment destroyed 3rd time (vev-154)
  },
  "map_type": {
-     0: "No map loaded",
-     1: "Senjo New City Center",
-     2: "Downtown Senjo",
-     3: "Senjo Port",
-     4: "Mount Chihaya",
-     5: "Volgara Territory",
-     6: "Rome",
-     7: "Toyko"
+    "title": {
+        0: "No map loaded",
+        1: "Senjo New City Center",
+        2: "Downtown Senjo",
+        3: "Senjo Port",
+        4: "Mount Chihaya",
+        5: "Volgara Territory",
+        6: "Rome",
+        7: "Toyko"
+    },
+    "senjo_peace_limit": {
+        0: "No map loaded",
+        1: 70,
+        2: 70,
+        3: 50,
+        4: 60,
+        7: 10,
+    },
+    "construction_minister_limit": {
+        0: "No map loaded",
+        1: 140,
+        2: 190,
+        3: 120,
+        4: 120,
+        7: 50
+    }
  },
  "amount_of_damage":{
     //???
@@ -1069,10 +1086,10 @@ function timeLeaderboard(mission_number){
     leaderboard_id=0
     if(mission_number=="15a"){
         leaderboard_id=time_leaderboard_id[mission_number]
-        start = ((currentScenario==15 && currentRobot==1))
+        start = ((currentScenario==15 && globalVar("map_type")!=7))
     }else if(mission_number=="15b or 18a"){
         leaderboard_id=time_leaderboard_id[mission_number]
-        start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+        start = ((currentScenario==15 || currentScenario==18) && globalVar("map_type")==7)
     }else if(mission_number=="19a"){
         leaderboard_id=time_leaderboard_id[mission_number]
         start = (currentScenario==19 && ep19A())
@@ -1106,10 +1123,10 @@ function scoreLeaderboard(mission_number){
     leaderboard_id=0
     if(mission_number=="15a"){
         leaderboard_id=score_leaderboard_id[mission_number]
-        start = ((currentScenario==15 && currentRobot==1))
+        start = ((currentScenario==15 && globalVar("map_type")!=7))
     }else if(mission_number=="15b or 18a"){
         leaderboard_id=score_leaderboard_id[mission_number]
-        start = ((currentScenario==15 || currentScenario==18) && mapType==7)
+        start = ((currentScenario==15 || currentScenario==18) && globalVar("map_type")==7)
     }else if(mission_number=="19a"){
         leaderboard_id=score_leaderboard_id[mission_number]
         start = (currentScenario==19 && ep19A())
@@ -1242,11 +1259,11 @@ function allAwardsComplete(){
     }    
 }
 
-function allAwardsAchievement(achievementTitle,missionNumber,mapType){
+function allAwardsAchievement(achievementTitle,missionNumber,missionMapType){
     if(missionNumber=="15a"){
-        allAwardsAchievementTrigger = once(missionStart() && currentScenario==15 && mapType!=7)
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==15 && globalVar("map_type")==missionMapType)
     }else if(missionNumber=="15b or 18a"){
-        allAwardsAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && mapType==7)
+        allAwardsAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && globalVar("map_type")==missionMapType)
     }else if(missionNumber=="19a or 19b"){
         allAwardsAchievementTrigger = once(missionStart() && currentScenario==19)
     }else{
@@ -1260,16 +1277,16 @@ function allAwardsAchievement(achievementTitle,missionNumber,mapType){
     }
     allAwardsAchievementTrigger = allAwardsAchievementTrigger
                                     && never(returnToMainMenu() || returnToChallengeSelection())
-                                    && never(cityDamage>=0x47)
+                                    && never(cityDamage>values["map_type"]["senjo_peace_limit"][missionMapType])
                                     && trigger_when(missionComplete(missionNumber))
-    if(values["map_type"][mapType]=="Senjo New City Center"){
+    if(values["map_type"]["title"][missionMapType]=="Senjo New City Center"){
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiHqDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiFactoryDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoHospitalDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoCityHallDestroyed())
-    }else if(values["map_type"][mapType]=="Downtown Senjo"){
+    }else if(values["map_type"]["title"][missionMapType]=="Downtown Senjo"){
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(schoolDestroyed())
-    }else if(values["map_type"][mapType]=="Senjo Port"){
+    }else if(values["map_type"]["title"][missionMapType]=="Senjo Port"){
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(observatoryDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(bnnSenjoBranchDestroyed())
     }
