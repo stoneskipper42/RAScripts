@@ -1047,7 +1047,16 @@ function onLoadSavedGameMenu() => screenIndex3==0x3334d
 function returnToChallengeSelection() => screenIndex3==0x33aa2 && prev(screenIndex3)!=0x33aa2
 //function returnToChallengeSelection() => screenIndex4==0xa482
 function missionIncomplete() => missionFailed() || screenIndex3==0x33aa2
-
+//Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
+function isCombatMission(){
+    return currentScenario!=2
+        && currentScenario!=4
+        && currentScenario!=12
+        && currentScenario!=34
+        && currentScenario!=35
+        && currentScenario!=36
+        && currentScenario!=37
+}
 
 function get_enemy_count(mission_number){
     if(mission_number==52)  return 4
@@ -1502,6 +1511,28 @@ function blockAllAttacksAchievement(){
     )
 }
 
+function useNormalControlsAchievement(){
+    achievement(
+        title = "Through This Controller, I Can Feel Every Beat of Its Heart",
+        description = "Defeat all enemies in an episode using normal controls",
+        points = 5,
+        trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission())
+                    && never(missionIncomplete())
+                    && (
+                        (currentScenario==52 && trigger_when(missionComplete(52)))
+                        || (currentScenario==33 && trigger_when(missionComplete(33)))
+                        || (currentScenario==20 && trigger_when(missionComplete(20)))
+                        || (currentScenario==24 && trigger_when(missionComplete(24)))
+                        || (currentScenario==48 && trigger_when(missionComplete(48)))
+                        || (currentScenario!=20
+                            && currentScenario!=24
+                            && currentScenario!=33
+                            && currentScenario!=48
+                            && currentScenario!=52
+                            && trigger_when(missionComplete(1)))
+                       )
+    )
+}
 /*
 function oneHitKOAchievement(){
     achievement(
@@ -1773,6 +1804,7 @@ launchAndHitEnemyAchievement()
 attackDownedEnemyAchievement()
 attackFallingEnemyAchievement()
 blockAllAttacksAchievement()
+useNormalControlsAchievement()
 
 
 
