@@ -1308,7 +1308,22 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
     )
 }
 
+
 // Mission-specific Achievements
+function senjoWouldHaveBeenGratefulAchievement(){
+    gratefulSenjoAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && globalVar("map_type")==7)
+    gratefulSenjoAchievementTrigger = gratefulSenjoAchievementTrigger
+                                    && never(returnToMainMenu() || returnToChallengeSelection())
+                                    && never(cityDamage>values["map_type"]["construction_minister_limit"][1])
+                                    && trigger_when(missionComplete("15b or 18a"))
+    achievement(
+        title = "Senjo Would Have Been Grateful",
+        description = "Complete episode 15b or 18a with under five million damage in Story or Challenge mode",
+        points = 5,
+        trigger = gratefulSenjoAchievementTrigger
+    )
+}
+
 function assistanceNotRequiredAchievement(){
 // Once level 24 starts
 // Reset if Valdor appears
@@ -1705,7 +1720,8 @@ allAwardsAchievement("Flawless First Memory",11,2)
 allAwardsAchievement("E.G.G.",13,1)
 allAwardsAchievement("Inferno",14,1) //TODO: Does not appear possible ... Volgara deals 80 city damage before player gets control
 allAwardsAchievement("The Mobile Fortress","15a",1)
-allAwardsAchievement("Airborne Dominator","15b or 18a",7)
+//allAwardsAchievement("[VOID] Airborne Dominator","15b or 18a",7) //Not possible; Peace award in Tokyo is 10 dmg and EVERYTHING is breakable
+senjoWouldHaveBeenGratefulAchievement()
 allAwardsAchievement("Ellen and Nanao",16,2)
 allAwardsAchievement("A Family Rival",17,1)
 allAwardsAchievement("Centurion Crusher","19a or 19b",1) //TODO: May not be possible; Volgara attacks city a lot before Vavel arrives, and can't beat volgara until after meganite loses 50% health
