@@ -260,8 +260,6 @@ function ep19B() => screenIndex0==0x1e
 
 // City damage
 cityDamage = dword(dword(0x0027e610)+0x6bc)
-function senjouPeaceAward() => cityDamage <= 0x46
-function constructionMinisterAward() => cityDamage >= 0x47 && cityDamage <= 0x8c
 function misakiHqDestroyed() => globalVar("collapse_misaki_heavy_industries_headquarters_building")==1
 function misakiFactoryDestroyed() =>  globalVar("collapse_misaki_heavy_industries_senjo_factory")==1
 function senjoHospitalDestroyed() => globalVar("collapse_senjo_hospital")==1
@@ -1245,19 +1243,6 @@ function allUpgradesAchievement(upgradeType){
     )
 }
 
-
-// Mission Award Achievement Functions
-function allAwardsComplete(){
-    if(mapType==1){ // Map type is Senjo New City Center
-        return senjouPeaceAward() && misakiFactoryDestroyed == 0 && misakiHqDestroyed == 0 && senjoHospitalDestroyed == 0 && senjoCityHallDestroyed == 0
-    }else if (mapType==2){ // Map type is Downtown Senjo
-        return senjouPeaceAward() && schoolDestroyed == 0
-    }else if (mapType==3){ // Map type is Senjo Port
-        return senjouPeaceAward() && observatoryDestroyed == 0 && bnnSenjoBranchDestroyed == 0
-    }else{
-        return senjouPeaceAward()
-    }    
-}
 
 function allAwardsAchievement(achievementTitle,missionNumber,missionMapType){
     if(missionNumber=="15a"){
