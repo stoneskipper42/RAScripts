@@ -334,11 +334,11 @@ values = {
     12: "Evacuation Exercise",
     13: "E.G.G.",
     14: "Inferno",
-    15: "The Mobile Fortress OR Airborne Dominator", // Airborne Dominator if initial_robot=1 (Gllang), The Mobile Fortress otherwise
+    15: "The Mobile Fortress OR Airborne Dominator", // Airborne Dominator if map_type==7 (Tokyo), The Mobile Fortress otherwise
     16: "Ellen and Nanao",
     17: "A Family Rival",
-    18: "Airborne Dominator OR The Complete - 1", // Airborne Dominator if initial_robot=0 (Vavel), The Complete - 1 otherwise
-    19: "Centurion OR The Complete - 2", // Centurion if initial_robot=0 (Vavel), The Complete - 2 otherwise
+    18: "Airborne Dominator OR The Complete - 1", // Airborne Dominator if map_type==7 (Tokyo), The Complete - 1 otherwise
+    19: "Centurion OR The Complete - 2", // Hard to differentiate, using screenIndex0; Centurion if 0x21, The Complete - 2 otherwise
     20: "A Day at School",
     21: "Nanao's Water Soup",
     22: "Meganite Memories",
@@ -733,6 +733,7 @@ meganite_struct = {
     },
     "last_attack": { //Meganite last attack [32-bit]
         //Set when an attack or action is made, does not change until overwritten
+        //Values that are not counted for "Use all attacks" achievements are commented out
         "offset": 0x9c8,
         "size": 32,
         "values": {
@@ -1243,7 +1244,6 @@ function allUpgradesAchievement(upgradeType){
         title = allUpgradesAchievementTitle,
         description = allUpgradesAchievementDescription,
         points = 10,
-        //trigger = allAwardsAchievementTrigger
         trigger = almostFullyUpgraded(upgradeList)
                     && measured(
                         tally(length(upgradeArray),upgradeArray)
@@ -1348,7 +1348,6 @@ function assistanceNotRequiredAchievement(){
     )
 }
 
-
 function destroyedNoSatellitesAchievement(){
 // Once level 42 starts
 // Reset if first satellite is destroyed
@@ -1363,6 +1362,7 @@ function destroyedNoSatellitesAchievement(){
                     && trigger_when(missionComplete(1))
     )
 }
+
 
 // Event Achievement Functions
 function stringCompare(string,address){
