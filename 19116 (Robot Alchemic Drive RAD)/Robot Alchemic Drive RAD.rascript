@@ -409,6 +409,7 @@ values = {
      "bit2": "Nanao mentioned getting a job as a dancer", // 3rd time bakery is destroyed between ep 10 and 30 (vev-6)
      "bit3": "Nanao met with Misaki", // 4th time bakery is destroyed between ep 10 and 30 (vev-8)
      "bit4": "Misaki donated 100b yen", // 5th time bakery is destroyed between ep 10 and 30 (vev-24)
+     "bit6": "Date with Ellen", // Episode 42 if ellen_favor_flag>=3 (vev-47)
      "bit7": "Couldn't protect Misaki's company", //First time Misaki HQ is destroyed? (vev-66)
      "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After Misaki finance >= 9 - Naoto/Ryo only (vev-71)
      "bit9": "Misaki discussed his broken engagement with protag", // After Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
