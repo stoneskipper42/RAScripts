@@ -1488,14 +1488,14 @@ function landAllAttacksAchievement(meganite){
 }
 
 function blockAllAttacksAchievement(){
-// Once levels starts
+// Once level starts
 // And once robot has blocked at least one attack
 // Reset if damage is taken
 // Trigger on mission complete
                             
     achievement(
         title = "Keep Those Hands Up",
-        description = "Block at least three attacks and take no unblocked damage during a mission",
+        description = "Block at least three attacks and take no unblocked damage during an episode",
         points = 5,
         trigger = once(missionStart())
                     && measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())))
