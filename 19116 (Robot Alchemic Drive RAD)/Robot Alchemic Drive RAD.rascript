@@ -1039,6 +1039,7 @@ function enemy4IsDown() => enemy4["falling_status"]==0x1 || enemy4["falling_stat
 
 //function missionStart() => screenIndex2==0x28e8d0
 function missionStart() => heroAppears()
+//TODO: Need to identify missionComplete screen index for undub patch
 function missionComplete(mission_number) => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282 && all_enemies_defeated(mission_number)
 //function missionComplete() => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282
 //function missionComplete() => screenIndex1==0x12 && prev(screenIndex1)!=0x12
@@ -1191,7 +1192,7 @@ function areFullyUpgraded(upgrade_name_array){
 function almostFullyUpgraded(upgrade_name_array){
     upgradeDeltaTotal = 0
     upgradeMaxTotal = 0
-    //Need to run check against ored mem(upgrade) to delta(upgrade)
+    //TODO: Need to run check against ored mem(upgrade) to delta(upgrade)
     for upgrade_name in upgrade_name_array{
         upgradeDeltaTotal = upgradeDeltaTotal + prev(globalVar(upgrade_name))
         upgradeMaxTotal = upgradeMaxTotal + values[upgrade_name]["max"]
@@ -1426,7 +1427,7 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
 
 
 // Combat Achievement Functions
-//TODO: Need to tweak to take into account ranged attacks, may not hit until after robot's no longer "attacking"
+//TODO: May need to tweak to take into account ranged attacks, may not hit until after robot's no longer "attacking"
 function attackLanded(attack_array,robot){  
     attackLandedArray = []
     for attack in attack_array{
@@ -1499,7 +1500,7 @@ function blockAllAttacksAchievement(){
         trigger = once(missionStart())
                     && measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())))
                     && never(missionIncomplete())
-                    && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
+                    && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking()) //TODO: Need to debug; measure will count during a mission after robot took damage
                     && (
                         (currentScenario==52 && trigger_when(missionComplete(52)))
                         || (currentScenario==33 && trigger_when(missionComplete(33)))
@@ -1702,32 +1703,34 @@ achievement("[VOID] Nanao favor +3", "Nanao favor increase by 2", 0, globalVar("
 
 missionProgressionAchievement("Driller vs Driller",1,5,0)
 missionProgressionAchievement("The World Doesn't Run on Theory Alone",6,8,0)
-missionProgressionAchievement("Mechanical Gods That Descended to Earth",9,11,0)
-missionProgressionAchievement("Vavel 15",12,15,0)
-missionProgressionAchievement("Vavel 19",16,19,0)
+missionProgressionAchievement("A Storm Will Arrive",9,11,0)
+missionProgressionAchievement("Everyone Should Be Asking \"Where's Laguiole?\"",12,15,0)
+missionProgressionAchievement("From Tower to Trio",16,19,0)
 
-missionProgressionAchievement("Driller vs Hammer",1,5,1)
-missionProgressionAchievement("Gllang 8",6,8,1)
-missionProgressionAchievement("Gllang 11",9,11,1)
-missionProgressionAchievement("Gllang 15",12,15,1)
-missionProgressionAchievement("Gllang 19",16,19,1)
+missionProgressionAchievement("Tread Lightly and Carry a Big Hammer",1,5,1)
+missionProgressionAchievement("Nothing Says \"Tank You\" Like Money",6,8,1)
+missionProgressionAchievement("Tanks For the Memories",9,11,1)
+missionProgressionAchievement("The G and U are slient",12,15,1)
+missionProgressionAchievement("From Tank to Trio",16,19,1)
 
-missionProgressionAchievement("Driller vs Thunder",1,5,2)
-missionProgressionAchievement("Laguiole 8",6,8,2)
-missionProgressionAchievement("Laguiole 11",9,11,2)
-missionProgressionAchievement("Laguiole 15",12,15,2)
-missionProgressionAchievement("Laguiole 19",16,19,2)
+missionProgressionAchievement("Welcome to the Thunderdome",1,5,2)
+missionProgressionAchievement("More Like Flight AND Fight Response",6,8,2)
+missionProgressionAchievement("The Ancient Legend Was True",9,11,2)
+missionProgressionAchievement("That's Gllang!",12,15,2)
+missionProgressionAchievement("From Twinjet to Trio",16,19,2)
 
 missionProgressionAchievement("Tag Team",20,24,"")
 missionProgressionAchievement("Regaining Control",25,30,"")
-missionProgressionAchievement("Mt. Chihaya Storming",31,33,"")
-missionProgressionAchievement("Genesis",34,38,"")
+missionProgressionAchievement("Fight for the Georite",31,33,"")
+missionProgressionAchievement("Controlling Your Destiny",34,38,"")
 missionProgressionAchievement("Unlimited Power",39,40,"")
-missionProgressionAchievement("The Warlords",41,42,"")
-missionProgressionAchievement("Live Action News",43,45,"")
+missionProgressionAchievement("Two Down, Two To Go",41,42,"")
+missionProgressionAchievement("The Fourth Estate",43,45,"")
 missionProgressionAchievement("Clearing the Air",46,47,"")
 missionProgressionAchievement("Turning the Tide",48,50,"")
 missionProgressionAchievement("A New Era of Coexistence",51,53,"")
+
+
 postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_favor_flag",7,"v58\72a-4") //Me and Nanao. And the Meganites.
 postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",2,"v58\49a-4") //Me and Ellen. And the Meganites.
 postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
@@ -1737,6 +1740,8 @@ postMissionEventAchievement("Time to Find Another Job","In story mode, destroy t
 postMissionEventAchievement("Can't Afford to Be Picky","In story mode, destroy the bakery 3 times between episodes 10 and 30",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
 postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, destroy the bakery 4 times between episodes 10 and 30",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
 postMissionEventAchievement("One Hundred Billion Yen","In story mode, destroy the bakery 5 times between episodes 10 and 30",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+
+//TODO: Ellen date post mission achievement
 
 postMissionEventAchievement("It Doesn't Bother Me at All","Destroy Keiko's apartment 1 time",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
 postMissionEventAchievement("It's Not a Big Deal at All","Destroy Keiko's apartment 2 time",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
@@ -1749,47 +1754,57 @@ postMissionEventAchievement("I'll Do What I Can","Discuss rebuilding MHI with Mi
 postMissionEventAchievement("Still Have a Part To Play","Tell Misaki the world is about to end",11,"misaki_heavy_industries_flag",11,"vev\125-3") //MHI still has a part to play
 
 
-allAwardsAchievement("Senjo's Protector",8,1)
-allAwardsAchievement("Bay Area Defense",9,3)
-allAwardsAchievement("Blast Furnace",10,2)
-allAwardsAchievement("Flawless First Memory",11,2)
-allAwardsAchievement("E.G.G.",13,1)
-allAwardsAchievement("Inferno",14,1) //TODO: Does not appear possible ... Volgara deals 80 city damage before player gets control
-allAwardsAchievement("The Mobile Fortress","15a",1)
-//allAwardsAchievement("[VOID] Airborne Dominator","15b or 18a",7) //Not possible; Peace award in Tokyo is 10 dmg and EVERYTHING is breakable
-senjoWouldHaveBeenGratefulAchievement()
-allAwardsAchievement("Ellen and Nanao",16,2)
-allAwardsAchievement("A Family Rival",17,1)
-allAwardsAchievement("Centurion Crusher","19a or 19b",1) //TODO: May not be possible; Volgara attacks city a lot before Vavel arrives, and can't beat volgara until after meganite loses 50% health
-allAwardsAchievement("A Day at School",20,2)
-allAwardsAchievement("Nanao's Water Soup",21,2)
-allAwardsAchievement("Meganite Memories",22,2)
-allAwardsAchievement("Bus Stop",23,1)
+allAwardsAchievement("One Weird Hack to More Than Double Your Income",8,1)
+allAwardsAchievement("Fray in the Bay",9,3)
+allAwardsAchievement("Standing the Heat",10,2)
+allAwardsAchievement("Ride the Cyclone",11,2)
+allAwardsAchievement("He Came Outta Nowhere",13,1)
+//allAwardsAchievement("[VOID] Inferno",14,1) //Top score: 100; Volgara deals 80 city damage before player gets control, but construction minister seems doable
+//TODO: Ep17 constuction minister achievement
+allAwardsAchievement("Catch a Riiiiiide","15a",1)
+//allAwardsAchievement("[VOID] Airborne Dominator","15b or 18a",7)
+senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15b/18a; Peace/construction awards in Tokyo are 10/50 dmg and EVERYTHING is breakable
+allAwardsAchievement("Childhood Protector",16,2)
+allAwardsAchievement("You Want Misaki, You Go Through Me",17,1)
+//allAwardsAchievement("[VOID] Centurion Crusher","19a or 19b",1) //TODO: May not be possible; Volgara attacks city a lot before Vavel arrives, and can't beat volgara until after meganite loses 50% health
+//TODO: Genesis after reducing centurion to half health in ep19a achievement
+//TODO: Misaki and misaki plant awards in ep19b achievement
+allAwardsAchievement("Double Jeopardy",20,2)
+allAwardsAchievement("Chicken Soup Run",21,2)
+allAwardsAchievement("Expertly Evacuated",22,2)
+allAwardsAchievement("Wheels on the Bus Go Round and Round",23,1)
 //allAwardsAchievement("[VOID] The Dark One",24,2) //TODO: Not likely to be possible; Valdor appears independent of damage taken, and he keeps using rocket fist
 assistanceNotRequiredAchievement()
-allAwardsAchievement("Ellen Bulnose",25,2)
-allAwardsAchievement("Volgara Mystery",26,1)
-allAwardsAchievement("Fortress",27,2)
-allAwardsAchievement("Voices Unheard",28,2)
-allAwardsAchievement("Close Combat",29,1)
-allAwardsAchievement("Rat Race",30,2)
-allAwardsAchievement("Defend & Destroy",31,2)
-allAwardsAchievement("Yaoya Imperiled",32,2)
-allAwardsAchievement("Mt. Chihaya Storming",33,4)
-allAwardsAchievement("Genesis",38,2)
-allAwardsAchievement("Dantarion",39,1)
-allAwardsAchievement("Valhalla Dawning",40,1)
-allAwardsAchievement("Baron",41,4)
-allAwardsAchievement("Bird's Eye News",43,3) //TODO: May not be possible ... volgara appears to beeline towards the tower and uses rocket punch
-destroyedNoSatellitesAchievement()
-//allAwardsAchievement("[VOID] Spectral Visitation",42,2) //TODO: Likely impossible, effectively invincible until all satellites are destroyed
-allAwardsAchievement("Live Action News",44,1)
-allAwardsAchievement("Off the Air",45,2)
-allAwardsAchievement("Chemical Warfare",46,2)
-allAwardsAchievement("Windborne Darkness",47,1)
-allAwardsAchievement("Lifesaver Express",48,1) //TODO: Not possible; episode starts with 100 damage
-allAwardsAchievement("Higher Ground - 1",49,3)
-allAwardsAchievement("The Fall of Senjo",51,1)
+allAwardsAchievement("Bye Bye Third Wheel",25,2)
+allAwardsAchievement("Satellite Scrapper",26,1)
+allAwardsAchievement("Gllang Is Very Sick! Don't Be Mad!",27,2)
+allAwardsAchievement("Jamming Up the Jammers",28,2)
+allAwardsAchievement("First Person View",29,1)
+allAwardsAchievement("Keep On Truckin",30,2)
+allAwardsAchievement("If Nanao Can Give 200% I Can Too",31,2)
+allAwardsAchievement("I'll \"Accidentally On Purpose\" Next Time",32,2)
+allAwardsAchievement("Almost A Fair Fight",33,4)
+allAwardsAchievement("We Are Vavel",38,2)
+//allAwardsAchievement("[VOID] Dantarion",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
+//TODO: Ep39 construction minister achievement
+//allAwardsAchievement("[VOID] Valhalla Dawning",40,1) //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
+//TODO: Ep40 in under 9 min achievement
+allAwardsAchievement("Baron Beatdown",41,4)
+destroyedNoSatellitesAchievement() // Ep42 all awards achievement impossible, volgara can only be attacked by grenades until all satellites are destroyed
+//allAwardsAchievement("[VOID] Spectral Visitation",42,2) 
+allAwardsAchievement("Tower Defense",43,3) //Tough but possible; Volgara beelines to the tower, you can distract it with ranged attacks
+allAwardsAchievement("Watch Your Step",44,1)
+allAwardsAchievement("Rooftop Rescue",45,2)
+allAwardsAchievement("Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
+//allAwardsAchievement("[VOID] Windborne Darkness",47,1) //May not be possible? 
+//TODO: Confirm if Windborne Darkness should use Senjo Peace award, Construction Minister award, or needs alternate achievement
+//allAwardsAchievement("[VOID] Lifesaver Express",48,1) //TODO: Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
+//TODO: Ep48 construction minister achievement
+allAwardsAchievement("Shipnapped",49,3)
+//TODO: Ep50 deal over 1000 damage to volgara city achievement
+allAwardsAchievement("Last Train Out of Senjo",51,1)
+//TODO: Confirm ep53 can be completed by activating 3 min ability before destroying any volgara
+//TODO: ep53 mission specific achievement - all awards?
 
 allUpgradesAchievement("Vavel")
 allUpgradesAchievement("Gllang")
