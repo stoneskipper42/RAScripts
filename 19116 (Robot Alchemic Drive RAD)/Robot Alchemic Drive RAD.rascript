@@ -769,7 +769,7 @@ meganite_struct = {
                 //0x1f5: "Activate Genesis Mode",
                 0x258: "Dual Knuckle",
                 0x259: "Assault Knuckle L",
-                0x25a: "Assault Knuckle R",
+                //0x25a: "Assault Knuckle R", // Don't need to count this AND Assault Knuckle L
             },
             "Laguiole": {
                 0x6a: "Thunder hand",
@@ -1005,7 +1005,11 @@ hitCountMissionDuration = tally(0,
             pilot["duration"]-prev(pilot["duration"])>=8,
             pilot["duration"]-prev(pilot["duration"])>=9)
 
-function robotLastAttackIs(attack) => robot["last_attack"]==attack
+function robotLastAttackIs(attack){
+    //Allow left or right Assault Knuckle
+    if(attack==0x259)   return robot["last_attack"]>=0x259 && robot["last_attack"]<=0x25a
+    return robot["last_attack"]==attack
+}
 
 function robotIsBlocking() => robot["is_blocking"]==0x1
 
