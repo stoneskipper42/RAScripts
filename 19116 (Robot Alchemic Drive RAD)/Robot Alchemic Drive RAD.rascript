@@ -440,8 +440,8 @@ values = {
     },
     "construction_minister_limit": {
         0: "No map loaded",
-        1: 140,
-        2: 190,
+        1: 190,
+        2: 140,
         3: 120,
         4: 120,
         7: 50
