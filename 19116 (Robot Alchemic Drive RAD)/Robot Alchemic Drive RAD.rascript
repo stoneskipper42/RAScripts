@@ -1382,6 +1382,8 @@ function stringCompare(string,address){
         stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x34]
     }else if(string=="vev\31-1"){
         stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
+    }else if(string=="vev\47-1"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x37,0x2d,0x31]
     }else if(string=="vev\68-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
     }else if(string=="vev\71a-1"){
@@ -1741,7 +1743,7 @@ postMissionEventAchievement("Can't Afford to Be Picky","In story mode, destroy t
 postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, destroy the bakery 4 times between episodes 10 and 30",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
 postMissionEventAchievement("One Hundred Billion Yen","In story mode, destroy the bakery 5 times between episodes 10 and 30",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
 
-//TODO: Ellen date post mission achievement
+postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //To the tune of one hundred billion yen
 
 postMissionEventAchievement("It Doesn't Bother Me at All","Destroy Keiko's apartment 1 time",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
 postMissionEventAchievement("It's Not a Big Deal at All","Destroy Keiko's apartment 2 time",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
