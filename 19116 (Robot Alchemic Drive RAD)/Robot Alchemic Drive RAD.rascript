@@ -250,7 +250,19 @@ function enemy2Destroyed() => enemy2["health"]==0 && prev(enemy2["health"])>0 &&
 function enemy3Destroyed() => enemy3["health"]==0 && prev(enemy3["health"])>0 && enemy3Pointer==prev(enemy3Pointer) && enemy3IsPresent()
 function enemy4Destroyed() => enemy4["health"]==0 && prev(enemy4["health"])>0 && enemy4Pointer==prev(enemy4Pointer) && enemy4IsPresent()
 function satelliteDestroyed() => satellite["health"]==0 && prev(satellite["health"])>0 && satellitePointer==prev(satellitePointer) && satelliteIsPresent()
-
+function asmodeusKnockdownCounter() => (enemy["falling_status"]==0 
+                                  && prev(enemy["falling_status"])!=0
+                                  && prev(enemy["is_attacking"])==0xffffffff
+                                  && (enemy["last_attack"]==0x14
+                                      || enemy["last_attack"]==0x67
+                                      || enemy["last_attack"]==0x68))
+function asmodeusPhantomCounter() =>  (enemy["phantom_system"]!=0
+                                 && prev(enemy["phantom_system"]==0)
+                                 && prev(enemy["is_attacking"])==0xffffffff
+                                 && (enemy["last_attack"]==0x14
+                                    || enemy["last_attack"]==0x67
+                                    || enemy["last_attack"]==0x68))
+                                                                        
 
 // Mission sub-indexes
 function ep16PostMissionCutscene() => screenIndex0==0x8
@@ -658,6 +670,13 @@ meganite_struct = {
         "offset": 0x54,
         "size": 32
     },
+    "ranged_attack_fired": {
+        //Possible indicator for whether a ranged attack has been made
+        //Changes as soon as projectiles are visible
+        //Freezing does not prevent projectiles
+        "offset": 0x5c,
+        "size": 32
+    },
     "x_position": {
         "offset": 0xa0,
         "size": 32
@@ -713,23 +732,33 @@ meganite_struct = {
         }
 
     },
+    "is_blocking": { //Blocking status [16-bit]
+        // If blocking, less damage is taken and cannot be knocked down.
+        // Does not change during one-handed blocks
+        "offset": 0x9a4,
+        "size": 8,
+        "values": {
+            0x00: "Not blocking",
+            0x01: "Blocking"
+        }
+    },
+    "grand_charge": { //Grand charge status [16-bit]
+        // In grand charge position
+        "offset": 0x9a5,
+        "size": 8,
+        "values": {
+            0x00: "Not charging",
+            0x01: "Grand charge pose"
+        }
+    },
     "is_attacking": { //Meganite attacking status [32-bit]
         //Can be used in tandem with the the "Meganite last atack" to determine the current attack
+        //For volgara, may also indicate phantom system was activated
         "offset": 0x9b8,
         "size": 32,
         "values": {
             0x00000000: "Not attacking",
             0xffffffff: "Attack animation active",
-        }
-    },
-    "is_blocking": { //Blocking status [16-bit]
-        //If blocking, less damage is taken and cannot be knocked down.
-        // Not impacted by one-handed blocks
-        "offset": 0x9a4,
-        "size": 16,
-        "values": {
-            0x0000: "Not blocking",
-            0x0001: "Blocking"
         }
     },
     "last_attack": { //Meganite last attack [32-bit]
@@ -794,6 +823,20 @@ meganite_struct = {
                 0x6f: "Detonator",
                 //0x70: "Iron Tusk",
                 0x73: "Gravity Zero",
+            },
+            "Asmodeus": {
+                0x01: "Hook",
+                0x02: "Uppercut",
+                0x03: "Straight",
+                0x04: "Chop",
+                0x05: "Demon Screw Rush",
+                0x14: "Grand Charge",
+                0x65: "Spite Ray",
+                0x66: "Vol Missile",
+                0x67: "End Blaster (Ether Cannon)",
+                0x68: "End Burst",
+                0xc8: "Gather Energy",
+                0xc9: "Taunt"
             }
         }
     },
@@ -806,6 +849,16 @@ meganite_struct = {
             0x00000002: "Recovery animation 1",
             0x00000003: "Recovered (standing/walking/attacking/blocking/etc)",
             0xcdcdcdcd: "Never fallen"
+        }
+    },
+    "phantom_system":{
+        //Indicator for phantom system being triggered
+        //Changes to a pointer while volgara is disappearing/reappearing
+        //Always zero while phantom system is not in use
+        "offset": 0xc90,
+        "size": 32,
+        "values": {
+            0x0: "Phantom system not in use",
         }
     }
 }
@@ -1369,6 +1422,19 @@ function destroyedNoSatellitesAchievement(){
     )
 }
 
+function counterAsmodeusAchievement(){
+// Once level 53 starts
+// Trigger once Asmodeus falls or teleports three times while using grand charge, End Blaster, or End Burst
+    achievement(
+        title = "Quicker on the Draw",
+        description = "In episode 53, disrupt Asmodeus's grand charge attacks three times by knocking him down or triggering his phantom system",
+        points = 5,
+        trigger = once(missionStart() && currentScenario==53)
+                    && never(missionIncomplete())
+                    && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter())))
+    )
+}
+
 
 // Event Achievement Functions
 function stringCompare(string,address){
@@ -1805,8 +1871,8 @@ allAwardsAchievement("Staying Above It All",46,2) //Difficult; volgara won't dod
 allAwardsAchievement("Shipnapped",49,3)
 //TODO: Ep50 deal over 1000 damage to volgara city achievement
 allAwardsAchievement("Last Train Out of Senjo",51,1)
-//TODO: Confirm ep53 can be completed by activating 3 min ability before destroying any volgara
-//TODO: ep53 mission specific achievement - all awards?
+//TODO: Confirm ep52 can be completed by activating 3 min ability before destroying any volgara
+counterAsmodeusAchievement()
 
 allUpgradesAchievement("Vavel")
 allUpgradesAchievement("Gllang")
