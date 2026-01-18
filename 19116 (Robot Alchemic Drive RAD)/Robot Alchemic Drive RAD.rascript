@@ -1302,6 +1302,7 @@ function allUpgradesAchievement(upgradeType){
         title = allUpgradesAchievementTitle,
         description = allUpgradesAchievementDescription,
         points = 10,
+        type = "missable",
         trigger = almostFullyUpgraded(upgradeList)
                     && measured(
                         tally(length(upgradeArray),upgradeArray)
@@ -1564,7 +1565,8 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
         title = achievementTitle,
         description = achievementDescription,
         points = points,
-        trigger = globalVarCheck && dialogueCheck
+        trigger = globalVarCheck && dialogueCheck,
+        type = "missable"
     )
 }
 
@@ -1721,6 +1723,7 @@ function launchAndHitEnemyAchievement(){
         title = "Keep Your Eye on the Ball",
         description = "As Vavel, launch an enemy with Gravity Zero then hit them again before they hit the ground",
         points = 5,
+        type = "missable",
         trigger = inMission() &&
                     (
                         (once(robot["last_attack"]==0x75 && enemyTakesDamage()) && robot["last_attack"]!=0x75 && enemyTakesDamage()
@@ -1768,6 +1771,7 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
         title = achTitle,
         description = "As "+robotName+", kill a Volgara with over 1000 health using only '"+attackName+"'",
         points = 5,
+        type = "missable",
         trigger = inMission()
                     && currentRobot==robotIndex
                     && never(robot["last_attack"]!=attackIndex)
