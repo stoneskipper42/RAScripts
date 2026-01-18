@@ -304,7 +304,7 @@ values = {
     // Starts at zero
     // Goes up every time Nanao's workplace is destoyed
     // Does down if competetor's workplaces are destroyed (Otawara in ep31, Otawara/Supermarket in ep32)
-    // Can go negative    
+    // Can go negative
  },
  "keiko_flag":{
     // Starts at zero
@@ -350,7 +350,7 @@ values = {
     16: "Ellen and Nanao",
     17: "A Family Rival",
     18: "Airborne Dominator OR The Complete - 1", // Airborne Dominator if map_type==7 (Tokyo), The Complete - 1 otherwise
-    19: "Centurion OR The Complete - 2", // Hard to differentiate, using screenIndex0; Centurion if 0x21, The Complete - 2 otherwise
+    19: "Centurion OR The Complete - 2", // Can differentiate using episodeSubstateIndex; Centurion if 0x21, The Complete - 2 otherwise
     20: "A Day at School",
     21: "Nanao's Water Soup",
     22: "Meganite Memories",
@@ -410,9 +410,9 @@ values = {
  "work": {
     //Unclear; may reference last announced level of financial impact for MHI?
      0: "No announcements made",
-     1: "bit0: MHI has rebuilt, lost 30b yen (vhh-49)",
-     2: "bit1: MHI rebuilt, lost 500b yen",
-     3: "bit2: Bulnose cancelled plans to partner with MHI"
+     1: "bit0: MHI has rebuilt, lost 30b yen (vhh-49)", // After misaki finance hits 5 or 6
+     2: "bit1: MHI rebuilt, lost 500b yen", // After misaki finance hits 7 or 8
+     3: "bit2: Bulnose cancelled plans to partner with MHI" // After episode 26 when misaki finance hits 9
  },
  "temporary_event": {
      //Bitfield that determines what post-mission events have been displayed
@@ -422,11 +422,11 @@ values = {
      "bit3": "Nanao met with Misaki", // 4th time bakery is destroyed between ep 10 and 30 (vev-8)
      "bit4": "Misaki donated 100b yen", // 5th time bakery is destroyed between ep 10 and 30 (vev-24)
      "bit6": "Date with Ellen", // Episode 42 if ellen_favor_flag>=3 (vev-47)
-     "bit7": "Couldn't protect Misaki's company", //First time Misaki HQ is destroyed? (vev-66)
-     "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After Misaki finance >= 9 - Naoto/Ryo only (vev-71)
-     "bit9": "Misaki discussed his broken engagement with protag", // After Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
-     "bit10": "Misaki discussed MHI's destruction after the broken engagement", // After Misaki finance >= 10
-     "bit11": "Misaki remains positive about MHI's destruction", // After Misaki finance >= 11
+     "bit7": "Couldn't protect Misaki's company", // After ep39+, Misaki finance >= 10, destroy Misaki HQ (vev-66)
+     "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After ep26+, Misaki finance >= 9 - Naoto/Ryo only (vev-71)
+     "bit9": "Misaki discussed his broken engagement with protag", // After ep26+, Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
+     "bit10": "Misaki discussed MHI's recovery after the broken engagement", // After ep39+, Misaki finance >= 11, destroy Misaki HQ
+     "bit11": "Misaki remains positive about MHI's destruction", // After ep39+, Misaki finance >= 12, destroy Misaki HQ
      "bit12": "Keiko found living in CFP HQ", //Keiko's apartment destroyed (vev-129)
      "bit13": "Keiko living in CPF HQ again", //Keiko's apartment destroyed 2nd time (vev-137)
      "bit14": "Keiko living in CFP HQ - don't try anything funny" //Keiko's apartment destroyed 3rd time (vev-154)
@@ -514,10 +514,10 @@ values = {
 },
 "hero_drive":{
     // Upgrade affecting hero's walk/run speed
-    0: "No Booster",
+    0: "No Drive",
     1: "Gravity Drive",
-    2: "Perfect Booster",
-    3: "Nova Booster",
+    2: "Perfect Drive",
+    3: "Nova Drive",
     "max":3
 },
 "hero_grenade":{
@@ -781,7 +781,7 @@ meganite_struct = {
                 //0x1e: "Crouch",
                 //0x1f: "Stand",
                 //0x20: "Jump",
-                //0x2d: "Grab",            
+                //0x2d: "Grab"
             },
             "Vavel": {
                 //0x65: "Deploy/retract Pyro Burner",
