@@ -1418,13 +1418,12 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
 // Mission-specific Achievements
 function senjoWouldHaveBeenGratefulAchievement(){
     gratefulSenjoAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && globalVar("map_type")==7)
-    gratefulSenjoAchievementTrigger = gratefulSenjoAchievementTrigger
                                     && never(returnToMainMenu() || returnToChallengeSelection())
                                     && never(cityDamage>values["map_type"]["construction_minister_limit"][1])
                                     && trigger_when(missionComplete("15b or 18a"))
     achievement(
         title = "Senjo Would Have Been Grateful",
-        description = "Complete episode 15b or 18a with under five million damage in Story or Challenge mode",
+        description = "Complete episode 15b or 18a with under ten billion yen in damage to the city in Story or Challenge mode",
         points = 5,
         trigger = gratefulSenjoAchievementTrigger
     )
@@ -1487,12 +1486,12 @@ function destroyedNoSatellitesAchievement(){
 // Trigger on mission complete
     achievement(
         title = "Bomberman",
-        description = "Complete episode 42 without destroying any satellite machines ",
+        description = "Complete episode 42 without destroying any satellite machines",
         points = 5,
         trigger = once(missionStart() && currentScenario==42)
                     && never(missionIncomplete())
                     && never(satelliteDestroyed())
-                    && trigger_when(missionComplete(1))
+                    && trigger_when(missionComplete(42))
     )
 }
 
@@ -1647,7 +1646,7 @@ function landAllAttacksAchievement(meganite){
         attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Laguiole"]))
         landAllAttacksArray = attackLanded(attackValueArray,2)
     }else if(meganite=="Gllang"){
-        achievementTitle = "Suns Out Guns Out"
+        achievementTitle = "Suns out Guns Out"
         achievementDescription = "Use all of Gllang's combat commands in a single session, not including starter-specific commands"
         attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Gllang"]))
         landAllAttacksArray = attackLanded(attackValueArray,1)
@@ -1670,7 +1669,7 @@ function blockAllAttacksAchievement(){
                             
     achievement(
         title = "Keep Those Hands Up",
-        description = "Block at least three attacks and take no unblocked damage during an episode",
+        description = "Complete an episode after blocking at least three attacks and taking no unblocked damage",
         points = 5,
         trigger = once(missionStart())
                     && measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())))
@@ -1695,7 +1694,7 @@ function blockAllAttacksAchievement(){
 function useNormalControlsAchievement(){
     achievement(
         title = "Through This Controller, I Can Feel Every Beat of Its Heart",
-        description = "Defeat all enemies in an episode using normal controls",
+        description = "Complete an episode after defeating all enemies using normal controls",
         points = 5,
         trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission())
                     && never(missionIncomplete())
@@ -1751,7 +1750,7 @@ function launchAndHitEnemyAchievement(){
     //Gravity Zero attack value is different for each Meganite, restricting to Vavel to limit comparisons
     achievement(
         title = "Keep Your Eye on the Ball",
-        description = "As Vavel, launch an enemy with Gravity Zero then hit them again before they hit the ground",
+        description = "Launch an enemy with Gravity Zero then hit them again before they hit the ground",
         points = 5,
         type = "missable",
         trigger = inMission() &&
@@ -1799,7 +1798,7 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
      
     achievement(
         title = achTitle,
-        description = "As "+robotName+", kill a Volgara with over 1000 health using only '"+attackName+"'",
+        description = "As "+robotName+", kill a Volgara with over 1000 health using only \""+attackName+"\"",
         points = 5,
         type = "missable",
         trigger = inMission()
@@ -1886,8 +1885,8 @@ missionProgressionAchievement("From Tower to Trio",16,19,0)
 
 missionProgressionAchievement("Tread Lightly and Carry a Big Hammer",1,5,1)
 missionProgressionAchievement("Nothing Says \"Tank You\" Like Money",6,8,1)
-missionProgressionAchievement("Tanks For the Memories",9,11,1)
-missionProgressionAchievement("The G and U are slient",12,15,1)
+missionProgressionAchievement("Tanks for the Memories",9,11,1)
+missionProgressionAchievement("The G and U Are Silent",12,15,1)
 missionProgressionAchievement("From Tank to Trio",16,19,1)
 
 missionProgressionAchievement("Welcome to the Thunderdome",1,5,2)
@@ -1901,7 +1900,7 @@ missionProgressionAchievement("Regaining Control",25,30,"")
 missionProgressionAchievement("Fight for the Georite",31,33,"")
 missionProgressionAchievement("Controlling Your Destiny",34,38,"")
 missionProgressionAchievement("Unlimited Power",39,40,"")
-missionProgressionAchievement("Two Down, Two To Go",41,42,"")
+missionProgressionAchievement("Two Down, Two to Go",41,42,"")
 missionProgressionAchievement("The Fourth Estate",43,45,"")
 missionProgressionAchievement("Clearing the Air",46,47,"")
 missionProgressionAchievement("Turning the Tide",48,50,"")
@@ -1912,23 +1911,23 @@ postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won 
 postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",2,"v58\49a-4") //Me and Ellen. And the Meganites.
 postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
 
-postMissionEventAchievement("No! The Bakery!","In story mode, destroy the bakery 1 time between episodes 10 and 30",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
-postMissionEventAchievement("Time to Find Another Job","In story mode, destroy the bakery 2 times between episodes 10 and 30",5,"nanao_economic_flag",2,"vev\4-1") //Baron Cafe seeking enthusiastic workers
-postMissionEventAchievement("Can't Afford to Be Picky","In story mode, destroy the bakery 3 times between episodes 10 and 30",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
-postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, destroy the bakery 4 times between episodes 10 and 30",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
-postMissionEventAchievement("One Hundred Billion Yen","In story mode, destroy the bakery 5 times between episodes 10 and 30",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+postMissionEventAchievement("No! The Bakery!","In story mode, speak with Nanao after her workplace is destroyed",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
+postMissionEventAchievement("Time to Find Another Job","In story mode, speak with Nanao after her workplace is destroyed again",5,"nanao_economic_flag",2,"vev\4-1") //Baron Cafe seeking enthusiastic workers
+postMissionEventAchievement("Can't Afford to Be Picky","In story mode, speak with Nanao after her workplace is destroyed yet again",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
+postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, speak with Nanao when a mysterious benefactor reaches out to her after her workplace is destroyed",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
+postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a boon from a guilt-ridden benefactor after Nanao's workplace is destroyed",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
 
 postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //To the tune of one hundred billion yen
 
-postMissionEventAchievement("It Doesn't Bother Me at All","Destroy Keiko's apartment 1 time",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
-postMissionEventAchievement("It's Not a Big Deal at All","Destroy Keiko's apartment 2 time",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
-postMissionEventAchievement("Don't Try Anything Funny","Destroy Keiko's apartment 3 time",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after destroying her apartment",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
+postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after destroying her apartment again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
+postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after destroying her apartment yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
 
-postMissionEventAchievement("We'll Rebuild","Destroy Misaki HQ",5,"misaki_heavy_industries_flag",1,"vev\68-2") //It'll take some money, but we'll find the financing somehow
-postMissionEventAchievement("Because It Was with You","Discuss Misaki's financial ruin with Ellen",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
-postMissionEventAchievement("More to Him Than Just a Spoiled Brat","Discuss Misaki's financial ruin with Misaki",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
-postMissionEventAchievement("I'll Do What I Can","Discuss rebuilding MHI with Misaki",10,"misaki_heavy_industries_flag",10,"vev\113-1") //I'll do what I can, the only way I know how
-postMissionEventAchievement("Still Have a Part To Play","Tell Misaki the world is about to end",11,"misaki_heavy_industries_flag",11,"vev\125-3") //MHI still has a part to play
+postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
+postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
+postMissionEventAchievement("We'll Rebuild","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed",5,"misaki_heavy_industries_flag",10,"vev\68-2") //It'll take some money, but we'll find the financing somehow
+postMissionEventAchievement("I'll Do What I Can","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed again",5,"misaki_heavy_industries_flag",11,"vev\113-2") //I'll do what I can, the only way I know how
+postMissionEventAchievement("Still Has a Part to Play","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed yet again",5,"misaki_heavy_industries_flag",12,"vev\125-3") //MHI still has a part to play
 
 
 allAwardsAchievement("senjo_peace_limit","One Weird Hack to More than Double Your Income",8,1)
