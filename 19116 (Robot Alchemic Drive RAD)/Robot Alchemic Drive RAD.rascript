@@ -1699,17 +1699,17 @@ function useNormalControlsAchievement(){
         trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission())
                     && never(missionIncomplete())
                     && (
-                        (currentScenario==52 && trigger_when(missionComplete(52)))
-                        || (currentScenario==33 && trigger_when(missionComplete(33)))
-                        || (currentScenario==20 && trigger_when(missionComplete(20)))
-                        || (currentScenario==24 && trigger_when(missionComplete(24)))
-                        || (currentScenario==48 && trigger_when(missionComplete(48)))
+                        (currentScenario==52 && missionComplete(52))
+                        || (currentScenario==33 && missionComplete(33))
+                        || (currentScenario==20 && missionComplete(20))
+                        || (currentScenario==24 && missionComplete(24))
+                        || (currentScenario==48 && missionComplete(48))
                         || (currentScenario!=20
                             && currentScenario!=24
                             && currentScenario!=33
                             && currentScenario!=48
                             && currentScenario!=52
-                            && trigger_when(missionComplete(1)))
+                            && missionComplete(1))
                        )
     )
 }
