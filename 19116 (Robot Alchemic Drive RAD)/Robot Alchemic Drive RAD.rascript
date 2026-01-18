@@ -1367,20 +1367,50 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
     if(startingMeganite==""){
         missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0)
                                                 && never(returnToMainMenu())
-                                                && trigger_when(missionComplete(missionRangeEnd))
+                                                && missionComplete(missionRangeEnd)
     }else{
         missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0 && startingMeganite==initialRobot)
                                                 && never(returnToMainMenu())
-                                                && trigger_when(missionComplete(missionRangeEnd))
-        if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Vavel"
-        if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Gllang"
-        if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" as Laguiole"
+                                                && missionComplete(missionRangeEnd)
+        if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Vavel as your starter"
+        if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Gllang as your starter"
+        if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Laguiole as your starter"
+    }
+    
+    if(missionRangeEnd==15){
+        if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Gllang"
+        if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Laguiole"
+        if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Gllang"
+    }else if(missionRangeEnd==19){
+        if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Laguiole and Genesis mode"
+        if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Vavel"
+        if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" and unlock Vavel"
+    }
+    
+    //missionRangeEnd==24 and fight side by side with the Black Meganite
+    //missionRangeEnd==30 and destroy the jammers
+    //missionRangeEnd==34 and defend Mt Chihaya
+    //missionRangeEnd==38 and regain control of Vavel
+    //missionRangeEnd==40 and unlock your ultimate attack
+    //missionRangeEnd==42 and face the warlords
+    //missionRangeEnd==45 and help Mika get the scoop
+    //47 and defeat the Toxinator
+    //50 and defeat the Banisher
+    //53 and defeat Asmodeus
+
+    if(missionRangeEnd==53){
+        achievementType = "win_condition"
+        achievementPoints = 25
+    }else{
+        achievementType = "progression"
+        achievementPoints = 10
     }
     achievement(
         title = achievementTitle,
         description = missionProgressionAchievementDescription,
-        points = 10,
-        trigger = missionProgressionAchievementTrigger
+        points = achievementPoints,
+        trigger = missionProgressionAchievementTrigger,
+        type = achievementType
     )
 }
 
