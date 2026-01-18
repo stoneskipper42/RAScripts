@@ -1583,8 +1583,8 @@ function stringCompare(string,address){
 
 function postMissionEventAchievement(achievementTitle,achievementDescription,points,varName,minValue,voiceIndex){
     if(varName=="no_ellen_or_nanao_yui"){
-        globalVarCheck = globalVar("nanao_favor_flag")<7 &&
-                            globalVar("ellen_favor_flag")<2 &&
+        globalVarCheck = globalVar("nanao_favor_flag")<4 &&
+                            globalVar("ellen_favor_flag")<3 &&
                             globalVar("main_character_number")==2
     }else{
         globalVarCheck = globalVar(varName)>=minValue    
@@ -1923,8 +1923,8 @@ missionProgressionAchievement("Turning the Tide",48,50,"")
 missionProgressionAchievement("A New Era of Coexistence",51,53,"")
 
 
-postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_favor_flag",7,"v58\72a-4") //Me and Nanao. And the Meganites.
-postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",2,"v58\49a-4") //Me and Ellen. And the Meganites.
+postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_favor_flag",4,"v58\72a-4") //Me and Nanao. And the Meganites.
+postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",3,"v58\49a-4") //Me and Ellen. And the Meganites.
 postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
 
 postMissionEventAchievement("No! The Bakery!","In story mode, speak with Nanao after her workplace is destroyed",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
