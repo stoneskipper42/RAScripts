@@ -237,7 +237,9 @@ function inMission() => heroIsPresent()
 function heroAppears() => characterDataArray!=0 && heroPointer!=0 && prev(heroPointer)==0
 function heroIsPresent() => heroPointer!=0 && characterDataArray!=0
 function robotIsPresent() => robotPointer!=0 && characterDataArray!=0
+function robotAbilityActivated() => robot["three_minute_ability"] == 0xcdcdcd01 && prev(robot["three_minute_ability"]) == 0xcdcdcd00
 function allyIsPresent() => allyPointer!=0 && characterDataArray!=0
+function enemyAppears() => characterDataArray!=0 && enemyPointer!=0 && prev(enemyPointer)==0
 function enemyIsPresent() => enemyPointer!=0 && characterDataArray!=0
 function enemy2IsPresent() => enemy2Pointer!=0 && characterDataArray!=0
 function enemy3IsPresent() => enemy3Pointer!=0 && characterDataArray!=0
@@ -858,6 +860,14 @@ meganite_struct = {
         "values": {
             0x0: "Phantom system not in use",
         }
+    },
+    "three_minute_ability":{
+        "offset": 0xd10,
+        "size": 32,
+        "values": {
+            0xcdcdcd00: "System inactive",
+            0xcdcdcd01: "Volcanic/Genesis/Desecrator/Sanctifier active"
+        }
     }
 }
 
@@ -1381,6 +1391,30 @@ function senjoWouldHaveBeenGratefulAchievement(){
     )
 }
 
+
+function riggedFightAchievement(){
+    riggedFightAchievementTrigger = (
+                                        never(returnToMainMenu() || returnToChallengeSelection())
+                                        && once(missionStart() && currentScenario==19 && ep19A())
+                                        && trigger_when(robotAbilityActivated())
+                                    )
+                                    ||
+                                    (
+                                    //Alt group used to display centurion's health
+                                        never(returnToMainMenu() || returnToChallengeSelection())
+                                        && measured(enemy["health"]==1100,once(missionStart() && currentScenario==19 && ep19A()))
+                                        && trigger_when(enemy["min_health"]==enemy["max_health"])
+                                    )
+                                    
+    achievement(
+        title = "Hey, This Fight Is Rigged",
+        description = "In episode 19a, activate Genesis Mode after reducing the centurion's health to 550",
+        points = 5,
+        trigger = riggedFightAchievementTrigger
+    )
+                                    
+}
+
 function assistanceNotRequiredAchievement(){
 // Once level 24 starts
 // Reset if Valdor appears
@@ -1396,6 +1430,18 @@ function assistanceNotRequiredAchievement(){
     )
 }
 
+function followTheScriptAchievement(){
+    achievement(
+        title = "Just Follow the Script",
+        description = "Complete episode 40 in under 8 minutes",
+        points = 5,
+        trigger = once(missionStart() && currentScenario==40)
+                    && never(missionIncomplete())
+                    && missionDuration <= 28800 // 8 min * 60 sec/min * 60 fps = 28800
+                    && trigger_when(missionComplete(40))
+    )
+}
+
 function destroyedNoSatellitesAchievement(){
 // Once level 42 starts
 // Reset if first satellite is destroyed
@@ -1408,6 +1454,38 @@ function destroyedNoSatellitesAchievement(){
                     && never(missionIncomplete())
                     && never(satelliteDestroyed())
                     && trigger_when(missionComplete(1))
+    )
+}
+
+function paybackTimeAchievement(){
+    achievement(
+        title = "Payback Time",
+        description = "In episode 50, deal over 1000 damage to the volgara city before Banisher's arrival",
+        points = 5,
+        trigger = once(missionStart() && currentScenario==50)
+                    && never(missionIncomplete())
+                    && never(enemyAppears())
+                    && trigger_when(measured(cityDamage==1000,once(missionStart() && currentScenario==50)))
+    )
+}
+
+function overconfidentAchievement(){
+// Once level 52 starts
+// Trigger on mission complete
+    achievement(
+        title = "Overconfident",
+        description = "In episode 52, activate your three minute ability before defeating any volgara and then complete the mission",
+        points = 5,
+        trigger = once(missionStart() && currentScenario==52)
+                    && never(missionIncomplete())
+                    && once(
+                        robotAbilityActivated() 
+                        && enemyIsPresent() 
+                        && enemy["health"]>0 
+                        && enemy2IsPresent() 
+                        && enemy2["health"]>0 
+                        )
+                    && trigger_when(missionComplete(52))
     )
 }
 
@@ -1824,13 +1902,12 @@ senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15
 allAwardsAchievement("Childhood Protector",16,2)
 allAwardsAchievement("You Want Misaki, You Go Through Me",17,1)
 //allAwardsAchievement("[VOID] Centurion Crusher","19a or 19b",1) //TODO: May not be possible; Volgara attacks city a lot before Vavel arrives, and can't beat volgara until after meganite loses 50% health
-//TODO: Genesis after reducing centurion to half health in ep19a achievement
 //TODO: Misaki and misaki plant awards in ep19b achievement
 allAwardsAchievement("Double Jeopardy",20,2)
 allAwardsAchievement("Chicken Soup Run",21,2)
 allAwardsAchievement("Expertly Evacuated",22,2)
 allAwardsAchievement("Wheels on the Bus Go Round and Round",23,1)
-//allAwardsAchievement("[VOID] The Dark One",24,2) //TODO: Not likely to be possible; Valdor appears independent of damage taken, and he keeps using rocket fist
+riggedFightAchievement()
 assistanceNotRequiredAchievement()
 allAwardsAchievement("Bye Bye Third Wheel",25,2)
 allAwardsAchievement("Satellite Scrapper",26,1)
@@ -1844,11 +1921,10 @@ allAwardsAchievement("Almost A Fair Fight",33,4)
 allAwardsAchievement("We Are Vavel",38,2)
 //allAwardsAchievement("[VOID] Dantarion",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
 //TODO: Ep39 construction minister achievement
-//allAwardsAchievement("[VOID] Valhalla Dawning",40,1) //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
 //TODO: Ep40 in under 9 min achievement
 allAwardsAchievement("Baron Beatdown",41,4)
+followTheScriptAchievement() //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
 destroyedNoSatellitesAchievement() // Ep42 all awards achievement impossible, volgara can only be attacked by grenades until all satellites are destroyed
-//allAwardsAchievement("[VOID] Spectral Visitation",42,2) 
 allAwardsAchievement("Tower Defense",43,3) //Tough but possible; Volgara beelines to the tower, you can distract it with ranged attacks
 allAwardsAchievement("Watch Your Step",44,1)
 allAwardsAchievement("Rooftop Rescue",45,2)
@@ -1858,9 +1934,9 @@ allAwardsAchievement("Staying Above It All",46,2) //Difficult; volgara won't dod
 //allAwardsAchievement("[VOID] Lifesaver Express",48,1) //TODO: Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
 //TODO: Ep48 construction minister achievement
 allAwardsAchievement("Shipnapped",49,3)
-//TODO: Ep50 deal over 1000 damage to volgara city achievement
 allAwardsAchievement("Last Train Out of Senjo",51,1)
-//TODO: Confirm ep52 can be completed by activating 3 min ability before destroying any volgara
+paybackTimeAchievement()
+overconfidentAchievement()
 counterAsmodeusAchievement()
 
 allUpgradesAchievement("Vavel")
