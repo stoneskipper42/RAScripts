@@ -1930,7 +1930,7 @@ postMissionEventAchievement("Can't Afford to Be Picky","In story mode, speak wit
 postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, speak with Nanao when a mysterious benefactor reaches out to her after her workplace is destroyed",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
 postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a boon from a guilt-ridden benefactor after Nanao's workplace is destroyed",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
 
-postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //To the tune of one hundred billion yen
+postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //It's quiet.
 
 postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after destroying her apartment",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
 postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after destroying her apartment again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
