@@ -209,11 +209,9 @@ function globalVar(var_name){
 
 
 // General Information
-screenIndex0 = dword(0x27e9cc)
-screenIndex1 = dword(0x248044)
-screenIndex2 = dword(0x28e2b8)
-screenIndex3 = dword(0x248040)
-screenIndex4 = dword(0x28e2a0)
+episodeSubstateIndex = dword(0x27e9cc)
+missionBriefingIndex = dword(0x28e2b8)
+menuScreenIndex = dword(0x248040)
 saveData = dword(dword(0x0027e5f4)+0x48)
 dialogueIndexAddress = 0x2823c0
 currentPilot = globalVar("main_character_number")
@@ -264,11 +262,11 @@ function asmodeusPhantomCounter() =>  (enemy["phantom_system"]!=0
                                     || enemy["last_attack"]==0x68))
                                                                         
 
-// Mission sub-indexes
-function ep16PostMissionCutscene() => screenIndex0==0x8
-function ep28PostMissionCutscene() => screenIndex0==0x6
-function ep19A() => screenIndex0==0x21
-function ep19B() => screenIndex0==0x1e
+// Mission sub-indexes; used to differentiate mission state when hero appears
+function ep16PostMissionCutscene() => episodeSubstateIndex==0x8
+function ep28PostMissionCutscene() => episodeSubstateIndex==0x6
+function ep19A() => episodeSubstateIndex==0x21
+function ep19B() => episodeSubstateIndex==0x1e
 
 // City damage
 cityDamage = dword(dword(0x0027e610)+0x6bc)
@@ -1045,7 +1043,6 @@ for value in get_keys(meganite_struct)
         satellite[value] = dword(satellitePointer+meganite_struct[value]["offset"])
 }
 
-//missionDuration = dword(dword(0x0027e664)+0x54) //Resets during cutscene in ep1
 missionDuration = dword(heroPointer+meganite_struct["duration"]["offset"])
 hitCountMissionDuration = tally(0,
             pilot["duration"]-prev(pilot["duration"])>=1,
@@ -1090,23 +1087,15 @@ function enemy3IsDown() => enemy3["falling_status"]==0x1 || enemy3["falling_stat
 function enemy4IsDown() => enemy4["falling_status"]==0x1 || enemy4["falling_status"]==0x2
 
 
-//function missionStart() => screenIndex2==0x28e8d0
 function missionStart() => heroAppears()
 //TODO: Need to identify missionComplete screen index for undub patch
-function missionComplete(mission_number) => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282 && all_enemies_defeated(mission_number)
-//function missionComplete() => screenIndex3==0x34282 && prev(screenIndex3)!=0x34282
-//function missionComplete() => screenIndex1==0x12 && prev(screenIndex1)!=0x12
-function missionFailed() => prev(screenIndex3==0x34282) && screenIndex3==0x34282
-//function missionFailed() => neverscreenIndex3!=0x34282) && tally(10,screenIndex3==0x34282)
-function returnToMainMenu() => screenIndex3==0x324be && prev(screenIndex3)!=0x324be
-//function returnToMainMenu() => screenIndex1==0x31 //bad screen index; not unique, used during cutscene in ep1
-function onTitleScreen() => screenIndex3==0x32453
-//function returnToMainMenu() => screenIndex4==0x8d99
-//function returnToChallengeSelection() => screenIndex1==0x136
-function onLoadSavedGameMenu() => screenIndex3==0x3334d
-function returnToChallengeSelection() => screenIndex3==0x33aa2 && prev(screenIndex3)!=0x33aa2
-//function returnToChallengeSelection() => screenIndex4==0xa482
-function missionIncomplete() => missionFailed() || screenIndex3==0x33aa2
+function missionComplete(mission_number) => menuScreenIndex==0x34282 && prev(menuScreenIndex)!=0x34282 && all_enemies_defeated(mission_number)
+function missionFailed() => prev(menuScreenIndex==0x34282) && menuScreenIndex==0x34282
+function returnToMainMenu() => menuScreenIndex==0x324be && prev(menuScreenIndex)!=0x324be
+function onTitleScreen() => menuScreenIndex==0x32453
+function onLoadSavedGameMenu() => menuScreenIndex==0x3334d
+function returnToChallengeSelection() => menuScreenIndex==0x33aa2 && prev(menuScreenIndex)!=0x33aa2
+function missionIncomplete() => missionFailed() || menuScreenIndex==0x33aa2
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
 function isCombatMission(){
     return currentScenario!=2
