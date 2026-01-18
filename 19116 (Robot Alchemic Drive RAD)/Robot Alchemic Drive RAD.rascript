@@ -464,17 +464,17 @@ values = {
  },
  "building_collapse_point":{
     //Amount of damage done to the city, calculated after the mission ends
-    //Affects Senjo Peace Award and Construction Minister Award
+    //Affects Senjo Peace Award and Construction Minister Award (limits vary per map type)
     //Affects how much damage Tomoe announces during the post-mission news report
-    //0x00=000=Below one billion yen (senjou peace award)
-    //0x46=070=Below one billion yen (senjou peace award)
-    //0x47=071=Apprx two billion yen (construction minister)
-    //0x6e=110=Apprx two billion yen (construction minister)
-    //0x6f=111=Apprx five billion yen (construction minister)
-    //0x8c=140=Apprx five billion yen (construction minister)
-    //0x8d=141=Apprx five billion yen (no award)
-    //0xa0=160=Apprx five billion yen (no award)
-    //0xa1=161=Apprx ten billion yen (no award)
+    //0x00=000=Below one billion yen
+    //0x46=070=Below one billion yen
+    //0x47=071=Apprx two billion yen
+    //0x6e=110=Apprx two billion yen
+    //0x6f=111=Apprx five billion yen
+    //0x8c=140=Apprx five billion yen
+    //0x8d=141=Apprx five billion yen
+    //0xa0=160=Apprx five billion yen
+    //0xa1=161=Apprx ten billion yen
     //0xbe=190=Apprx ten billion yen
     //0xbf=191=At least ten billion yen
     //0xdc=220=At least ten billion yen
@@ -1311,13 +1311,15 @@ function allUpgradesAchievement(upgradeType){
 }
 
 
-function allAwardsAchievement(achievementTitle,missionNumber,missionMapType){
+function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,missionMapType){
     if(missionNumber=="15a"){
         allAwardsAchievementTrigger = once(missionStart() && currentScenario==15 && globalVar("map_type")==missionMapType)
     }else if(missionNumber=="15b or 18a"){
         allAwardsAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && globalVar("map_type")==missionMapType)
-    }else if(missionNumber=="19a or 19b"){
-        allAwardsAchievementTrigger = once(missionStart() && currentScenario==19)
+    }else if(missionNumber=="19a"){
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==19 && ep19A())
+    }else if(missionNumber=="19b"){
+        allAwardsAchievementTrigger = once(missionStart() && currentScenario==19 && ep19B())
     }else{
         if(missionNumber==16){
             allAwardsAchievementTrigger = once(missionStart() && !ep16PostMissionCutscene() && currentScenario==missionNumber)
@@ -1329,7 +1331,7 @@ function allAwardsAchievement(achievementTitle,missionNumber,missionMapType){
     }
     allAwardsAchievementTrigger = allAwardsAchievementTrigger
                                     && never(returnToMainMenu() || returnToChallengeSelection())
-                                    && never(cityDamage>values["map_type"]["senjo_peace_limit"][missionMapType])
+                                    && never(cityDamage>values["map_type"][cityDamageLimit][missionMapType])
                                     && trigger_when(missionComplete(missionNumber))
     if(values["map_type"]["title"][missionMapType]=="Senjo New City Center"){
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiHqDestroyed())
@@ -1343,9 +1345,15 @@ function allAwardsAchievement(achievementTitle,missionNumber,missionMapType){
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(bnnSenjoBranchDestroyed())
     }
     
+    if(cityDamageLimit=="senjo_peace_limit"){
+        achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award and all other possible awards in Story or Challenge mode"
+    }else{
+        achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award and all other possible awards in Story or Challenge mode"
+    }
+    
     achievement(
         title = achievementTitle,
-        description = "Complete episode "+missionNumber+" with all possible awards and under one million damage in Story or Challenge mode",
+        description = achievementDescription,
         points = 5,
         trigger = allAwardsAchievementTrigger
     )
@@ -1889,53 +1897,46 @@ postMissionEventAchievement("I'll Do What I Can","Discuss rebuilding MHI with Mi
 postMissionEventAchievement("Still Have a Part To Play","Tell Misaki the world is about to end",11,"misaki_heavy_industries_flag",11,"vev\125-3") //MHI still has a part to play
 
 
-allAwardsAchievement("One Weird Hack to More Than Double Your Income",8,1)
-allAwardsAchievement("Fray in the Bay",9,3)
-allAwardsAchievement("Standing the Heat",10,2)
-allAwardsAchievement("Ride the Cyclone",11,2)
-allAwardsAchievement("He Came Outta Nowhere",13,1)
-//allAwardsAchievement("[VOID] Inferno",14,1) //Top score: 100; Volgara deals 80 city damage before player gets control, but construction minister seems doable
-//TODO: Ep17 constuction minister achievement
-allAwardsAchievement("Catch a Riiiiiide","15a",1)
-//allAwardsAchievement("[VOID] Airborne Dominator","15b or 18a",7)
+allAwardsAchievement("senjo_peace_limit","One Weird Hack to More than Double Your Income",8,1)
+allAwardsAchievement("senjo_peace_limit","Fray in the Bay",9,3)
+allAwardsAchievement("senjo_peace_limit","Standing the Heat",10,2)
+allAwardsAchievement("senjo_peace_limit","Ride the Cyclone",11,2)
+allAwardsAchievement("senjo_peace_limit","He Came Outta Nowhere",13,1)
+allAwardsAchievement("construction_minister_limit","We Don't Need No Water",14,1) //Top score: 100; Volgara deals 80 city damage before player gets control, but construction minister seems doable
+allAwardsAchievement("senjo_peace_limit","Catch a Riiiiiide","15a",1)
 senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15b/18a; Peace/construction awards in Tokyo are 10/50 dmg and EVERYTHING is breakable
-allAwardsAchievement("Childhood Protector",16,2)
-allAwardsAchievement("You Want Misaki, You Go Through Me",17,1)
-//allAwardsAchievement("[VOID] Centurion Crusher","19a or 19b",1) //TODO: May not be possible; Volgara attacks city a lot before Vavel arrives, and can't beat volgara until after meganite loses 50% health
-//TODO: Misaki and misaki plant awards in ep19b achievement
-allAwardsAchievement("Double Jeopardy",20,2)
-allAwardsAchievement("Chicken Soup Run",21,2)
-allAwardsAchievement("Expertly Evacuated",22,2)
-allAwardsAchievement("Wheels on the Bus Go Round and Round",23,1)
+allAwardsAchievement("senjo_peace_limit","Childhood Protector",16,2)
+allAwardsAchievement("senjo_peace_limit","You Want Misaki, You Go Through Me",17,1)
 riggedFightAchievement()
+allAwardsAchievement("construction_minister_limit","Controlling the Battlefield","19b",1) 
+allAwardsAchievement("senjo_peace_limit","Double Jeopardy",20,2)
+allAwardsAchievement("senjo_peace_limit","Chicken Soup Run",21,2)
+allAwardsAchievement("senjo_peace_limit","Expertly Evacuated",22,2)
+allAwardsAchievement("senjo_peace_limit","Wheels on the Bus Go Round and Round",23,1)
 assistanceNotRequiredAchievement()
-allAwardsAchievement("Bye Bye Third Wheel",25,2)
-allAwardsAchievement("Satellite Scrapper",26,1)
-allAwardsAchievement("Gllang Is Very Sick! Don't Be Mad!",27,2)
-allAwardsAchievement("Jamming Up the Jammers",28,2)
-allAwardsAchievement("First Person View",29,1)
-allAwardsAchievement("Keep On Truckin",30,2)
-allAwardsAchievement("If Nanao Can Give 200% I Can Too",31,2)
-allAwardsAchievement("I'll \"Accidentally On Purpose\" Next Time",32,2)
-allAwardsAchievement("Almost A Fair Fight",33,4)
-allAwardsAchievement("We Are Vavel",38,2)
-//allAwardsAchievement("[VOID] Dantarion",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
-//TODO: Ep39 construction minister achievement
-//TODO: Ep40 in under 9 min achievement
-allAwardsAchievement("Baron Beatdown",41,4)
+allAwardsAchievement("senjo_peace_limit","Bye Bye Third Wheel",25,2)
+allAwardsAchievement("senjo_peace_limit","Satellite Scrapper",26,1)
+allAwardsAchievement("senjo_peace_limit","Gllang Is Very Sick! Don't Be Mad!",27,2)
+allAwardsAchievement("senjo_peace_limit","Jamming up the Jammers",28,2)
+allAwardsAchievement("senjo_peace_limit","First Person View",29,1)
+allAwardsAchievement("senjo_peace_limit","Keep on Truckin",30,2)
+allAwardsAchievement("senjo_peace_limit","If Nanao Can Give 200% I Can Too",31,2)
+allAwardsAchievement("senjo_peace_limit","I'll \"Accidentally on Purpose\" Next Time",32,2)
+allAwardsAchievement("senjo_peace_limit","Almost A Fair Fight",33,4)
+allAwardsAchievement("senjo_peace_limit","We Are Vavel",38,2)
+allAwardsAchievement("construction_minister_limit","Kaiju Kiting",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
 followTheScriptAchievement() //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
+allAwardsAchievement("senjo_peace_limit","Baron Beatdown",41,4)
 destroyedNoSatellitesAchievement() // Ep42 all awards achievement impossible, volgara can only be attacked by grenades until all satellites are destroyed
-allAwardsAchievement("Tower Defense",43,3) //Tough but possible; Volgara beelines to the tower, you can distract it with ranged attacks
-allAwardsAchievement("Watch Your Step",44,1)
-allAwardsAchievement("Rooftop Rescue",45,2)
-allAwardsAchievement("Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
-//allAwardsAchievement("[VOID] Windborne Darkness",47,1) //May not be possible? 
-//TODO: Confirm if Windborne Darkness should use Senjo Peace award, Construction Minister award, or needs alternate achievement
-//allAwardsAchievement("[VOID] Lifesaver Express",48,1) //TODO: Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
-//TODO: Ep48 construction minister achievement
-allAwardsAchievement("Shipnapped",49,3)
-allAwardsAchievement("Last Train Out of Senjo",51,1)
+allAwardsAchievement("senjo_peace_limit","Tower Defense",43,3) //Tough but possible; Volgara beelines to the tower, you can distract it with ranged attacks
+allAwardsAchievement("senjo_peace_limit","Watch Your Step",44,1)
+allAwardsAchievement("senjo_peace_limit","Rooftop Rescue",45,2)
+allAwardsAchievement("senjo_peace_limit","Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
+allAwardsAchievement("construction_minister_limit","Smoking the Competition",47,1) //Senjo award not possible; volgara deals 60 city damage while approaching the hosptial, narrow roads while walking, can't teleport/kite, and takes a while to take down
+allAwardsAchievement("construction_minister_limit","Rumble for the Cure",48,1) //Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
+allAwardsAchievement("senjo_peace_limit","Shipnapped",49,3)
 paybackTimeAchievement()
+allAwardsAchievement("senjo_peace_limit","Last Train out of Senjo",51,1)
 overconfidentAchievement()
 counterAsmodeusAchievement()
 
