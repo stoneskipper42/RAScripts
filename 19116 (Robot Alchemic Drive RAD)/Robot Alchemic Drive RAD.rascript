@@ -1244,7 +1244,6 @@ function areFullyUpgraded(upgrade_name_array){
 function almostFullyUpgraded(upgrade_name_array){
     upgradeDeltaTotal = 0
     upgradeMaxTotal = 0
-    //TODO: Need to run check against ored mem(upgrade) to delta(upgrade)
     for upgrade_name in upgrade_name_array{
         upgradeDeltaTotal = upgradeDeltaTotal + prev(globalVar(upgrade_name))
         upgradeMaxTotal = upgradeMaxTotal + values[upgrade_name]["max"]
@@ -1601,7 +1600,6 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
 
 
 // Combat Achievement Functions
-//TODO: May need to tweak to take into account ranged attacks, may not hit until after robot's no longer "attacking"
 function attackLanded(attack_array,robot){  
     attackLandedArray = []
     for attack in attack_array{
@@ -1802,7 +1800,6 @@ function attackFallingEnemyAchievement(){
     )
 }
 
-//TODO: Debug why "trigger when" isn't working
 function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
     robotName = values["current_robot"][robotIndex]
     if(attackIndex==0x70){
