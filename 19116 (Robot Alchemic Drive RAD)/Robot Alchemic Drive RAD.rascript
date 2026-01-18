@@ -1655,7 +1655,8 @@ function landAllAttacksAchievement(meganite){
         title = achievementTitle,
         description = achievementDescription,
         points = 10,
-        trigger = measured(
+        trigger = never(onTitleScreen()) &&
+                  measured(
                     tally(length(landAllAttacksArray),landAllAttacksArray)
                   )
     )
