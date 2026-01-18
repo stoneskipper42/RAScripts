@@ -1672,10 +1672,9 @@ function blockAllAttacksAchievement(){
         title = "Keep Those Hands Up",
         description = "Complete an episode after blocking at least three attacks and taking no unblocked damage",
         points = 5,
-        trigger = once(missionStart())
-                    && measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())))
+        trigger = measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())),when=once(missionStart()))
                     && never(missionIncomplete())
-                    && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking()) //TODO: Need to debug; measure will count during a mission after robot took damage
+                    && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
                     && (
                         (currentScenario==52 && trigger_when(missionComplete(52)))
                         || (currentScenario==33 && trigger_when(missionComplete(33)))
