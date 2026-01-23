@@ -1695,17 +1695,17 @@ function landAllAttacksAchievement(meganite){
     
     if(meganite=="Vavel"){
         achievementTitle = "Rock Em Sock Em"
-        achievementDescription = "Use all of Vavel's combat commands in a single session, not including starter-specific commands"
+        achievementDescription = "Use all of Vavel's combat commands in a single session, not including \"Genesis Cry\""
         attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Vavel"]))
         landAllAttacksArray = attackLanded(attackValueArray,0)
     }else if(meganite=="Laguiole"){
         achievementTitle = "Bird of Prey"
-        achievementDescription = "Use all of Laguiole's combat commands in a single session, not including starter-specific commands"
+        achievementDescription = "Use all of Laguiole's vertical mode combat commands in a single session, not including \"Annihilator\""
         attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Laguiole"]))
         landAllAttacksArray = attackLanded(attackValueArray,2)
     }else if(meganite=="Gllang"){
         achievementTitle = "Suns out Guns Out"
-        achievementDescription = "Use all of Gllang's combat commands in a single session, not including starter-specific commands"
+        achievementDescription = "Use all of Gllang's vertical mode combat commands in a single session, not including \"Iron Tusk\""
         attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Gllang"]))
         landAllAttacksArray = attackLanded(attackValueArray,1)
     }
@@ -1992,9 +1992,9 @@ postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a 
 
 postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //It's quiet.
 
-postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after destroying her apartment",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
-postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after destroying her apartment again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
-postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after destroying her apartment yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after destroying her condo",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
+postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after destroying her condo again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
+postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after destroying her condo yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
 
 postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
 postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
