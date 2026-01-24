@@ -2,6 +2,10 @@
 // #ID = 19116
 
 /*
+// Most of the memory addresses in this game are derived from a doubly-linked list of variables
+// Although the linked list order/elements do not change, many of the values are only valid during certain contexts
+// For example, "current_scenario" is valid while playing story/challenge/training, but during menu screens it will show the last STORY scenario, even if the last mission played was challenge/training
+//
 // $27E5E4: [32-bit] Pointer to doubly linked list of global variables.
 //          +0x5c - Variables linked list (first element)
 //          Stored in a 32-byte struct
@@ -95,6 +99,7 @@
 // NOTABLE MEMORY ADDRESSES //
 
 // Build array of doublely linked global variables. Variable data can be accessed by calling globalVar("var_name")
+// nodes struct recommended by Souzooka
 variables = ["main_character_number",
 "initial_robot",
 "control_type",
@@ -719,7 +724,7 @@ values = {
  }
 }
 
-meganite_struct = {
+character_struct = {
     "z_position": {
         "offset": 0x14,
         "size": 32
@@ -1050,70 +1055,70 @@ function array_merge(array1,array2){
 
 // Reusable data/functions
 pilot = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        pilot[value] = word(heroPointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        pilot[value] = word(heroPointer+character_struct[value]["offset"])
     else
-        pilot[value] = dword(heroPointer+meganite_struct[value]["offset"])
+        pilot[value] = dword(heroPointer+character_struct[value]["offset"])
 }
 
 robot = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        robot[value] = word(robotPointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        robot[value] = word(robotPointer+character_struct[value]["offset"])
     else
-        robot[value] = dword(robotPointer+meganite_struct[value]["offset"])
+        robot[value] = dword(robotPointer+character_struct[value]["offset"])
 }
 
 enemy = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        enemy[value] = word(enemyPointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        enemy[value] = word(enemyPointer+character_struct[value]["offset"])
     else
-        enemy[value] = dword(enemyPointer+meganite_struct[value]["offset"])
+        enemy[value] = dword(enemyPointer+character_struct[value]["offset"])
 }
 
 enemy2 = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        enemy2[value] = word(enemy2Pointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        enemy2[value] = word(enemy2Pointer+character_struct[value]["offset"])
     else
-        enemy2[value] = dword(enemy2Pointer+meganite_struct[value]["offset"])
+        enemy2[value] = dword(enemy2Pointer+character_struct[value]["offset"])
 }
 
 enemy3 = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        enemy3[value] = word(enemy3Pointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        enemy3[value] = word(enemy3Pointer+character_struct[value]["offset"])
     else
-        enemy3[value] = dword(enemy3Pointer+meganite_struct[value]["offset"])
+        enemy3[value] = dword(enemy3Pointer+character_struct[value]["offset"])
 }
 
 
 enemy4 = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        enemy4[value] = word(enemy4Pointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        enemy4[value] = word(enemy4Pointer+character_struct[value]["offset"])
     else
-        enemy4[value] = dword(enemy4Pointer+meganite_struct[value]["offset"])
+        enemy4[value] = dword(enemy4Pointer+character_struct[value]["offset"])
 }
 
 satellite = {}
-for value in get_keys(meganite_struct)
+for value in get_keys(character_struct)
 {
-    if(meganite_struct[value]["size"]==16)
-        satellite[value] = word(satellitePointer+meganite_struct[value]["offset"])
+    if(character_struct[value]["size"]==16)
+        satellite[value] = word(satellitePointer+character_struct[value]["offset"])
     else
-        satellite[value] = dword(satellitePointer+meganite_struct[value]["offset"])
+        satellite[value] = dword(satellitePointer+character_struct[value]["offset"])
 }
 
-missionDuration = dword(heroPointer+meganite_struct["duration"]["offset"])
+missionDuration = dword(heroPointer+character_struct["duration"]["offset"])
 hitCountMissionDuration = tally(0,
             pilot["duration"]-prev(pilot["duration"])>=1,
             pilot["duration"]-prev(pilot["duration"])>=2,
@@ -1393,22 +1398,28 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
                                     && never(returnToMainMenu() || returnToChallengeSelection())
                                     && never(cityDamage>values["map_type"][cityDamageLimit][missionMapType])
                                     && trigger_when(missionComplete(missionNumber))
+    
+    otherAwardsString = ""
     if(values["map_type"]["title"][missionMapType]=="Senjo New City Center"){
+        otherAwardsString = " and all 4 other possible awards"
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiHqDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(misakiFactoryDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoHospitalDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(senjoCityHallDestroyed())
     }else if(values["map_type"]["title"][missionMapType]=="Downtown Senjo"){
+        otherAwardsString = " and the other possible award"
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(schoolDestroyed())
     }else if(values["map_type"]["title"][missionMapType]=="Senjo Port"){
+        otherAwardsString = " and both other possible awards"
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(observatoryDestroyed())
         allAwardsAchievementTrigger = allAwardsAchievementTrigger && never(bnnSenjoBranchDestroyed())
     }
     
+    
     if(cityDamageLimit=="senjo_peace_limit"){
-        achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award and all other possible awards in Story or Challenge mode"
+        achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award"+otherAwardsString+" in Story or Challenge mode"
     }else{
-        achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award and all other possible awards in Story or Challenge mode"
+        achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award"+otherAwardsString+" in Story or Challenge mode"
     }
     
     achievement(
@@ -1691,22 +1702,22 @@ function attackLanded(attack_array,robot){
 
 function landAllAttacksAchievement(meganite){
     
-    attackValueArray = get_keys(meganite_struct["last_attack"]["values"]["All"])
+    attackValueArray = get_keys(character_struct["last_attack"]["values"]["All"])
     
     if(meganite=="Vavel"){
         achievementTitle = "Rock Em Sock Em"
         achievementDescription = "Use all of Vavel's combat commands in a single session, not including \"Genesis Cry\""
-        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Vavel"]))
+        attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Vavel"]))
         landAllAttacksArray = attackLanded(attackValueArray,0)
     }else if(meganite=="Laguiole"){
         achievementTitle = "Bird of Prey"
         achievementDescription = "Use all of Laguiole's vertical mode combat commands in a single session, not including \"Annihilator\""
-        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Laguiole"]))
+        attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Laguiole"]))
         landAllAttacksArray = attackLanded(attackValueArray,2)
     }else if(meganite=="Gllang"){
         achievementTitle = "Suns out Guns Out"
         achievementDescription = "Use all of Gllang's vertical mode combat commands in a single session, not including \"Iron Tusk\""
-        attackValueArray = array_merge(attackValueArray,get_keys(meganite_struct["last_attack"]["values"]["Gllang"]))
+        attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Gllang"]))
         landAllAttacksArray = attackLanded(attackValueArray,1)
     }
     achievement(
