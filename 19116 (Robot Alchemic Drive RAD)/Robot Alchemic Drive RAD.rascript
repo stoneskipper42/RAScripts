@@ -2094,52 +2094,75 @@ RPvalues={
     },
     "menuScreenIndex":{
         0x00000: "Intro FMV",
-        0x2f770: "Episode 1 title card/BNN Mission intro",
-        0x2c7cd: "Episode 16 post-mission cutscene starting val?",
-        0x2c946: "Episode 16 post-mission cutscenes",
-        0x2cb62: "Episode 1",
-        0x2da6d: "Episode 1 intro FMV",
-        0x2f5c5: "Episode 1 after speaking with Nanao",
-        0x31e42: "Event misaki3/Event keiko3",
-        0x324be: "Main menu",
+        0x0f926: "Title screen", //undub
+        0x0f991: "Main menu", //undub
+        0x0fc38: "Initial control/pilot/meganite selection - story mode", //undub
+        0x1023e: "Story mode intro", //undub
+        0x1037b: "intermission", //undub
+        0x10414: "intermission", //undub - no hangar/lab access
+        0x104e1: "laboratory", //undub
+        0x10687: "hangar", //undub
+        0x10820: "Save/Load game", //undub
+        0x109c3: "Meganite selection", //undub
+        0x10a2d: "Option menu", //undub
+        0x10ab3: "Story options menu", //undub
+        0x10c86: "Versus mode setup", //undub
+        0x10f75: "Challenge mission selection", //undub
+        0x112c1: "Character selection", //undub
+        0x11317: "Tutorial mission selection", //undub
+        0x11755: "Mission clear/Mission failed", //undub
+        0x117b4: "Opening credits", //undub
         0x32453: "Title screen",
+        0x324be: "Main menu",
         0x32765: "Initial control/pilot/meganite selection - story mode",
-        0x32d6b: "Story mode unskippable intro fmv",
-        0x32ea8: "Intermission",
-        0x3300e: "Laboratory",
-        0x331b4: "Hangar",
+        0x32d6b: "Story mode intro",
+        0x32ea8: "intermission",
+        0x32f41: "intermission", //no hangar/lab access
+        0x3300e: "laboratory",
+        0x331b4: "hangar",
         0x3334d: "Save/Load game",
         0x33469: "Meganite selection",
-        0x335e0: "Story Options Menu",
+        0x335e0: "Story options menu",
         0x3355a: "Options menu",
         0x337b3: "Versus mode setup",
         0x33aa2: "Challenge mission selection",
         0x33e44: "Tutorial mission selection",
         0x33dee: "Character selection",
-        0x34282: "Mission Clear/Mission Failed",
-        0x3500a: "Mission briefing ep7",
-        0x35056: "Mission briefing ep8",
-        0x353b3: "Mission breifing ep19b"
+        0x34282: "Mission clear/Mission failed",
+        0x342e1: "Opening credits",
     }
 }
 
 
 //Title/menu/options screens
-rich_presence_conditional_display(menuScreenIndex==0x00000
-                                || menuScreenIndex==0x324be
-                                || menuScreenIndex==0x32453
-                                || menuScreenIndex==0x3334d
-                                || menuScreenIndex==0x3355a
-                                || menuScreenIndex==0x335e0
-                                || menuScreenIndex==0x337b3
-                                || menuScreenIndex==0x33aa2
-                                || menuScreenIndex==0x33e44,
+rich_presence_conditional_display(menuScreenIndex==0x00000 //Intro
+                                || menuScreenIndex==0x0f926 //Title screen undub
+                                || menuScreenIndex==0x0f991 //Main menu undub
+                                || menuScreenIndex==0x0fc38 //Initial control/pilot/meganite selection - story mode undub
+                                || menuScreenIndex==0x1023e //Story mode intro undub
+                                || menuScreenIndex==0x10820 //Save/Load game undub
+                                || menuScreenIndex==0x10a2d //Option menu undub
+                                || menuScreenIndex==0x10c86 //Versus mode setup undub
+                                || menuScreenIndex==0x10f75 //Challenge mission selection undub
+                                || menuScreenIndex==0x11317 //Tutorial mission selection undub
+                                || menuScreenIndex==0x117b4 //Opening credits undub
+                                || menuScreenIndex==0x32453 //Title screen
+                                || menuScreenIndex==0x324be //Main menu
+                                || menuScreenIndex==0x32765 //Initial control/pilot/meganite selection - story mode
+                                || menuScreenIndex==0x3334d //Save/Load game
+                                || menuScreenIndex==0x3355a //Options menu
+                                || menuScreenIndex==0x335e0 //Story options menu
+                                || menuScreenIndex==0x337b3 //Versus mode setup
+                                || menuScreenIndex==0x33aa2 //Challenge mission selection
+                                || menuScreenIndex==0x33e44 //Tutorial mission selection
+                                || menuScreenIndex==0x342e1, //Opening credits
     "{0}",
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],"")
     )
 
 //Story mode meganite selection
-rich_presence_conditional_display(gameMode==0 && menuScreenIndex==0x33469,
+rich_presence_conditional_display(gameMode==0 && (menuScreenIndex==0x33469
+                                                || menuScreenIndex==0x109c3),
     "Meganite selection for episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
@@ -2155,8 +2178,10 @@ rich_presence_conditional_display(gameMode==0 && menuScreenIndex==0x33469,
     )
 
 //Challenge mode character/meganite selection
-rich_presence_conditional_display(gameMode!=0 && (menuScreenIndex==0x33469
-                                || menuScreenIndex==0x33dee),
+rich_presence_conditional_display(gameMode!=0 && (menuScreenIndex==0x109c3 //Meganite selection (undub)
+                                || menuScreenIndex==0x112c1 //Character selection (undub)
+                                || menuScreenIndex==0x33469 //Meganite selection
+                                || menuScreenIndex==0x33dee), //Character selection
     "{0} for episode {1} ({2})",
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
     rich_presence_macro("Number",currentScenario),
@@ -2164,7 +2189,12 @@ rich_presence_conditional_display(gameMode!=0 && (menuScreenIndex==0x33469
     )
 
 //Intermission/Hanger/Laboratory
-rich_presence_conditional_display(gameMode==0 && (menuScreenIndex==0x32ea8 //Intermission
+rich_presence_conditional_display(gameMode==0 && (menuScreenIndex==0x1037b //Intermission (undub)
+                                                || menuScreenIndex==0x10414 //Intermission - no hangar/lab access (undub)
+                                                || menuScreenIndex==0x10687 //Hanger (undub)
+                                                || menuScreenIndex==0x104e1 //Laboratory (undub)
+                                                || menuScreenIndex==0x32ea8 //Intermission
+                                                || menuScreenIndex==0x32f41 //Intermission - no hangar/lab access
                                                 || menuScreenIndex==0x331b4 //Hanger
                                                 || menuScreenIndex==0x3300e), //Laboratory
     "{0} in {1} after episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
@@ -2209,7 +2239,7 @@ rich_presence_conditional_display(gameMode==0 && missionBriefingIndex==0x0028e96
     
 //Challenge mode mission briefing
 rich_presence_conditional_display(missionBriefingIndex==0x0028e960,
-    "{0} is in episode {1} Mission Briefing ({2})",
+    "{0} is in episode {1} mission briefing ({2})",
 //    "{0} is in Episode {1} Mission Briefing ({2}) T:{3}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_macro("Number",currentScenario),
