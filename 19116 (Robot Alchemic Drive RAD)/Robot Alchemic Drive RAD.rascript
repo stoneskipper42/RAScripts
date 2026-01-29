@@ -1785,7 +1785,6 @@ function useNormalControlsAchievement(){
     )
 }
 
-//TODO: Make measured?
 function attackDownedEnemyAchievement(){
     achievement(
         title = "Hit 'Em While They're Down",
@@ -1793,10 +1792,10 @@ function attackDownedEnemyAchievement(){
         points = 5,
         trigger = inMission() &&
                     (
-                        (tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
-                        || (tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
-                        || (tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
-                        || (tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown()), enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown()), enemyIsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown()), enemyIsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown()), enemyIsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
                     )
     )
 }
@@ -1841,7 +1840,6 @@ function launchAndHitEnemyAchievement(){
 
 //TODO: Need to either make this available to other meganites or modify description. If this will be a laguiole-only achievement, probably need some other combat achievements for Vavel/Gllang
 //TODO: See if it's possible to have this trigger when the enemy's invulnerable (eg ep18a)
-//TODO: Make measured?
 function attackFallingEnemyAchievement(){
     achievement(
         title = "Then You Have My Permission to Fall",
@@ -1849,13 +1847,13 @@ function attackFallingEnemyAchievement(){
         points = 5,
         trigger = inMission() &&
                     (
-                        (tally(3,enemyTakesDamage() && enemyIsFalling() && currentRobot==2)
+                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && currentRobot==2),enemyIsFalling())
                             && never(!enemyIsFalling()))
-                        || (tally(3,enemy2TakesDamage() && enemy2IsFalling() && currentRobot==2)
+                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && currentRobot==2),enemy2IsFalling())
                             && never(!enemy2IsFalling()))
-                        || (tally(3,enemy3TakesDamage() && enemy3IsFalling() && currentRobot==2)
+                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && currentRobot==2),enemy3IsFalling())
                             && never(!enemy3IsFalling()))
-                        || (tally(3,enemy4TakesDamage() && enemy4IsFalling() && currentRobot==2)
+                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && currentRobot==2),enemy4IsFalling())
                             && never(!enemy4IsFalling()))
                     )
     )
