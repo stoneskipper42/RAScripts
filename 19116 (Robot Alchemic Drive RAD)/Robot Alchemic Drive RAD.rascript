@@ -1417,9 +1417,9 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
     
     
     if(cityDamageLimit=="senjo_peace_limit"){
-        achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award"+otherAwardsString+" in Story or Challenge mode"
+        achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award"+otherAwardsString+" in story or challenge mode"
     }else{
-        achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award"+otherAwardsString+" in Story or Challenge mode"
+        achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award"+otherAwardsString+" in story or challenge mode"
     }
     
     achievement(
@@ -1493,7 +1493,7 @@ function senjoWouldHaveBeenGratefulAchievement(){
                                     && trigger_when(missionComplete("15b or 18a"))
     achievement(
         title = "Senjo Would Have Been Grateful",
-        description = "Complete episode 15b or 18a with under ten billion yen in damage to the city in Story or Challenge mode",
+        description = "Complete episode 15b or 18a with under ten billion yen in damage to the city in story or challenge mode",
         points = 5,
         trigger = gratefulSenjoAchievementTrigger
     )
@@ -2003,9 +2003,9 @@ postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a 
 
 postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //It's quiet.
 
-postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after destroying her condo",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
-postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after destroying her condo again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
-postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after destroying her condo yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after her condo is destroyed",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
+postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after her condo is destroyed again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
+postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after her condo is destroyed yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
 
 postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
 postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
