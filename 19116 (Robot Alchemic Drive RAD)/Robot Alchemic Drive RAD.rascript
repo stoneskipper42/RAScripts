@@ -1065,6 +1065,10 @@ function asmodeusPhantomCounter() =>  (enemy["phantom_system"]!=0
 //** MISSION VARIABLES/FUNCTIONS **//
 currentScenario = globalVar("current_scenario")
 gameMode = globalVar("game_mode")
+function storyMode() => gameMode==0
+function challengeMode() => gameMode==1
+function trainingMode() => gameMode==2
+function versusMode() => gameMode==3
 
 missionDuration = dword(heroPointer+character_struct["duration"]["offset"])
 
@@ -1384,11 +1388,11 @@ function allUpgradesAchievement(upgradeType){
 function missionProgressionAchievement(achievementTitle,missionRangeStart,missionRangeEnd,startingMeganite){
     missionProgressionAchievementDescription = "Complete episodes "+missionRangeStart+"-"+missionRangeEnd+" in story mode"
     if(startingMeganite==""){
-        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0)
+        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && storyMode())
                                                 && never(returnToMainMenu())
                                                 && missionComplete(missionRangeEnd)
     }else{
-        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && gameMode==0 && startingMeganite==initialRobot)
+        missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && storyMode() && startingMeganite==initialRobot)
                                                 && never(returnToMainMenu())
                                                 && missionComplete(missionRangeEnd)
         if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Vavel as your starter"
@@ -2090,7 +2094,7 @@ RPvalues={
         0x00000: "Intro FMV",
         0x0f926: "Title screen", //undub
         0x0f991: "Main menu", //undub
-        0x0fc38: "Initial control/pilot/meganite selection - story mode", //undub
+        0x0fc38: "Control/pilot/meganite selection", //undub
         0x1023e: "Story mode intro", //undub
         0x1037b: "intermission", //undub
         0x10414: "intermission", //undub - no hangar/lab access
@@ -2108,7 +2112,7 @@ RPvalues={
         0x117b4: "Opening credits", //undub
         0x32453: "Title screen",
         0x324be: "Main menu",
-        0x32765: "Initial control/pilot/meganite selection - story mode",
+        0x32765: "Control/pilot/meganite selection",
         0x32d6b: "Story mode intro",
         0x32ea8: "intermission",
         0x32f41: "intermission", //no hangar/lab access
@@ -2154,7 +2158,7 @@ rich_presence_conditional_display(menuScreenIndex==0x00000 //Intro
     )
 
 //Story mode meganite selection
-rich_presence_conditional_display(gameMode==0 && (menuScreenIndex==0x33469
+rich_presence_conditional_display(storyMode() && (menuScreenIndex==0x33469
                                                 || menuScreenIndex==0x109c3),
     "Meganite selection for episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
@@ -2182,7 +2186,7 @@ rich_presence_conditional_display(gameMode!=0 && (menuScreenIndex==0x109c3 //Meg
     )
 
 //Intermission/Hanger/Laboratory
-rich_presence_conditional_display(gameMode==0 && (menuScreenIndex==0x1037b //Intermission (undub)
+rich_presence_conditional_display(storyMode() && (menuScreenIndex==0x1037b //Intermission (undub)
                                                 || menuScreenIndex==0x10414 //Intermission - no hangar/lab access (undub)
                                                 || menuScreenIndex==0x10687 //Hanger (undub)
                                                 || menuScreenIndex==0x104e1 //Laboratory (undub)
@@ -2215,7 +2219,7 @@ rich_presence_conditional_display(globalVar("current_scenario")==700,
     )
 
 //Story mode mission briefing
-rich_presence_conditional_display(gameMode==0 && missionBriefingIndex==0x0028e960,
+rich_presence_conditional_display(storyMode() && missionBriefingIndex==0x0028e960,
     "{0} in episode {2} mission briefing ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
@@ -2239,6 +2243,26 @@ rich_presence_conditional_display(missionBriefingIndex==0x0028e960,
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES")
     )
+
+//Training mode; meganite deployed
+rich_presence_conditional_display(trainingMode() && heroIsPresent() && robotIsPresent(),
+    "{0} is piloting {1} in {2} ({3})",
+//    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} DMG:{6} BCP:{7}", //used for debugging
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_lookup("Number",currentScenario,RPvalues["mission_title"]),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???")
+)
+
+
+//Training mode mid-mission; meganite not deployed
+rich_presence_conditional_display(trainingMode() && heroIsPresent(),
+    "{0} is in {1} ({2})",
+//    "{0} is in Episode {1} ({2}) ⏲:{3} 🏠💥:{4} DMG:{5} BCP:{6}", //used for debugging
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Number",currentScenario,RPvalues["mission_title"]),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???")
+)
 
 /*
 //DEBUG ONLY mid-mission; meganite deployed; 3 enemies present
@@ -2306,7 +2330,7 @@ rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent() && ro
 */
 
 //Story mode mid-mission; meganite deployed
-rich_presence_conditional_display(gameMode==0 && heroIsPresent() && robotIsPresent(),
+rich_presence_conditional_display(storyMode() && heroIsPresent() && robotIsPresent(),
     "{0} is piloting {1} in episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
@@ -2326,7 +2350,7 @@ rich_presence_conditional_display(gameMode==0 && heroIsPresent() && robotIsPrese
     )
 
 //Story mode mid-mission; meganite not deployed
-rich_presence_conditional_display(gameMode==0 && heroIsPresent(),
+rich_presence_conditional_display(storyMode() && heroIsPresent(),
     "{0} is in episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
@@ -2346,7 +2370,7 @@ rich_presence_conditional_display(gameMode==0 && heroIsPresent(),
     )
 
 //Challenge mode mid-mission; meganite deployed
-rich_presence_conditional_display(gameMode==2 && heroIsPresent() && robotIsPresent(),
+rich_presence_conditional_display(challengeMode() && heroIsPresent() && robotIsPresent(),
     "{0} is piloting {1} in episode {2} ({3})",
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} DMG:{6} BCP:{7}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
@@ -2365,7 +2389,7 @@ rich_presence_conditional_display(gameMode==2 && heroIsPresent() && robotIsPrese
     )
 
 //Challenge mode mid-mission; meganite not deployed
-rich_presence_conditional_display(gameMode==2 && heroIsPresent(),
+rich_presence_conditional_display(challengeMode() && heroIsPresent(),
     "{0} is in episode {1} ({2})",
 //    "{0} is in Episode {1} ({2}) ⏲:{3} 🏠💥:{4} DMG:{5} BCP:{6}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
@@ -2378,7 +2402,7 @@ rich_presence_conditional_display(gameMode==2 && heroIsPresent(),
     )
 
 //TODO: When not explicitly set, appears to default to the last played story mission; need to figure out how to detect this scenarion
-rich_presence_conditional_display(gameMode==0 && globalVar("map_type")!=0 && currentScenario<900,
+rich_presence_conditional_display(storyMode() && globalVar("map_type")!=0 && currentScenario<900,
     "{0} is in episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
