@@ -1091,7 +1091,7 @@ function inMission() => heroIsPresent()
 function missionStart() => heroAppears()
 function missionComplete(mission_number) => menuScreenIndex==0x34282 && prev(menuScreenIndex)!=0x34282 && all_enemies_defeated(mission_number)
 //TODO: Need to update leaderboards/achievements to also account for the missionCompleteUndub condition
-function missionCompleteUndub(mission_number) => menuScreenIndex==0x11755 && prev(menuScreenIndex)!=0x11755 && all_enemies_defeated(mission_number)
+function missionCompleteUndub(mission_number) => menuScreenIndex==0x11755 && prev(menuScreenIndex)!=0x11755 && all_enemies_defeated_undub(mission_number)
 function missionFailed() => menuScreenIndex==0x34282 && prev(menuScreenIndex==0x34282)
 function missionFailedUndub() => menuScreenIndex==0x11755 && prev(menuScreenIndex)==0x11755
 function returnToMainMenu() => menuScreenIndex==0x324be && prev(menuScreenIndex)!=0x324be
@@ -1103,7 +1103,7 @@ function onLoadSavedGameMenuUndub() => menuScreenIndex==0x1023e
 function onChallengeMissionMenu() => menuScreenIndex==0x33aa2
 function onChallengeMissionMenuUndub() => menuScreenIndex==0x10f75
 function returnToChallengeSelection() => menuScreenIndex==0x33aa2 && prev(menuScreenIndex)!=0x33aa2
-function returnToChallengeSelection() => menuScreenIndex==0x10f75 && prev(menuScreenIndex)!=0x10f75
+function returnToChallengeSelectionUndub() => menuScreenIndex==0x10f75 && prev(menuScreenIndex)!=0x10f75
 function missionIncomplete() => missionFailed() || onChallengeMissionMenu()
 function missionIncompleteUndub() => missionFailedUndub() || onChallengeMissionMenuUndub()
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
@@ -1144,6 +1144,29 @@ function all_enemies_defeated(mission_number){
     }
     
     return once(enemyDestroyed() && never(missionIncomplete()))
+}
+
+
+function all_enemies_defeated_undub(mission_number){
+    if(get_enemy_count(mission_number)==4){
+        return once(enemyDestroyed() && never(missionIncompleteUndub()))
+        && once(enemy2Destroyed() && never(missionIncompleteUndub()))
+        && once(enemy3Destroyed() && never(missionIncompleteUndub()))
+        && once(enemy4Destroyed() && never(missionIncompleteUndub()))
+    }
+    
+    if(get_enemy_count(mission_number)==3){
+        return once(enemyDestroyed() && never(missionIncompleteUndub()))
+        && once(enemy2Destroyed() && never(missionIncompleteUndub()))
+        && once(enemy3Destroyed() && never(missionIncompleteUndub()))
+    }
+
+    if(get_enemy_count(mission_number)==2){
+        return once(enemyDestroyed() && never(missionIncompleteUndub()))
+        && once(enemy2Destroyed() && never(missionIncompleteUndub()))
+    }
+    
+    return once(enemyDestroyed() && never(missionIncompleteUndub()))
 }
 
 
@@ -1266,8 +1289,8 @@ function timeLeaderboard(mission_number){
         "Episode "+mission_number,
         "Successfully complete episode "+mission_number+" as fast as possible",
         start,
-        missionIncomplete(),
-        missionComplete(mission_number),
+        missionIncomplete() || missionIncompleteUndub(),
+        missionComplete(mission_number) || missionCompleteUndub(mission_number),
         hitCountMissionDuration,
         format="FRAMES",
         lower_is_better=true,
@@ -1294,8 +1317,8 @@ function scoreLeaderboard(mission_number){
         "Episode "+mission_number+" - Least City Damage",
         "Successfully complete episode "+mission_number+" with the least damage to the city",
         start,
-        missionIncomplete(),
-        missionComplete(mission_number),
+        missionIncomplete() || missionIncompleteUndub(),
+        missionComplete(mission_number) || missionCompleteUndub(mission_number),
         cityDamage,
         format="VALUE",
         lower_is_better=true,
