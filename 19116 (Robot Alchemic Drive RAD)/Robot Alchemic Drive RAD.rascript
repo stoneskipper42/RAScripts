@@ -1089,14 +1089,23 @@ hitCountMissionDuration = tally(0,
 
 function inMission() => heroIsPresent()
 function missionStart() => heroAppears()
-//TODO: Need to identify missionComplete screen index for undub patch
 function missionComplete(mission_number) => menuScreenIndex==0x34282 && prev(menuScreenIndex)!=0x34282 && all_enemies_defeated(mission_number)
-function missionFailed() => prev(menuScreenIndex==0x34282) && menuScreenIndex==0x34282
+//TODO: Need to update leaderboards/achievements to also account for the missionCompleteUndub condition
+function missionCompleteUndub(mission_number) => menuScreenIndex==0x11755 && prev(menuScreenIndex)!=0x11755 && all_enemies_defeated(mission_number)
+function missionFailed() => menuScreenIndex==0x34282 && prev(menuScreenIndex==0x34282)
+function missionFailedUndub() => menuScreenIndex==0x11755 && prev(menuScreenIndex)==0x11755
 function returnToMainMenu() => menuScreenIndex==0x324be && prev(menuScreenIndex)!=0x324be
+function returnToMainMenuUndub() => menuScreenIndex==0x0f991 && prev(menuScreenIndex)!=0x0f991
 function onTitleScreen() => menuScreenIndex==0x32453
+function onTitleScreenUndub() => menuScreenIndex==0x0f926
 function onLoadSavedGameMenu() => menuScreenIndex==0x3334d
+function onLoadSavedGameMenuUndub() => menuScreenIndex==0x1023e
+function onChallengeMissionMenu() => menuScreenIndex==0x33aa2
+function onChallengeMissionMenuUndub() => menuScreenIndex==0x10f75
 function returnToChallengeSelection() => menuScreenIndex==0x33aa2 && prev(menuScreenIndex)!=0x33aa2
-function missionIncomplete() => missionFailed() || menuScreenIndex==0x33aa2
+function returnToChallengeSelection() => menuScreenIndex==0x10f75 && prev(menuScreenIndex)!=0x10f75
+function missionIncomplete() => missionFailed() || onChallengeMissionMenu()
+function missionIncompleteUndub() => missionFailedUndub() || onChallengeMissionMenuUndub()
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
 function isCombatMission(){
     return currentScenario!=2
