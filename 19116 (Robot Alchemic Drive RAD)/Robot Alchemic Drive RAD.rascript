@@ -2195,15 +2195,15 @@ rich_presence_conditional_display(storyMode() && (menuScreenIndex==0x33469
     "Meganite selection for episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag"))
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag"))
     )
 
 //Challenge mode character/meganite selection
@@ -2213,7 +2213,7 @@ rich_presence_conditional_display(gameMode!=0 && (menuScreenIndex==0x109c3 //Meg
                                 || menuScreenIndex==0x33dee), //Character selection
     "{0} for episode {1} ({2})",
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???")
     )
 
@@ -2229,15 +2229,15 @@ rich_presence_conditional_display(storyMode() && (menuScreenIndex==0x1037b //Int
     "{0} in {1} after episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
-    rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag"))
+    rich_presence_value("cityDamage",cityDamage),
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag"))
     )
 
 //Versus mode
@@ -2255,15 +2255,15 @@ rich_presence_conditional_display(storyMode() && missionBriefingIndex==0x0028e96
     "{0} in episode {2} mission briefing ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag"))
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag"))
     )
     
 //Challenge mode mission briefing
@@ -2271,7 +2271,7 @@ rich_presence_conditional_display(missionBriefingIndex==0x0028e960,
     "{0} is in episode {1} mission briefing ({2})",
 //    "{0} is in Episode {1} Mission Briefing ({2}) T:{3}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES")
     )
@@ -2302,7 +2302,7 @@ rich_presence_conditional_display(characterDataArray!=0 && inMission() && robotI
     "{0} is piloting {1} in Episode {2} ({3}) 🤖{5}/{6} 👾{7}/{8} 👾{9}/{10} 👾{11}/{12} ⏲:{13} 🏠💥:{14} DMG:{15} BCP:{16}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Robot Health",robot["health"]),
@@ -2325,7 +2325,7 @@ rich_presence_conditional_display(characterDataArray!=0 && inMission() && robotI
     "{0} is piloting {1} in Episode {2} ({3}) Time:{4} 🤖{5}/{6} 👾{7}/{8} 👾{9}/{10} ⏲:{11} 🏠💥:{12} DMG:{13} BCP:{14}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Robot Health",robot["health"]),
@@ -2345,7 +2345,7 @@ rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent() && ro
     "{0} is piloting {1} in Episode {2} ({3}) 🤖{5}/{6} 👾{7}/{8} ⏲:{9} 🏠💥:{10} NL: {13} mission:{14}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Robot Health",robot["health"]),
@@ -2367,15 +2367,15 @@ rich_presence_conditional_display(storyMode() && heroIsPresent() && robotIsPrese
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag")),
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag")),
     rich_presence_value("Number",globalVar("amount_of_damage")),
     rich_presence_value("Number",globalVar("building_collapse_point")),
     rich_presence_value("Number",globalVar("temporary_event"))
@@ -2387,15 +2387,15 @@ rich_presence_conditional_display(storyMode() && heroIsPresent(),
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag")),
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag")),
     rich_presence_value("Number",globalVar("amount_of_damage")),
     rich_presence_value("Number",globalVar("building_collapse_point")),
     rich_presence_value("Number",globalVar("temporary_event"))
@@ -2407,7 +2407,7 @@ rich_presence_conditional_display(challengeMode() && heroIsPresent() && robotIsP
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} DMG:{6} BCP:{7}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Robot Health",robot["health"]),
@@ -2415,7 +2415,7 @@ rich_presence_conditional_display(challengeMode() && heroIsPresent() && robotIsP
     rich_presence_value("Robot Health",enemy["health"]),
     rich_presence_value("Robot Health",enemy["max_health"]),
     rich_presence_value("Time",missionDuration,"FRAMES"),
-    rich_presence_value("Number",cityDamage),
+    rich_presence_value("cityDamage",cityDamage),
     rich_presence_value("Number",globalVar("amount_of_damage")),
     rich_presence_value("Number",globalVar("building_collapse_point"))
     )
@@ -2425,7 +2425,7 @@ rich_presence_conditional_display(challengeMode() && heroIsPresent(),
     "{0} is in episode {1} ({2})",
 //    "{0} is in Episode {1} ({2}) ⏲:{3} 🏠💥:{4} DMG:{5} BCP:{6}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
@@ -2439,15 +2439,15 @@ rich_presence_conditional_display(storyMode() && globalVar("map_type")!=0 && cur
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage),
-    rich_presence_macro("Number",globalVar("nanao_favor_flag")),
-    rich_presence_macro("Number",globalVar("ellen_favor_flag")),
-    rich_presence_macro("Number",globalVar("nanao_economic_flag")),
-    rich_presence_macro("Number",globalVar("misaki_heavy_industries_flag")),
-    rich_presence_macro("Number",globalVar("keiko_flag")),
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag")),
     rich_presence_value("Number",globalVar("amount_of_damage")),
     rich_presence_value("Number",globalVar("building_collapse_point")),
     rich_presence_value("Number",globalVar("temporary_event"))
@@ -2457,7 +2457,7 @@ rich_presence_conditional_display(gameMode!=0 && globalVar("map_type")!=0 && cur
     "{0} is in episode {2} ({3})",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
-    rich_presence_macro("Number",currentScenario),
+    rich_presence_value("Scenario",currentScenario),
     rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
     rich_presence_value("Time",missionDuration,"FRAMES"),
     rich_presence_value("Number",cityDamage)
@@ -2465,4 +2465,4 @@ rich_presence_conditional_display(gameMode!=0 && globalVar("map_type")!=0 && cur
 
 rich_presence_display("No! The Bakery! That's where I work!",
 //rich_presence_display("No! The Bakery! That's where I work! (Episode {0})", //DEBUG
-    rich_presence_macro("Number",currentScenario))
+    rich_presence_value("Scenario",currentScenario))
