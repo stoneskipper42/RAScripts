@@ -1087,10 +1087,10 @@ hitCountMissionDuration = tally(0,
             pilot["duration"]-prev(pilot["duration"])>=8,
             pilot["duration"]-prev(pilot["duration"])>=9)
 
+//Note that the undub patch uses mostly the same addresses and values, but uses a unique set of values for the menuScreenIndex
 function inMission() => heroIsPresent()
 function missionStart() => heroAppears()
 function missionComplete(mission_number) => menuScreenIndex==0x34282 && prev(menuScreenIndex)!=0x34282 && all_enemies_defeated(mission_number)
-//TODO: Need to update leaderboards/achievements to also account for the missionCompleteUndub condition
 function missionCompleteUndub(mission_number) => menuScreenIndex==0x11755 && prev(menuScreenIndex)!=0x11755 && all_enemies_defeated_undub(mission_number)
 function missionFailed() => menuScreenIndex==0x34282 && prev(menuScreenIndex==0x34282)
 function missionFailedUndub() => menuScreenIndex==0x11755 && prev(menuScreenIndex)==0x11755
@@ -1102,8 +1102,6 @@ function onLoadSavedGameMenu() => menuScreenIndex==0x3334d
 function onLoadSavedGameMenuUndub() => menuScreenIndex==0x1023e
 function onChallengeMissionMenu() => menuScreenIndex==0x33aa2
 function onChallengeMissionMenuUndub() => menuScreenIndex==0x10f75
-function returnToChallengeSelection() => menuScreenIndex==0x33aa2 && prev(menuScreenIndex)!=0x33aa2
-function returnToChallengeSelectionUndub() => menuScreenIndex==0x10f75 && prev(menuScreenIndex)!=0x10f75
 function missionIncomplete() => missionFailed() || onChallengeMissionMenu()
 function missionIncompleteUndub() => missionFailedUndub() || onChallengeMissionMenuUndub()
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
@@ -1411,7 +1409,9 @@ function allUpgradesAchievement(upgradeType){
                     && measured(
                         tally(length(upgradeArray),upgradeArray)
                     )
-                    && never(onLoadSavedGameMenu()) //TODO: Need a better reset condition; values from last save are still shown on the main menu and load screens
+                    //TODO: Look into better reset condition; values from last save are still shown on the main menu and load screens
+                    && never(onLoadSavedGameMenu())
+                    && never(onLoadSavedGameMenuUndub())
     )
 }
 
@@ -1422,11 +1422,13 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
     if(startingMeganite==""){
         missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && storyMode())
                                                 && never(returnToMainMenu())
-                                                && missionComplete(missionRangeEnd)
+                                                && never(returnToMainMenuUndub())
+                                                && (missionComplete(missionRangeEnd) || missionCompleteUndub(missionRangeEnd))
     }else{
         missionProgressionAchievementTrigger = once(missionStart() && currentScenario==missionRangeEnd && storyMode() && startingMeganite==initialRobot)
                                                 && never(returnToMainMenu())
-                                                && missionComplete(missionRangeEnd)
+                                                && never(returnToMainMenuUndub())
+                                                && (missionComplete(missionRangeEnd) || missionCompleteUndub(missionRangeEnd))
         if(values["initial_robot"][startingMeganite]=="Vavel") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Vavel as your starter"
         if(values["initial_robot"][startingMeganite]=="Gllang") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Gllang as your starter"
         if(values["initial_robot"][startingMeganite]=="Laguiole") missionProgressionAchievementDescription=missionProgressionAchievementDescription+" with Laguiole as your starter"
@@ -1491,9 +1493,10 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
         }
     }
     allAwardsAchievementTrigger = allAwardsAchievementTrigger
-                                    && never(returnToMainMenu() || returnToChallengeSelection())
+                                    && never(missionIncomplete())
+                                    && never(missionIncompleteUndub())
                                     && never(cityDamage>values["map_type"][cityDamageLimit][missionMapType])
-                                    && trigger_when(missionComplete(missionNumber))
+                                    && trigger_when(missionComplete(missionNumber) || missionCompleteUndub(missionNumber))
     
     otherAwardsString = ""
     if(values["map_type"]["title"][missionMapType]=="Senjo New City Center"){
@@ -1528,9 +1531,10 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
 
 function senjoWouldHaveBeenGratefulAchievement(){
     gratefulSenjoAchievementTrigger = once(missionStart() && (currentScenario==15 || currentScenario==18) && globalVar("map_type")==7)
-                                    && never(returnToMainMenu() || returnToChallengeSelection())
+                                    && never(missionIncomplete())
+                                    && never(missionIncompleteUndub())
                                     && never(cityDamage>values["map_type"]["construction_minister_limit"][1])
-                                    && trigger_when(missionComplete("15b or 18a"))
+                                    && trigger_when(missionComplete("15b or 18a") || missionCompleteUndub("15b or 18a"))
     achievement(
         title = "Senjo Would Have Been Grateful",
         description = "Complete episode 15b or 18a with under ten billion yen in damage to the city in story or challenge mode",
@@ -1541,14 +1545,16 @@ function senjoWouldHaveBeenGratefulAchievement(){
 
 function riggedFightAchievement(){
     riggedFightAchievementTrigger = (
-                                        never(returnToMainMenu() || returnToChallengeSelection())
+                                        never(missionIncomplete())
+                                        && never(missionIncompleteUndub())
                                         && once(missionStart() && currentScenario==19 && ep19A())
                                         && trigger_when(robotAbilityActivated())
                                     )
                                     ||
                                     (
                                     //Alt group used to display centurion's health
-                                        never(returnToMainMenu() || returnToChallengeSelection())
+                                        never(missionIncomplete())
+                                        && never(missionIncompleteUndub())
                                         && measured(enemy["health"]==1100,once(missionStart() && currentScenario==19 && ep19A()))
                                         && trigger_when(enemy["min_health"]==enemy["max_health"])
                                     )
@@ -1571,6 +1577,7 @@ function assistanceNotRequiredAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==24)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && never(allyIsPresent())
                     && trigger_when(enemyDestroyed() || enemy2Destroyed())
     )
@@ -1583,8 +1590,9 @@ function followTheScriptAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==40)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && missionDuration <= 28800 // 8 min * 60 sec/min * 60 fps = 28800
-                    && trigger_when(missionComplete(40))
+                    && trigger_when(missionComplete(40) || missionCompleteUndub(40))
     )
 }
 
@@ -1598,8 +1606,9 @@ function destroyedNoSatellitesAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==42)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && never(satelliteDestroyed())
-                    && trigger_when(missionComplete(42))
+                    && trigger_when(missionComplete(42) || missionCompleteUndub(42))
     )
 }
 
@@ -1610,6 +1619,7 @@ function paybackTimeAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==50)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && never(enemyAppears())
                     && trigger_when(measured(cityDamage==1000,once(missionStart() && currentScenario==50)))
     )
@@ -1624,6 +1634,7 @@ function overconfidentAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==52)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && once(
                         robotAbilityActivated() 
                         && enemyIsPresent() 
@@ -1631,7 +1642,7 @@ function overconfidentAchievement(){
                         && enemy2IsPresent() 
                         && enemy2["health"]>0 
                         )
-                    && trigger_when(missionComplete(52))
+                    && trigger_when(missionComplete(52) || missionCompleteUndub(52))
     )
 }
 
@@ -1644,6 +1655,7 @@ function counterAsmodeusAchievement(){
         points = 5,
         trigger = once(missionStart() && currentScenario==53)
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter())))
     )
 }
@@ -1763,6 +1775,7 @@ function landAllAttacksAchievement(meganite){
         description = achievementDescription,
         points = 10,
         trigger = never(onTitleScreen()) &&
+                  never(onTitleScreenUndub()) &&
                   measured(
                     tally(length(landAllAttacksArray),landAllAttacksArray)
                   )
@@ -1781,19 +1794,20 @@ function blockAllAttacksAchievement(){
         points = 5,
         trigger = measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())),when=once(missionStart()))
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
                     && (
-                        (currentScenario==52 && trigger_when(missionComplete(52)))
-                        || (currentScenario==33 && trigger_when(missionComplete(33)))
-                        || (currentScenario==20 && trigger_when(missionComplete(20)))
-                        || (currentScenario==24 && trigger_when(missionComplete(24)))
-                        || (currentScenario==48 && trigger_when(missionComplete(48)))
+                        (currentScenario==52 && (missionComplete(52) || missionCompleteUndub(52)))
+                        || (currentScenario==33 && (missionComplete(33) || missionCompleteUndub(33)))
+                        || (currentScenario==20 && (missionComplete(20) || missionCompleteUndub(20)))
+                        || (currentScenario==24 && (missionComplete(24) || missionCompleteUndub(24)))
+                        || (currentScenario==48 && (missionComplete(48) || missionCompleteUndub(48)))
                         || (currentScenario!=20
                             && currentScenario!=24
                             && currentScenario!=33
                             && currentScenario!=48
                             && currentScenario!=52
-                            && trigger_when(missionComplete(1)))
+                            && (missionComplete(1) || missionCompleteUndub(1)))
                        )
     )
 }
@@ -1805,18 +1819,19 @@ function useNormalControlsAchievement(){
         points = 5,
         trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission())
                     && never(missionIncomplete())
+                    && never(missionIncompleteUndub())
                     && (
-                        (currentScenario==52 && missionComplete(52))
-                        || (currentScenario==33 && missionComplete(33))
-                        || (currentScenario==20 && missionComplete(20))
-                        || (currentScenario==24 && missionComplete(24))
-                        || (currentScenario==48 && missionComplete(48))
+                        (currentScenario==52 && (missionComplete(52) || missionCompleteUndub(52)))
+                        || (currentScenario==33 && (missionComplete(33) || missionCompleteUndub(33)))
+                        || (currentScenario==20 && (missionComplete(20) || missionCompleteUndub(20)))
+                        || (currentScenario==24 && (missionComplete(24) || missionCompleteUndub(24)))
+                        || (currentScenario==48 && (missionComplete(48) || missionCompleteUndub(48)))
                         || (currentScenario!=20
                             && currentScenario!=24
                             && currentScenario!=33
                             && currentScenario!=48
                             && currentScenario!=52
-                            && missionComplete(1))
+                            && (missionComplete(1) || missionCompleteUndub(1)))
                        )
     )
 }
