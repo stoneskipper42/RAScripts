@@ -1411,8 +1411,9 @@ function allUpgradesAchievement(upgradeType){
         type = "missable",
         trigger = almostFullyUpgraded(upgradeList)
                     && measured(
-                        tally(length(upgradeArray),upgradeArray)
+                        tally(length(upgradeArray),upgradeArray),storyMode()
                     )
+                    && storyMode()
                     //TODO: Look into better reset condition; values from last save are still shown on the main menu and load screens
                     && never(onLoadSavedGameMenu())
                     && never(onLoadSavedGameMenuUndub())
