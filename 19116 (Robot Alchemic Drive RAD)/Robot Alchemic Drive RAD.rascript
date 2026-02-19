@@ -1941,13 +1941,13 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
                             && trigger_when(enemy4["health"]==0 && prev(enemy4["health"])>0)
                         )
                         || //If player has the capability to earn this achievment, show an indicator; these alts should never be able to trigger
-                        enemyIsPresent() && enemy["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(prev(enemy["max_health"]<1000) && enemy["max_health"]<1000)
+                        enemyIsPresent() && enemy["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy2IsPresent() && enemy2["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(prev(enemy2["max_health"]<1000) && enemy2["max_health"]<1000)
+                        enemy2IsPresent() && enemy2["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy3IsPresent() && enemy3["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(prev(enemy3["max_health"]<1000) && enemy3["max_health"]<1000)
+                        enemy3IsPresent() && enemy3["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy4IsPresent() && enemy4["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(prev(enemy4["max_health"]<1000) && enemy4["max_health"]<1000)
+                        enemy4IsPresent() && enemy4["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
                     )
 
     )
