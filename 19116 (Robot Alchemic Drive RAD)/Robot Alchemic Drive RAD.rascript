@@ -1020,6 +1020,10 @@ function enemy4TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4
 function heroAppears() => characterDataArray!=0 && heroPointer!=0 && prev(heroPointer)==0
 function enemyAppears() => characterDataArray!=0 && enemyPointer!=0 && prev(enemyPointer)==0
 
+function robotIsVavel() => currentRobot==0
+function robotIsGllang() => currentRobot==1
+function robotIsLaguiole() => currentRobot==2
+
 function heroIsPresent() => heroPointer!=0 && characterDataArray!=0
 function robotIsPresent() => robotPointer!=0 && characterDataArray!=0
 function allyIsPresent() => allyPointer!=0 && characterDataArray!=0
@@ -1839,52 +1843,32 @@ function useNormalControlsAchievement(){
 function attackDownedEnemyAchievement(){
     achievement(
         title = "Hit 'Em While They're Down",
-        description = "Hit a downed enemy three times before they get back up",
+        description = "As Vavel, hit a downed enemy three times before they get back up",
         points = 5,
         trigger = inMission() &&
                     (
-                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown()), enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
-                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown()), enemyIsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
-                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown()), enemyIsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
-                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown()), enemyIsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel()), robotIsVavel() && enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel()), robotIsVavel() && enemy2IsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robotIsVavel()), robotIsVavel() && enemy3IsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robotIsVavel()), robotIsVavel() && enemy4IsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
                     )
     )
 }
 
-function launchAndHitEnemyAchievement(){
-    //Use gravity zero on an enemy, then hit them again on the way down
-    //Gravity Zero attack value is different for each Meganite, restricting to Vavel to limit comparisons
+//As Gllang, hit an enemy with Gravity Zero three times without taking damage
+function attackAfterGravityZeroAchievement(){
     achievement(
-        title = "Keep Your Eye on the Ball",
-        description = "Launch an enemy with Gravity Zero then hit them again before they hit the ground",
+        title = "What Goes up Must Stay Down",
+        description = "As Gllang, uppercut or straight punch an enemy when they're getting back up after Gravity Zero three times without taking damage",
         points = 5,
-        type = "missable",
+        id=568362,
         trigger = inMission() &&
                     (
-                        (once(currentRobot==0 && robot["last_attack"]==0x75 && enemyTakesDamage()) && robot["last_attack"]!=0x75 && enemyTakesDamage()
-                            && never(!enemyIsFalling()))
-                        || (once(currentRobot==0 && robot["last_attack"]==0x75 && enemy2TakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
-                            && never(!enemy2IsFalling()))
-                        || (once(currentRobot==0 && robot["last_attack"]==0x75 && enemy3TakesDamage()) && robot["last_attack"]!=0x75 && enemy3TakesDamage()
-                            && never(!enemy3IsFalling()))
-                        || (once(currentRobot==0 && robot["last_attack"]==0x75 && enemy4TakesDamage()) && robot["last_attack"]!=0x75 && enemy4TakesDamage()
-                            && never(!enemy4IsFalling()))
-                        || (once(currentRobot==1 && robot["last_attack"]==0x73 && enemyTakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
-                            && never(!enemy2IsFalling()))
-                        || (once(currentRobot==1 && robot["last_attack"]==0x73 && enemy2TakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
-                            && never(!enemy2IsFalling()))
-                        || (once(currentRobot==1 && robot["last_attack"]==0x73 && enemy3TakesDamage()) && robot["last_attack"]!=0x75 && enemy3TakesDamage()
-                            && never(!enemy3IsFalling()))
-                        || (once(currentRobot==1 && robot["last_attack"]==0x73 && enemy4TakesDamage()) && robot["last_attack"]!=0x75 && enemy4TakesDamage()
-                            && never(!enemy4IsFalling()))
-                        || (once(currentRobot==2 && robot["last_attack"]==0x6f && enemyTakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
-                            && never(!enemy2IsFalling()))
-                        || (once(currentRobot==2 && robot["last_attack"]==0x6f && enemy2TakesDamage()) && robot["last_attack"]!=0x75 && enemy2TakesDamage()
-                            && never(!enemy2IsFalling()))
-                        || (once(currentRobot==2 && robot["last_attack"]==0x6f && enemy3TakesDamage()) && robot["last_attack"]!=0x75 && enemy3TakesDamage()
-                            && never(!enemy3IsFalling()))
-                        || (once(currentRobot==2 && robot["last_attack"]==0x6f && enemy4TakesDamage()) && robot["last_attack"]!=0x75 && enemy4TakesDamage()
-                            && never(!enemy4IsFalling()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
+
                     )
     )
 }
@@ -1894,17 +1878,17 @@ function launchAndHitEnemyAchievement(){
 function attackFallingEnemyAchievement(){
     achievement(
         title = "Then You Have My Permission to Fall",
-        description = "Hit a falling enemy three times before they hit the ground",
+        description = "As Laguiole, hit a falling enemy three times before they hit the ground",
         points = 5,
         trigger = inMission() &&
                     (
-                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && currentRobot==2),enemyIsFalling())
+                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemyIsFalling())
                             && never(!enemyIsFalling()))
-                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && currentRobot==2),enemy2IsFalling())
+                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy2IsFalling())
                             && never(!enemy2IsFalling()))
-                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && currentRobot==2),enemy3IsFalling())
+                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy3IsFalling())
                             && never(!enemy3IsFalling()))
-                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && currentRobot==2),enemy4IsFalling())
+                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy4IsFalling())
                             && never(!enemy4IsFalling()))
                     )
     )
@@ -2117,11 +2101,11 @@ singleAttackAchievement("Baby You're A Firework","glg_iron_tusk",1,0x70)
 singleAttackAchievement("Launch All Missiles!","glg_all_shots_fired",1,0x6e)
 singleAttackAchievement("Wolverine Would Be Proud","lio_horobi",2,0x6c)
 
-launchAndHitEnemyAchievement()
-attackDownedEnemyAchievement()
-attackFallingEnemyAchievement()
-blockAllAttacksAchievement()
 useNormalControlsAchievement()
+blockAllAttacksAchievement()
+attackDownedEnemyAchievement()
+attackAfterGravityZeroAchievement()
+attackFallingEnemyAchievement()
 
 
 //** RICH PRESENCE **//
