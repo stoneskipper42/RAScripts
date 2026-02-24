@@ -1846,12 +1846,27 @@ function attackDownedEnemyAchievement(){
         title = "Hit 'Em While They're Down",
         description = "As Vavel, hit a downed enemy three times before they get back up",
         points = 5,
-        trigger = inMission() &&
+        trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
-                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel()), robotIsVavel() && enemyIsDown()) && never(enemyIsPresent() && !enemyIsDown()))
-                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel()), robotIsVavel() && enemy2IsDown()) && never(enemy2IsPresent() && !enemy2IsDown()))
-                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robotIsVavel()), robotIsVavel() && enemy3IsDown()) && never(enemy3IsPresent() && !enemy3IsDown()))
-                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robotIsVavel()), robotIsVavel() && enemy4IsDown()) && never(enemy4IsPresent() && !enemy4IsDown()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel() && never(enemyIsPresent() && !enemyIsDown())), robotIsVavel() && enemyIsDown()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel() && never(enemy2IsPresent() && !enemy2IsDown())), robotIsVavel() && enemy2IsDown()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robotIsVavel() && never(enemy3IsPresent() && !enemy3IsDown())), robotIsVavel() && enemy3IsDown()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robotIsVavel() && never(enemy4IsPresent() && !enemy4IsDown())), robotIsVavel() && enemy4IsDown()))
+                    )
+    )
+}
+
+function attackFallingEnemyAchievement(){
+    achievement(
+        title = "Then You Have My Permission to Fall",
+        description = "As Laguiole, hit a falling enemy three times before they hit the ground",
+        points = 5,
+        trigger = inMission() && !trainingMode() && !versusMode() &&
+                    (
+                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole() && never(enemyIsPresent() && !enemyIsFalling())),robotIsLaguiole() && enemyIsFalling()))
+                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole() && never(enemy2IsPresent() && !enemy2IsFalling())),robotIsLaguiole() && enemy2IsFalling()))
+                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && robotIsLaguiole() && never(enemy3IsPresent() && !enemy3IsFalling())),robotIsLaguiole() && enemy3IsFalling()))
+                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && robotIsLaguiole() && never(enemy4IsPresent() && !enemy4IsFalling())),robotIsLaguiole() && enemy4IsFalling()))
                     )
     )
 }
@@ -1863,34 +1878,13 @@ function attackAfterGravityZeroAchievement(){
         description = "As Gllang, uppercut or straight punch an enemy when they're getting back up after Gravity Zero three times without taking damage",
         points = 5,
         id=568362,
-        trigger = inMission() &&
+        trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
                         (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
                         || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
                         || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
                         || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
 
-                    )
-    )
-}
-
-//TODO: Need to either make this available to other meganites or modify description. If this will be a laguiole-only achievement, probably need some other combat achievements for Vavel/Gllang
-//TODO: See if it's possible to have this trigger when the enemy's invulnerable (eg ep18a)
-function attackFallingEnemyAchievement(){
-    achievement(
-        title = "Then You Have My Permission to Fall",
-        description = "As Laguiole, hit a falling enemy three times before they hit the ground",
-        points = 5,
-        trigger = inMission() &&
-                    (
-                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemyIsFalling())
-                            && never(!enemyIsFalling()))
-                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy2IsFalling())
-                            && never(!enemy2IsFalling()))
-                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy3IsFalling())
-                            && never(!enemy3IsFalling()))
-                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && robotIsLaguiole()),robotIsLaguiole() && enemy4IsFalling())
-                            && never(!enemy4IsFalling()))
                     )
     )
 }
