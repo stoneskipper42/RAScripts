@@ -1802,17 +1802,28 @@ function blockAllAttacksAchievement(){
                     && never(missionIncompleteUndub())
                     && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
                     && (
-                        (currentScenario==52 && (missionComplete(52) || missionCompleteUndub(52)))
-                        || (currentScenario==33 && (missionComplete(33) || missionCompleteUndub(33)))
-                        || (currentScenario==20 && (missionComplete(20) || missionCompleteUndub(20)))
-                        || (currentScenario==24 && (missionComplete(24) || missionCompleteUndub(24)))
-                        || (currentScenario==48 && (missionComplete(48) || missionCompleteUndub(48)))
+                        (currentScenario==52 && trigger_when(missionComplete(52)))
+                        || (currentScenario==52 && trigger_when(missionCompleteUndub(52)))
+                        || (currentScenario==33 && trigger_when(missionComplete(33)))
+                        || (currentScenario==33 && trigger_when(missionCompleteUndub(33)))
+                        || (currentScenario==20 && trigger_when(missionComplete(20)))
+                        || (currentScenario==20 && trigger_when(missionCompleteUndub(20)))
+                        || (currentScenario==24 && trigger_when(missionComplete(24)))
+                        || (currentScenario==24 && trigger_when(missionCompleteUndub(24)))
+                        || (currentScenario==48 && trigger_when(missionComplete(48)))
+                        || (currentScenario==48 && trigger_when(missionCompleteUndub(48)))
                         || (currentScenario!=20
                             && currentScenario!=24
                             && currentScenario!=33
                             && currentScenario!=48
                             && currentScenario!=52
-                            && (missionComplete(1) || missionCompleteUndub(1)))
+                            && trigger_when(missionComplete(1)))
+                        || (currentScenario!=20
+                            && currentScenario!=24
+                            && currentScenario!=33
+                            && currentScenario!=48
+                            && currentScenario!=52
+                            && trigger_when(missionCompleteUndub(1)))
                        )
     )
 }
