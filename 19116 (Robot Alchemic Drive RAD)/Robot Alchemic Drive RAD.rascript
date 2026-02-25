@@ -1678,6 +1678,8 @@ function stringCompare(string,address){
         stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x34]
     }else if(string=="vev\31-1"){
         stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
+    }else if(string=="vev\44"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x34]
     }else if(string=="vev\47-1"){
         stringArray = [0x76,0x65,0x76,0x5c,0x34,0x37,0x2d,0x31]
     }else if(string=="vev\68-2"){
@@ -1703,7 +1705,12 @@ function stringCompare(string,address){
     }else if(string=="v58\95-4"){
         stringArray = [0x76,0x35,0x38,0x5C,0x39,0x35,0x2D,0x34]
     }
-    return prev(byte(address))==1 && all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
+
+    prev_value = 1
+    if(string=="vev\44") prev_value = 0xe0
+
+    return prev(byte(address))==prev_value
+        && all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
 }
 
 function postMissionEventAchievement(achievementTitle,achievementDescription,points,varName,minValue,voiceIndex){
@@ -2031,6 +2038,8 @@ postMissionEventAchievement("Time to Find Another Job","In story mode, speak wit
 postMissionEventAchievement("Can't Afford to Be Picky","In story mode, speak with Nanao after her workplace is destroyed yet again",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
 postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, speak with Nanao when a mysterious benefactor reaches out to her after her workplace is destroyed",5,"nanao_economic_flag",4,"vev\20-4") //I'm sorry, big brother ...
 postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a boon from a guilt-ridden benefactor after Nanao's workplace is destroyed",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+
+postMissionEventAchievement("Bread and Water Soup","In story mode, get a dinner date offer from Nanao",5,"nanao_favor_flag",0,"vev\44") //Bread and water soup
 
 postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //It's quiet.
 
