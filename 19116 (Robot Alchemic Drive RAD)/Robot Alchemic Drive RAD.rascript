@@ -1680,8 +1680,9 @@ function stringCompare(string,address){
         stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
     }else if(string=="vev\44"){
         stringArray = [0x76,0x65,0x76,0x5c,0x34,0x34]
-    }else if(string=="vev\47-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x37,0x2d,0x31]
+    }else if(string=="vev\53-4"){
+        stringArray = [0x76,0x65,0x76,0x5c,0x35,0x33,0x2d,0x34] //vev\53-4 Naoto\Ryo dialogue
+        stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialogue
     }else if(string=="vev\68-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
     }else if(string=="vev\71a-1"){
@@ -1709,6 +1710,13 @@ function stringCompare(string,address){
     prev_value = 1
     if(string=="vev\44") prev_value = 0xe0
 
+    if(string=="vev\53-4"){
+        return prev(byte(address))==prev_value &&
+         (
+          all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
+          || all_of(range(0, length(stringArray2) - 1), i => byte(address + i) == stringArray2[i])
+         )
+    }
     return prev(byte(address))==prev_value
         && all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
 }
@@ -2041,7 +2049,7 @@ postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a 
 
 postMissionEventAchievement("Bread and Water Soup","In story mode, get a dinner date offer from Nanao",5,"nanao_favor_flag",0,"vev\44") //Bread and water soup
 
-postMissionEventAchievement("Looking Capable","In story mode, go on a dinner date with Ellen",5,"ellen_favor_flag",3,"vev\47-1") //It's quiet.
+postMissionEventAchievement("Looking Capable","In story mode, go on a date with Ellen",5,"ellen_favor_flag",3,"vev\53-4") //It's quiet.
 
 postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after her condo is destroyed",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
 postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after her condo is destroyed again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
