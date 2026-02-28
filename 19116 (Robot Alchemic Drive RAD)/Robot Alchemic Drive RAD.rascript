@@ -1928,7 +1928,6 @@ function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
         title = achTitle,
         description = "As "+robotName+", kill a Volgara with over 1000 health using only \""+attackName+"\"",
         points = 5,
-        type = "missable",
         trigger = inMission()
                     && currentRobot==robotIndex
                     && never(prev(robot["last_attack"])==attackIndex && robot["last_attack"]!=attackIndex)
