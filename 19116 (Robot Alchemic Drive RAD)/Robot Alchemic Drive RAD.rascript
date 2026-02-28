@@ -1411,7 +1411,7 @@ function allUpgradesAchievement(upgradeType){
         type = "missable",
         trigger = almostFullyUpgraded(upgradeList)
                     && measured(
-                        tally(length(upgradeArray),upgradeArray),storyMode()
+                        tally(length(upgradeArray),upgradeArray),when=storyMode()
                     )
                     && storyMode()
                     //TODO: Look into better reset condition; values from last save are still shown on the main menu and load screens
@@ -1560,7 +1560,7 @@ function riggedFightAchievement(){
                                     //Alt group used to display centurion's health
                                         never(missionIncomplete())
                                         && never(missionIncompleteUndub())
-                                        && measured(enemy["health"]==1100,once(missionStart() && currentScenario==19 && ep19A()))
+                                        && measured(enemy["health"]==1100,when=once(missionStart() && currentScenario==19 && ep19A()))
                                         && trigger_when(enemy["min_health"]==enemy["max_health"])
                                     )
                                     
@@ -1626,7 +1626,7 @@ function paybackTimeAchievement(){
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
                     && never(enemyAppears())
-                    && trigger_when(measured(cityDamage==1000,once(missionStart() && currentScenario==50)))
+                    && trigger_when(measured(cityDamage==1000,when=once(missionStart() && currentScenario==50)))
     )
 }
 
@@ -1661,7 +1661,7 @@ function counterAsmodeusAchievement(){
         trigger = once(missionStart()) && currentScenario==53
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
-                    && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter()),currentScenario==53))
+                    && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter()),when=currentScenario==53))
     )
 }
 
@@ -1874,10 +1874,10 @@ function attackDownedEnemyAchievement(){
         points = 5,
         trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
-                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel() && never(enemyIsPresent() && !enemyIsDown())), robotIsVavel() && enemyIsDown()))
-                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel() && never(enemy2IsPresent() && !enemy2IsDown())), robotIsVavel() && enemy2IsDown()))
-                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robotIsVavel() && never(enemy3IsPresent() && !enemy3IsDown())), robotIsVavel() && enemy3IsDown()))
-                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robotIsVavel() && never(enemy4IsPresent() && !enemy4IsDown())), robotIsVavel() && enemy4IsDown()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel() && never(enemyIsPresent() && !enemyIsDown())), when=robotIsVavel() && enemyIsDown()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel() && never(enemy2IsPresent() && !enemy2IsDown())), when=robotIsVavel() && enemy2IsDown()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robotIsVavel() && never(enemy3IsPresent() && !enemy3IsDown())), when=robotIsVavel() && enemy3IsDown()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robotIsVavel() && never(enemy4IsPresent() && !enemy4IsDown())), when=robotIsVavel() && enemy4IsDown()))
                     )
     )
 }
@@ -1889,10 +1889,10 @@ function attackFallingEnemyAchievement(){
         points = 5,
         trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
-                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole() && never(enemyIsPresent() && !enemyIsFalling())),robotIsLaguiole() && enemyIsFalling()))
-                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole() && never(enemy2IsPresent() && !enemy2IsFalling())),robotIsLaguiole() && enemy2IsFalling()))
-                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && robotIsLaguiole() && never(enemy3IsPresent() && !enemy3IsFalling())),robotIsLaguiole() && enemy3IsFalling()))
-                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && robotIsLaguiole() && never(enemy4IsPresent() && !enemy4IsFalling())),robotIsLaguiole() && enemy4IsFalling()))
+                        (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole() && never(enemyIsPresent() && !enemyIsFalling())), when=robotIsLaguiole() && enemyIsFalling()))
+                        || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole() && never(enemy2IsPresent() && !enemy2IsFalling())), when=robotIsLaguiole() && enemy2IsFalling()))
+                        || (measured(tally(3,enemy3TakesDamage() && enemy3IsFalling() && robotIsLaguiole() && never(enemy3IsPresent() && !enemy3IsFalling())), when=robotIsLaguiole() && enemy3IsFalling()))
+                        || (measured(tally(3,enemy4TakesDamage() && enemy4IsFalling() && robotIsLaguiole() && never(enemy4IsPresent() && !enemy4IsFalling())), when=robotIsLaguiole() && enemy4IsFalling()))
                     )
     )
 }
@@ -1906,10 +1906,10 @@ function attackAfterGravityZeroAchievement(){
         id=568362,
         trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
-                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
 
                     )
     )
