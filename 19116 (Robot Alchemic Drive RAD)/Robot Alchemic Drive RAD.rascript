@@ -1658,10 +1658,10 @@ function counterAsmodeusAchievement(){
         title = "Quicker on the Draw",
         description = "In episode 53, disrupt Asmodeus's grand charge attacks three times by knocking him down or triggering his phantom system",
         points = 5,
-        trigger = once(missionStart() && currentScenario==53)
+        trigger = once(missionStart()) && currentScenario==53
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
-                    && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter())))
+                    && trigger_when(measured(tally(3,asmodeusKnockdownCounter(),asmodeusPhantomCounter()),currentScenario==53))
     )
 }
 
