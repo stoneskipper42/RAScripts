@@ -770,6 +770,14 @@ character_struct = {
         "offset": 0xbe,
         "size": 16
     },
+    "is_transformed": { //Meganite transformation status [16-bit]
+        "offset": 0x2f0,
+        "size": 16,
+        "values":{
+            0x0100: "Vertical mode",
+            0x0000: "Fortress mode (Laguiole/Gllang); Gigantic Booster (Vavel)"
+        }
+    },
     "pilot_animation": {
         "offset": 0x458,
         "size": 32,
@@ -805,6 +813,14 @@ character_struct = {
         "values": {
             0x00: "Not charging",
             0x01: "Grand charge pose"
+        }
+    },
+    "is_transformed_alt": { //Meganite transformation status [8-bit]
+        "offset": 0x9b0,
+        "size": 8,
+        "values":{
+            0x01: "Vertical mode",
+            0x00: "Fortress mode (Laguiole/Gllang); Gigantic Booster (Vavel)"
         }
     },
     "is_attacking": { //Meganite attacking status [32-bit]
@@ -847,9 +863,9 @@ character_struct = {
                 0x6a: "Vavel Missile",
                 0x6b: "Divine Upper",
                 0x6c: "Pyro Burner",
-                //0x70: "Genesis Cry", // Ultimate attack
+                0x70: "Genesis Cry", // Ultimate attack
                 0x71: "Blast Hook",
-                0x74: "Angelic Fall",
+                0x74: "Meteor Dive / Angelic Fall",
                 0x75: "Gravity Zero",
                 //0x1f5: "Activate Genesis Mode",
                 0x258: "Dual Knuckle",
@@ -862,8 +878,10 @@ character_struct = {
                 //0x66: "Deploy/retract Thunder Hand",
                 0x67: "Nova/Divine Laser",
                 0x68: "Aerial Corridor",
-                0x69: "Gigantic Boomerang",
-                //0x6c: "Annihilator", // Ultimate attack
+                0x69: "Gigantic Boomerang", //L or R
+                //0x6b: "Activate Desecrator"
+                0x6c: "Annihilator", // Ultimate attack
+                0x6d: "Aerial Missile",
                 0x6f: "Gravity Zero"
             },
             "Gllang": {
@@ -873,11 +891,12 @@ character_struct = {
                 0x68: "Leg Missile",
                 0x69: "Gaia Axe",
                 0x6a: "Gaia Buster",
+                //0x6b: "Activate Sanctifier"
                 0x6c: "Proton Beam",
                 0x6d: "30mm/40mm/50mm Cannon",
                 0x6e: "Fire All Ordnance",
                 0x6f: "Detonator",
-                //0x70: "Iron Tusk",
+                0x70: "Iron Tusk",
                 0x73: "Gravity Zero",
             },
             "Asmodeus": {
@@ -1008,6 +1027,8 @@ function robotIsBlocking() => robot["is_blocking"]==0x1
 
 function robotTakesDamage() => robot["health"]<prev(robot["health"])
                                 //&& enemyIsPresent()
+
+//Do not count 10 damage, since only tanks and level 2 grenades deal 10 damage
 function enemyTakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy["health"])-enemy["health"]>10
                                 //&& enemyIsPresent()
 function enemy2TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy2["health"])-enemy2["health"]>10
@@ -1017,12 +1038,24 @@ function enemy3TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy3
 function enemy4TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4["health"])-enemy4["health"]>10
                                 //&& enemy3IsPresent()
 
+//Used to track 30mm/40mm/50mm cannon, which is the only meganite attack that deals less than 10 damage at a time
+function enemyTakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy["health"])>enemy["health"]
+                                //&& enemyIsPresent()
+function enemy2TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy2["health"])>enemy2["health"]
+                                //&& enemy2IsPresent()
+function enemy3TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy3["health"])>enemy3["health"]
+                                //&& enemy3IsPresent()
+function enemy4TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4["health"])>enemy4["health"]
+                                //&& enemy3IsPresent()
+
 function heroAppears() => characterDataArray!=0 && heroPointer!=0 && prev(heroPointer)==0
 function enemyAppears() => characterDataArray!=0 && enemyPointer!=0 && prev(enemyPointer)==0
 
 function robotIsVavel() => currentRobot==0
 function robotIsGllang() => currentRobot==1
 function robotIsLaguiole() => currentRobot==2
+
+function robotIsVertical() => robot["is_transformed"]==0x100
 
 function heroIsPresent() => heroPointer!=0 && characterDataArray!=0
 function robotIsPresent() => robotPointer!=0 && characterDataArray!=0
@@ -1744,52 +1777,59 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
 
 
 //** COMBAT ACHIEVEMENT FUNCTIONS **//
-function attackLanded(attack_array,robot){  
+function attackLanded(attack_array,robot){
     attackLandedArray = []
     for attack in attack_array{
-            array_push(attackLandedArray,once(
+            if(robot==1 && attack==0x6d){
+                //If attack is 30mm/40mm/50mm cannon, track damage dealt that is less than 10
+                array_push(attackLandedArray,once(
                                             currentRobot==robot
                                             && robotLastAttackIs(attack)
-                                            //&& enemyIsPresent()
-                                            && enemyTakesDamage()
-                                            ||
-                                            currentRobot==robot
-                                            && robotLastAttackIs(attack)
-                                            //&& enemy2IsPresent()
-                                            && enemy2TakesDamage()
-                                            ||
-                                            currentRobot==robot
-                                            && robotLastAttackIs(attack)
-                                            //&& enemy3IsPresent()
-                                            && enemy3TakesDamage()
-                                            ||
-                                            currentRobot==robot
-                                            && robotLastAttackIs(attack)
-                                            //&& enemy4IsPresent()
-                                            && enemy4TakesDamage()
+                                            && robotIsVertical()
+                                            && (
+                                                enemyTakesMinorDamage()
+                                                || enemy2TakesMinorDamage()
+                                                || enemy3TakesMinorDamage()
+                                                || enemy4TakesMinorDamage()
+                                               )
                                             )
                                           )
+            }else{
+                array_push(attackLandedArray,once(
+                                            currentRobot==robot
+                                            && robotLastAttackIs(attack)
+                                            && robotIsVertical()
+                                            && (
+                                                enemyTakesDamage()
+                                                || enemy2TakesDamage()
+                                                || enemy3TakesDamage()
+                                                || enemy4TakesDamage()
+                                               )
+                                            )
+                                          )
+            }
     }  
     return attackLandedArray
 }
 
+//TODO: Include ultimate attacks in achievement, since they're always available in challenge mode
 function landAllAttacksAchievement(meganite){
     
     attackValueArray = get_keys(character_struct["last_attack"]["values"]["All"])
     
     if(meganite=="Vavel"){
         achievementTitle = "Rock Em Sock Em"
-        achievementDescription = "Use all of Vavel's combat commands in a single session, not including \"Genesis Cry\""
+        achievementDescription = "Use all of Vavel's combat commands in a single session"
         attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Vavel"]))
         landAllAttacksArray = attackLanded(attackValueArray,0)
     }else if(meganite=="Laguiole"){
         achievementTitle = "Bird of Prey"
-        achievementDescription = "Use all of Laguiole's vertical mode combat commands in a single session, not including \"Annihilator\""
+        achievementDescription = "Use all of Laguiole's vertical mode combat commands in a single session"
         attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Laguiole"]))
         landAllAttacksArray = attackLanded(attackValueArray,2)
     }else if(meganite=="Gllang"){
         achievementTitle = "Suns out Guns Out"
-        achievementDescription = "Use all of Gllang's vertical mode combat commands in a single session, not including \"Iron Tusk\""
+        achievementDescription = "Use all of Gllang's vertical mode combat commands in a single session"
         attackValueArray = array_merge(attackValueArray,get_keys(character_struct["last_attack"]["values"]["Gllang"]))
         landAllAttacksArray = attackLanded(attackValueArray,1)
     }
