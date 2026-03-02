@@ -1900,19 +1900,18 @@ function attackFallingEnemyAchievement(){
     )
 }
 
-//As Gllang, hit an enemy with Gravity Zero three times without taking damage
 function attackAfterGravityZeroAchievement(){
     achievement(
         title = "What Goes up Must Stay Down",
-        description = "As Gllang, uppercut or straight punch an enemy when they're getting back up after Gravity Zero three times without taking damage",
+        description = "As Gllang, uppercut or straight punch a downed enemy three times without taking damage",
         points = 5,
         id=568362,
         trigger = inMission() && !trainingMode() && !versusMode() &&
                     (
-                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
-                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && prior(robot["last_attack"])==0x73 && robotIsGllang()), when=robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
+                        (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy3IsPresent() && enemy3TakesDamage() && enemy3IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemy3IsPresent()) && never(robotTakesDamage()))
+                        || (measured(tally(3,enemy4IsPresent() && enemy4TakesDamage() && enemy4IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemy4IsPresent()) && never(robotTakesDamage()))
 
                     )
     )
