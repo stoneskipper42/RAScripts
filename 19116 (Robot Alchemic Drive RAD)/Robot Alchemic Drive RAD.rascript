@@ -1685,10 +1685,12 @@ function stringCompare(string,address){
         stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialogue
     }else if(string=="vev\68-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
-    }else if(string=="vev\71a-1"){
-        stringArray = [0x76,0x65,0x76,0x5C,0x37,0x31,0x61,0x2D,0x31]
-    }else if(string=="vev\84-1"){
-        stringArray = [0x76,0x65,0x76,0x5C,0x38,0x34,0x2D,0x31]
+    }else if(string=="vev\83-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x38,0x33,0x2D,0x31]
+    }else if(string=="vev\101a-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x61,0x2D,0x31] //vev\101a-1 Naoto dialog 'So there's more to him than just a spoiled brat.'
+        stringArray2 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x62,0x2D,0x31] //vev\101b-1 Ryo dialog 'So there's more to him than just a spoiled brat...'
+        stringArray3 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x32,0x2D,0x31] //vev\102-1 Yui dialog 'So there's more to him than just a spoiled jerk...'
     }else if(string=="vev\113-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x31,0x31,0x33,0x2D,0x32]
     }else if(string=="vev\125-3"){
@@ -1710,15 +1712,16 @@ function stringCompare(string,address){
     prev_value = 1
     if(string=="vev\44") prev_value = 0xe0
 
-    if(string=="vev\53-4"){
-        return prev(byte(address))==prev_value &&
-         (
-          all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
-          || all_of(range(0, length(stringArray2) - 1), i => byte(address + i) == stringArray2[i])
-         )
+    stringComp = all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
+    if(string=="vev\53-4" || string=="vev\101a-1"){
+        stringComp = stringComp || all_of(range(0, length(stringArray2) - 1), i => byte(address + i) == stringArray2[i])
     }
+    if(string=="vev\101a-1"){
+        stringComp = stringComp || all_of(range(0, length(stringArray3) - 1), i => byte(address + i) == stringArray3[i])
+    }
+
     return prev(byte(address))==prev_value
-        && all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
+        && stringComp
 }
 
 function postMissionEventAchievement(achievementTitle,achievementDescription,points,varName,minValue,voiceIndex){
@@ -2054,8 +2057,8 @@ postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak 
 postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after her condo is destroyed again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
 postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after her condo is destroyed yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
 
-postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\71a-1") //Ellen! Is it true your engagement is off?
-postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\84-1") //Oh, it's you ...
+postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\83-1") //Because it was with you...
+postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\101a-1") //Oh, it's you ...
 postMissionEventAchievement("We'll Rebuild","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed",5,"misaki_heavy_industries_flag",10,"vev\68-2") //It'll take some money, but we'll find the financing somehow
 postMissionEventAchievement("I'll Do What I Can","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed again",5,"misaki_heavy_industries_flag",11,"vev\113-2") //I'll do what I can, the only way I know how
 postMissionEventAchievement("Still Has a Part to Play","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed yet again",5,"misaki_heavy_industries_flag",12,"vev\125-3") //MHI still has a part to play
