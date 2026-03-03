@@ -1716,8 +1716,8 @@ function stringCompare(string,address){
     }else if(string=="vev\53-4"){
         stringArray = [0x76,0x65,0x76,0x5c,0x35,0x33,0x2d,0x34] //vev\53-4 Naoto\Ryo dialogue
         stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialogue
-    }else if(string=="vev\68-2"){
-        stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x32]
+    }else if(string=="vev\68-1"){
+        stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x31] //Don't worry about it. We'll rebuild.
     }else if(string=="vev\83-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x38,0x33,0x2D,0x31]
     }else if(string=="vev\101a-1"){
@@ -2098,7 +2098,7 @@ postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak wit
 
 postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\83-1") //Because it was with you...
 postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\101a-1") //Oh, it's you ...
-postMissionEventAchievement("We'll Rebuild","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed",5,"misaki_heavy_industries_flag",10,"vev\68-2") //It'll take some money, but we'll find the financing somehow
+postMissionEventAchievement("We'll Rebuild","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed",5,"misaki_heavy_industries_flag",10,"vev\68-1") //Don't worry about it. We'll rebuild
 postMissionEventAchievement("I'll Do What I Can","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed again",5,"misaki_heavy_industries_flag",11,"vev\113-2") //I'll do what I can, the only way I know how
 postMissionEventAchievement("Still Has a Part to Play","In story mode, speak with Misaki after the MHI-Bulnose merger is cancelled and his company's HQ is destroyed yet again",5,"misaki_heavy_industries_flag",12,"vev\125-3") //MHI still has a part to play
 
