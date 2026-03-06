@@ -1659,7 +1659,7 @@ function paybackTimeAchievement(){
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
                     && never(enemyAppears())
-                    && trigger_when(measured(cityDamage==1000,when=once(missionStart() && currentScenario==50)))
+                    && trigger_when(measured(cityDamage>=1000,when=once(missionStart() && currentScenario==50)))
     )
 }
 
