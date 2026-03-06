@@ -2205,6 +2205,8 @@ RPvalues={
         0x11317: "Tutorial mission selection", //undub
         0x11755: "Mission clear/Mission failed", //undub
         0x117b4: "Opening credits", //undub
+        0x11185: "Closing credits", //undub
+        0x11366: "Save game clear data", //undub
         0x32453: "Title screen",
         0x324be: "Main menu",
         0x32765: "Control/pilot/meganite selection",
@@ -2219,8 +2221,10 @@ RPvalues={
         0x3355a: "Options menu",
         0x337b3: "Versus mode setup",
         0x33aa2: "Challenge mission selection",
+        0x33cb2: "Closing Credits",
         0x33e44: "Tutorial mission selection",
         0x33dee: "Character selection",
+        0x33e93: "Save game clear data",
         0x34282: "Mission clear/Mission failed",
         0x342e1: "Opening credits",
     }
@@ -2238,6 +2242,8 @@ rich_presence_conditional_display(menuScreenIndex==0x00000 //Intro
                                 || menuScreenIndex==0x10f75 //Challenge mission selection undub
                                 || menuScreenIndex==0x11317 //Tutorial mission selection undub
                                 || menuScreenIndex==0x117b4 //Opening credits undub
+                                || menuScreenIndex==0x11185 //Closing credits undub
+                                || menuScreenIndex==0x11366 //Save game clear data undub
                                 || menuScreenIndex==0x32453 //Title screen
                                 || menuScreenIndex==0x324be //Main menu
                                 || menuScreenIndex==0x32765 //Initial control/pilot/meganite selection - story mode
@@ -2246,7 +2252,9 @@ rich_presence_conditional_display(menuScreenIndex==0x00000 //Intro
                                 || menuScreenIndex==0x335e0 //Story options menu
                                 || menuScreenIndex==0x337b3 //Versus mode setup
                                 || menuScreenIndex==0x33aa2 //Challenge mission selection
+                                || menuScreenIndex==0x33cb2 //Closing credits
                                 || menuScreenIndex==0x33e44 //Tutorial mission selection
+                                || menuScreenIndex==0x33e93 //Save game clear data
                                 || menuScreenIndex==0x342e1, //Opening credits
     "{0}",
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],"")
@@ -2289,7 +2297,7 @@ rich_presence_conditional_display(storyMode() && (menuScreenIndex==0x1037b //Int
                                                 || menuScreenIndex==0x32f41 //Intermission - no hangar/lab access
                                                 || menuScreenIndex==0x331b4 //Hanger
                                                 || menuScreenIndex==0x3300e), //Laboratory
-    "{0} in {1} after episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
+    "{0} is in {1} after episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
     rich_presence_value("Scenario",currentScenario),
@@ -2315,7 +2323,7 @@ rich_presence_conditional_display(globalVar("current_scenario")==700,
 
 //Story mode mission briefing
 rich_presence_conditional_display(storyMode() && missionBriefingIndex==0x0028e960,
-    "{0} in episode {2} mission briefing ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
+    "{0} is in episode {2} mission briefing ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
     rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
     rich_presence_lookup("menuScreenIndex",menuScreenIndex,RPvalues["menuScreenIndex"],""),
     rich_presence_value("Scenario",currentScenario),
@@ -2423,6 +2431,21 @@ rich_presence_conditional_display(characterDataArray!=0 && heroIsPresent() && ro
     rich_presence_value("Number",dword(dword(0x27e5f4)+0x2c))
     )
 */
+
+rich_presence_conditional_display(storyMode() && currentScenario==54,
+    "{0} is in the epilogue ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
+    rich_presence_lookup("Pilot",currentPilot,values["main_character_number"],"The Hero"),
+    rich_presence_lookup("Meganite",currentRobot,values["initial_robot"],"the meganite"),
+    rich_presence_value("Scenario",currentScenario),
+    rich_presence_lookup("Game Mode",gameMode,RPvalues["game_mode"],"???"),
+    rich_presence_value("Time",missionDuration,"FRAMES"),
+    rich_presence_value("Number",cityDamage),
+    rich_presence_value("nanaoFavor",globalVar("nanao_favor_flag")),
+    rich_presence_value("ellenFavor",globalVar("ellen_favor_flag")),
+    rich_presence_value("nanaoEcon",globalVar("nanao_economic_flag")),
+    rich_presence_value("misakiEcon",globalVar("misaki_heavy_industries_flag")),
+    rich_presence_value("keikoEcon",globalVar("keiko_flag"))
+    )
 
 //Story mode mid-mission; meganite deployed
 rich_presence_conditional_display(storyMode() && heroIsPresent() && robotIsPresent(),
