@@ -2104,7 +2104,7 @@ postMissionEventAchievement("Still Has a Part to Play","In story mode, speak wit
 
 
 //Mission-specific achievements
-allAwardsAchievement("senjo_peace_limit","One Weird Hack to More than Double Your Income",8,1)
+allAwardsAchievement("construction_minister_limit","One Weird Hack to Double Your Income",8,1)
 allAwardsAchievement("senjo_peace_limit","Fray in the Bay",9,3)
 allAwardsAchievement("senjo_peace_limit","Standing the Heat",10,2)
 allAwardsAchievement("senjo_peace_limit","Ride the Cyclone",11,2)
