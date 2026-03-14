@@ -438,6 +438,14 @@ values = {
         3: 120,
         4: 120,
         7: 50
+    },
+    "fifty_billion_limit": {
+        0: "No map loaded",
+        1: 450,
+        2: 450,
+        3: 450,
+        4: 450,
+        7: 450
     }
  },
  "amount_of_damage":{
@@ -1555,8 +1563,10 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
     
     if(cityDamageLimit=="senjo_peace_limit"){
         achievementDescription = "Complete episode "+missionNumber+" with the Senjo Peace Award"+otherAwardsString+" in story or challenge mode"
-    }else{
+    }else if(cityDamageLimit=="construction_minister_limit"){
         achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award"+otherAwardsString+" in story or challenge mode"
+    }else if(cityDamageLimit=="fifty_billion_limit"){
+        achievementDescription = "Complete episode "+missionNumber+" with less than 50 billion damage and all 4 building-specific awards in story or challenge mode"
     }
     
     achievement(
@@ -2115,7 +2125,7 @@ senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15
 allAwardsAchievement("senjo_peace_limit","Childhood Protector",16,2)
 allAwardsAchievement("senjo_peace_limit","You Want Misaki, You Go Through Me",17,1)
 riggedFightAchievement()
-allAwardsAchievement("construction_minister_limit","Controlling the Battlefield","19b",1) 
+allAwardsAchievement("fifty_billion_limit","Controlling the Battlefield","19b",1) 
 allAwardsAchievement("senjo_peace_limit","Double Jeopardy",20,2)
 allAwardsAchievement("senjo_peace_limit","Chicken Soup Run",21,2)
 allAwardsAchievement("senjo_peace_limit","Expertly Evacuated",22,2)
