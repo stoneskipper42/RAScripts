@@ -2108,7 +2108,7 @@ allAwardsAchievement("construction_minister_limit","One Weird Hack to Double You
 allAwardsAchievement("senjo_peace_limit","Fray in the Bay",9,3)
 allAwardsAchievement("senjo_peace_limit","Standing the Heat",10,2)
 allAwardsAchievement("senjo_peace_limit","Ride the Cyclone",11,2)
-allAwardsAchievement("senjo_peace_limit","He Came Outta Nowhere",13,1)
+allAwardsAchievement("construction_minister_limit","He Came Outta Nowhere",13,1) //Top score: 100; volgara usually lands on a building when it appears, starts attacking buildings before you can launch
 allAwardsAchievement("construction_minister_limit","We Don't Need No Water",14,1) //Top score: 100; Volgara deals 80 city damage before player gets control, but construction minister seems doable
 allAwardsAchievement("senjo_peace_limit","Catch a Riiiiiide","15a",1)
 senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15b/18a; Peace/construction awards in Tokyo are 10/50 dmg and EVERYTHING is breakable
