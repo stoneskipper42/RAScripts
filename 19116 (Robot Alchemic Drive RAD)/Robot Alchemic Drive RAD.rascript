@@ -2129,7 +2129,7 @@ allAwardsAchievement("fifty_billion_limit","Controlling the Battlefield","19b",1
 allAwardsAchievement("senjo_peace_limit","Double Jeopardy",20,2)
 allAwardsAchievement("senjo_peace_limit","Chicken Soup Run",21,2)
 allAwardsAchievement("senjo_peace_limit","Expertly Evacuated",22,2)
-allAwardsAchievement("senjo_peace_limit","Wheels on the Bus Go Round and Round",23,1)
+allAwardsAchievement("construction_minister_limit","Wheels on the Bus Go Round and Round",23,1)
 assistanceNotRequiredAchievement()
 allAwardsAchievement("senjo_peace_limit","Bye Bye Third Wheel",25,2)
 allAwardsAchievement("senjo_peace_limit","Satellite Scrapper",26,1)
