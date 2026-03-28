@@ -1632,14 +1632,17 @@ function assistanceNotRequiredAchievement(){
 }
 
 function followTheScriptAchievement(){
+// Once level 40 starts
+// Reset if mission duration exceeds 9 minutes
+// Trigger on mission complete
     achievement(
         title = "Just Follow the Script",
-        description = "Complete episode 40 in under 8 minutes",
+        description = "Complete episode 40 in under 9 minutes",
         points = 5,
         trigger = once(missionStart() && currentScenario==40)
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
-                    && missionDuration <= 28800 // 8 min * 60 sec/min * 60 fps = 28800
+                    && missionDuration <= 32400 // 9 min * 60 sec/min * 60 fps = 32400
                     && trigger_when(missionComplete(40) || missionCompleteUndub(40))
     )
 }
