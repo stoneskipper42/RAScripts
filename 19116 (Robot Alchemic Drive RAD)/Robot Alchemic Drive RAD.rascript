@@ -1147,6 +1147,7 @@ function onChallengeMissionMenu() => menuScreenIndex==0x33aa2
 function onChallengeMissionMenuUndub() => menuScreenIndex==0x10f75
 function missionIncomplete() => missionFailed() || onChallengeMissionMenu()
 function missionIncompleteUndub() => missionFailedUndub() || onChallengeMissionMenuUndub()
+function startClosingCredits() => (menuScreenIndex==0x11185 && prev(menuScreenIndex)!=0x11185) || (menuScreenIndex==0x33cb2 && prev(menuScreenIndex)==0x33cb2)
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
 function isCombatMission(){
     return currentScenario!=2
@@ -1712,21 +1713,23 @@ function counterAsmodeusAchievement(){
 
 //** POST MISSION EVENT ACHIEVEMENT FUNCTIONS **//
 function stringCompare(string,address){
+    string_count = 1
     if(string=="vev\1-3"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x2d,0x33]
+        stringArray = [0x76,0x65,0x76,0x5c,0x31,0x2d,0x33] //I wonder if they'll still pay me for this month's work
     }else if(string=="vev\4-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x2d,0x31]
+        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x2d,0x31] //Baron Cafe seeking enthusiastic workers
     }else if(string=="vev\7-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x37,0x2d,0x31]
+        stringArray = [0x76,0x65,0x76,0x5c,0x37,0x2d,0x31] //Exotic dance lounge Valhalla seeks floor workers
     }else if(string=="vev\20-3"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x33]
+        stringArray = [0x76,0x65,0x76,0x5c,0x32,0x30,0x2d,0x33] //Because this is the life that grandma chose
     }else if(string=="vev\31-1"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31]
+        stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31] //To the tune of one hundred billion yen
     }else if(string=="vev\44"){
         stringArray = [0x76,0x65,0x76,0x5c,0x34,0x34]
     }else if(string=="vev\53-4"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x35,0x33,0x2d,0x34] //vev\53-4 Naoto\Ryo dialogue
-        stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialogue
+        stringArray = [0x76,0x65,0x76,0x5c,0x35,0x33,0x2d,0x34] //vev\53-4 Naoto\Ryo dialog
+        stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialog
+        string_count = 2
     }else if(string=="vev\68-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x36,0x38,0x2D,0x31] //Don't worry about it. We'll rebuild.
     }else if(string=="vev\83-1"){
@@ -1735,6 +1738,7 @@ function stringCompare(string,address){
         stringArray = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x61,0x2D,0x31] //vev\101a-1 Naoto dialog 'So there's more to him than just a spoiled brat.'
         stringArray2 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x62,0x2D,0x31] //vev\101b-1 Ryo dialog 'So there's more to him than just a spoiled brat...'
         stringArray3 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x32,0x2D,0x31] //vev\102-1 Yui dialog 'So there's more to him than just a spoiled jerk...'
+        string_count = 3
     }else if(string=="vev\113-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x31,0x31,0x33,0x2D,0x32]
     }else if(string=="vev\125-3"){
@@ -1746,9 +1750,15 @@ function stringCompare(string,address){
     }else if(string=="vev\157-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x31,0x35,0x37,0x2D,0x31]
     }else if(string=="v58\49a-4"){
-        stringArray = [0x76,0x35,0x38,0x5C,0x34,0x39,0x61,0x2D,0x34]
+        stringArray = [0x76,0x35,0x38,0x5C,0x34,0x39,0x61,0x2D,0x34] //v58\49a-4 Naoto dialog "Me and Ellen. And the Meganites."
+        stringArray2 = [0x76,0x35,0x38,0x5C,0x34,0x39,0x62,0x2D,0x34] //v58\49b-4 Ryo dialog "Me and Ellen. And the Meganites."
+        stringArray3 = [0x76,0x35,0x38,0x5C,0x35,0x30,0x2D,0x34] //v58\50-4 Yui dialog "Me and Ellen. And the Meganites."
+        string_count = 3
     }else if(string=="v58\72a-4"){
-        stringArray = [0x76,0x35,0x38,0x5C,0x37,0x32,0x61,0x2D,0x34]
+        stringArray = [0x76,0x35,0x38,0x5C,0x37,0x32,0x61,0x2D,0x34] //v58\72a-4 Naoto dialog "Me and Nanao. And the Meganites."
+        stringArray2 = [0x76,0x35,0x38,0x5C,0x37,0x32,0x62,0x2D,0x34] //v58\72b-4 Ryo dialog "Me and Nanao. And the Meganites."
+        stringArray3 = [0x76,0x35,0x38,0x5C,0x37,0x33,0x2D,0x34] //v58\73-4 Yui dialog "Me and Nanao. And the Meganites."
+        string_count = 3
     }else if(string=="v58\95-4"){
         stringArray = [0x76,0x35,0x38,0x5C,0x39,0x35,0x2D,0x34]
     }
@@ -1757,10 +1767,10 @@ function stringCompare(string,address){
     if(string=="vev\44") prev_value = 0xe0
 
     stringComp = all_of(range(0, length(stringArray) - 1), i => byte(address + i) == stringArray[i])
-    if(string=="vev\53-4" || string=="vev\101a-1"){
+    if(string_count >= 2){
         stringComp = stringComp || all_of(range(0, length(stringArray2) - 1), i => byte(address + i) == stringArray2[i])
     }
-    if(string=="vev\101a-1"){
+    if(string_count >= 3){
         stringComp = stringComp || all_of(range(0, length(stringArray3) - 1), i => byte(address + i) == stringArray3[i])
     }
 
@@ -1773,10 +1783,22 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
         globalVarCheck = globalVar("nanao_favor_flag")<4 &&
                             globalVar("ellen_favor_flag")<3 &&
                             globalVar("main_character_number")==2
+    }else if(varName=="ellen_epilogue"){
+        globalVarCheck = globalVar("nanao_favor_flag")<6 &&
+                            globalVar("ellen_favor_flag")>=3
+    }else if(varName=="nanao_epilogue"){
+        globalVarCheck = globalVar("nanao_favor_flag")>=4 &&
+                            (globalVar("nanao_favor_flag")>=6 || globalVar("ellen_favor_flag")<3)
     }else{
-        globalVarCheck = globalVar(varName)>=minValue    
+        globalVarCheck = globalVar(varName)>=minValue
     }
     dialogueCheck = stringCompare(voiceIndex,dialogueIndexAddress)
+
+    //for epilogue achievements, include "Transition to credits" check since you CAN fast-forward through the dialog
+    if(voiceIndex == "v58\72a-4" || voiceIndex == "v58\49a-4" || voiceIndex == "v58\95-4"){
+        dialogueCheck = dialogueCheck || (currentScenario==54 && startClosingCredits())
+    }
+
     achievement(
         title = achievementTitle,
         description = achievementDescription,
@@ -2103,8 +2125,8 @@ missionProgressionAchievement("A New Era of Coexistence",51,53,"")
 
 
 //Post-mission event achievements
-postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_favor_flag",4,"v58\72a-4") //Me and Nanao. And the Meganites.
-postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_favor_flag",3,"v58\49a-4") //Me and Ellen. And the Meganites.
+postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won Nanao's favor",10,"nanao_epilogue",4,"v58\72a-4") //Me and Nanao. And the Meganites.
+postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_epilogue",3,"v58\49a-4") //Me and Ellen. And the Meganites.
 postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
 
 postMissionEventAchievement("No! The Bakery!","In story mode, speak with Nanao after her workplace is destroyed",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
