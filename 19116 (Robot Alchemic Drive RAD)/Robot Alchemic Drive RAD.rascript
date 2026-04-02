@@ -2147,19 +2147,21 @@ postMissionEventAchievement("Me and Nanao","Watch the epilogue after having won 
 postMissionEventAchievement("Me and Ellen","Watch the epilogue after having won Ellen's favor",10,"ellen_epilogue",3,"v58\49a-4") //Me and Ellen. And the Meganites.
 postMissionEventAchievement("Me and Souya","Watch the epilogue after having won Souya's favor",10,"no_ellen_or_nanao_yui",0,"v58\95-4") //Me and Souya. And the Meganites.
 
-postMissionEventAchievement("No! The Bakery!","In story mode, speak with Nanao after her workplace is destroyed",5,"nanao_economic_flag",1,"vev\1-3") //I wonder if they'll still pay me for this month's work
-postMissionEventAchievement("Time to Find Another Job","In story mode, speak with Nanao after her workplace is destroyed again",5,"nanao_economic_flag",2,"vev\4-1") //Baron Cafe seeking enthusiastic workers
-postMissionEventAchievement("Can't Afford to Be Picky","In story mode, speak with Nanao after her workplace is destroyed yet again",5,"nanao_economic_flag",3,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
-postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, speak with Nanao when a mysterious benefactor reaches out to her after her workplace is destroyed",5,"nanao_economic_flag",4,"vev\20-3") //Because this is the life that grandma chose
-postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a boon from a guilt-ridden benefactor after Nanao's workplace is destroyed",10,"nanao_economic_flag",5,"vev\31-1") //To the tune of one hundred billion yen
+//Each event occurs sequentially after the destruction of Nanao's workplace; event CAN trigger without nanao's econ flag increasing, since event triggers based on building's destruction flag and econ changes based on the in-game cutscene talking about the destruction
+postMissionEventAchievement("No! The Bakery!","In story mode, speak with Nanao after her workplace is destroyed",5,"nanao_economic_flag",0,"vev\1-3") //I wonder if they'll still pay me for this month's work
+postMissionEventAchievement("Time to Find Another Job","In story mode, speak with Nanao after her workplace is destroyed again",5,"nanao_economic_flag",0,"vev\4-1") //Baron Cafe seeking enthusiastic workers
+postMissionEventAchievement("Can't Afford to Be Picky","In story mode, speak with Nanao after her workplace is destroyed yet again",5,"nanao_economic_flag",0,"vev\7-1") //Exotic dance lounge Valhalla seeks floor workers
+postMissionEventAchievement("This Is the Life That Grandma Chose","In story mode, speak with Nanao when a mysterious benefactor reaches out to her after her workplace is destroyed",5,"nanao_economic_flag",0,"vev\20-3") //Because this is the life that grandma chose
+postMissionEventAchievement("One Hundred Billion Yen","In story mode, receive a boon from a guilt-ridden benefactor after Nanao's workplace is destroyed",10,"nanao_economic_flag",0,"vev\31-1") //To the tune of one hundred billion yen
 
 postMissionEventAchievement("Bread and Water Soup","In story mode, get a dinner date offer from Nanao",5,"nanao_favor_flag",0,"vev\44") //Bread and water soup
 
 postMissionEventAchievement("Looking Capable","In story mode, go on a date with Ellen",5,"ellen_favor_flag",3,"vev\53-4") //It's quiet.
 
-postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after her condo is destroyed",5,"keiko_flag",1,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
-postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after her condo is destroyed again",5,"keiko_flag",2,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
-postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after her condo is destroyed yet again",5,"keiko_flag",3,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
+//Each event occurs sequentially after the destruction of Keiko's condo; event CAN trigger without keiko's flag increasing, since event triggers based on building's destruction flag and econ changes based on the in-game cutscene talking about the destruction
+postMissionEventAchievement("It Doesn't Bother Me at All","In story mode, speak with Keiko after her condo is destroyed",5,"keiko_flag",0,"vev\132-1") //Well, my Condo building got destroyed in the fighting the other day
+postMissionEventAchievement("It's Not a Big Deal at All","In story mode, speak with Keiko after her condo is destroyed again",5,"keiko_flag",0,"vev\150-1") //My condo got destroyed during the fighting, so I'm sleeping here tonight
+postMissionEventAchievement("Don't Try Anything Funny","In story mode, speak with Keiko after her condo is destroyed yet again",5,"keiko_flag",0,"vev\157-1") //I'm staying here too. Because my condo was destroyed.
 
 postMissionEventAchievement("Because It Was with You","In story mode as Naoto or Ryo, speak with Ellen about the cancelled MHI-Bulnose merger",5,"misaki_heavy_industries_flag",9,"vev\83-1") //Because it was with you...
 postMissionEventAchievement("More than Just a Spoiled Brat","In story mode, speak with Misaki about the cancelled MHI-Bulnose merger",10,"misaki_heavy_industries_flag",9,"vev\101a-1") //Oh, it's you ...
