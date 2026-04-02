@@ -2004,43 +2004,61 @@ function attackAfterGravityZeroAchievement(){
     )
 }
 
-function singleAttackAchievement(achTitle,upgrade_name,robotIndex,attackIndex){
-    robotName = values["current_robot"][robotIndex]
-    if(attackIndex==0x70){
-        if(robotIndex==0) attackName = "Genesis Cry"
-        if(robotIndex==1) attackName = "Iron Tusk"
+function singleAttackAchievement(achTitle,upgrade_name){
+    achievementTrigger = inMission() && robotIsPresent()
+
+    if(upgrade_name=="vvl_available_genesis_cry"){
+        robotIndex=0
+        attackIndex=0x70
+        healthLimit=1000
+        achievementTrigger = achievementTrigger && currentRobot==robotIndex && initialRobot==robotIndex
+    }else if(upgrade_name=="glg_iron_tusk"){
+        robotIndex=1
+        attackIndex=0x70
+        healthLimit=1000
+        achievementTrigger = achievementTrigger && currentRobot==robotIndex && initialRobot==robotIndex
+    }else if(upgrade_name=="glg_all_shots_fired"){
+        robotIndex=1
+        attackIndex=0x6e
+        healthLimit=600
+        achievementTrigger = achievementTrigger && currentRobot==robotIndex
+    }else if(upgrade_name=="lio_horobi"){
+        robotIndex=2
+        attackIndex=0x6c
+        healthLimit=1000
+        achievementTrigger = achievementTrigger && currentRobot==robotIndex && initialRobot==robotIndex
     }
-    if(attackIndex==0x6c) attackName = "Annihilator"
-    if(attackIndex==0x6e) attackName = "Fire All Ordnance"
-     
+
+    robotName = values["current_robot"][robotIndex]
+    attackName = character_struct["last_attack"]["values"][robotName][attackIndex]
+
     achievement(
         title = achTitle,
-        description = "As "+robotName+", kill a Volgara with over 1000 health using only \""+attackName+"\"",
+        description = "As "+robotName+", kill a Volgara with over "+healthLimit+" health using only \""+attackName+"\"",
         points = 5,
-        trigger = inMission()
-                    && currentRobot==robotIndex
+        trigger = achievementTrigger
                     && never(prev(robot["last_attack"])==attackIndex && robot["last_attack"]!=attackIndex)
                     && (
-                        (once(enemy["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        (once(enemy["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy["health"]==0 && prev(enemy["health"])>0)
                         )
-                        || (once(enemy2["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy2["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy2["health"]==0 && prev(enemy2["health"])>0)
                         )
-                        || (once(enemy3["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy3["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy3["health"]==0 && prev(enemy3["health"])>0)
                         )
-                        || (once(enemy4["health"]>1000 && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy4["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy4["health"]==0 && prev(enemy4["health"])>0)
                         )
                         || //If player has the capability to earn this achievment, show an indicator; these alts should never be able to trigger
-                        enemyIsPresent() && enemy["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemyIsPresent() && enemy["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy2IsPresent() && enemy2["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy2IsPresent() && enemy2["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy3IsPresent() && enemy3["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy3IsPresent() && enemy3["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy4IsPresent() && enemy4["health"]>1000 && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy4IsPresent() && enemy4["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                     )
 
     )
@@ -2207,10 +2225,10 @@ landAllAttacksAchievement("Vavel")
 landAllAttacksAchievement("Laguiole")
 landAllAttacksAchievement("Gllang")
 
-singleAttackAchievement("With a Rebel Yell","vvl_available_genesis_cry",0,0x70)
-singleAttackAchievement("Baby You're A Firework","glg_iron_tusk",1,0x70)
-singleAttackAchievement("Launch All Missiles!","glg_all_shots_fired",1,0x6e)
-singleAttackAchievement("Wolverine Would Be Proud","lio_horobi",2,0x6c)
+singleAttackAchievement("With a Rebel Yell","vvl_available_genesis_cry")
+singleAttackAchievement("Baby You're A Firework","glg_iron_tusk")
+singleAttackAchievement("Launch All Missiles!","glg_all_shots_fired")
+singleAttackAchievement("Wolverine Would Be Proud","lio_horobi")
 
 useNormalControlsAchievement()
 blockAllAttacksAchievement()
