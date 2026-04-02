@@ -619,7 +619,7 @@ values = {
 "vvl_available_genesis_cry":{
     // 
     0: "Genesis cry unavailable",
-    1: "Genesis cryavailable"
+    1: "Genesis cry available"
 },
 "lio_available_reinforcement":{
     // Demon Sword Desecrator
@@ -867,10 +867,10 @@ character_struct = {
                 //0x65: "Deploy/retract Pyro Burner",
                 //0x66: "Deploy/retract Drill Gear",
                 0x68: "Harken Laser",
-                0x69: "Lava Stream",
+                0x69: "Lava Stream / Volcanic Stream",
                 0x6a: "Vavel Missile",
                 0x6b: "Divine Upper",
-                0x6c: "Pyro Burner",
+                0x6c: "Pyro Burner", //deals 2 dmg/frame
                 0x70: "Genesis Cry", // Ultimate attack
                 0x71: "Blast Hook",
                 0x74: "Meteor Dive / Angelic Fall",
@@ -1038,23 +1038,21 @@ function robotTakesDamage() => robot["health"]<prev(robot["health"])
 
 //Do not count 10 damage, since only tanks and level 2 grenades deal 10 damage
 function enemyTakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy["health"])-enemy["health"]>10
-                                //&& enemyIsPresent()
 function enemy2TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy2["health"])-enemy2["health"]>10
-                                //&& enemy2IsPresent()
 function enemy3TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy3["health"])-enemy3["health"]>10
-                                //&& enemy3IsPresent()
 function enemy4TakesDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4["health"])-enemy4["health"]>10
-                                //&& enemy3IsPresent()
 
-//Used to track 30mm/40mm/50mm cannon, which is the only meganite attack that deals less than 10 damage at a time
+//Used to track 30mm/40mm/50mm cannon and pyro burner, which are the only meganite attacks that deals less than 10 damage at a time
 function enemyTakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy["health"])>enemy["health"]
-                                //&& enemyIsPresent()
 function enemy2TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy2["health"])>enemy2["health"]
-                                //&& enemy2IsPresent()
 function enemy3TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy3["health"])>enemy3["health"]
-                                //&& enemy3IsPresent()
 function enemy4TakesMinorDamage() => robot["is_attacking"]==0xffffffff && prev(enemy4["health"])>enemy4["health"]
-                                //&& enemy3IsPresent()
+
+//Used to track detonator, which does not hit until after attack animation finishes
+function enemyTakesDelayedDamage() => prev(enemy["health"])-enemy["health"]>10
+function enemy2TakesDelayedDamage() => prev(enemy2["health"])-enemy2["health"]>10
+function enemy3TakesDelayedDamage() => prev(enemy3["health"])-enemy3["health"]>10
+function enemy4TakesDelayedDamage() => prev(enemy4["health"])-enemy4["health"]>10
 
 function heroAppears() => characterDataArray!=0 && heroPointer!=0 && prev(heroPointer)==0
 function enemyAppears() => characterDataArray!=0 && enemyPointer!=0 && prev(enemyPointer)==0
@@ -1793,39 +1791,53 @@ function postMissionEventAchievement(achievementTitle,achievementDescription,poi
 function attackLanded(attack_array,robot){
     attackLandedArray = []
     for attack in attack_array{
-            if(robot==1 && attack==0x6d){
-                //If attack is 30mm/40mm/50mm cannon, track damage dealt that is less than 10
-                array_push(attackLandedArray,once(
-                                            currentRobot==robot
-                                            && robotLastAttackIs(attack)
-                                            && robotIsVertical()
-                                            && (
-                                                enemyTakesMinorDamage()
-                                                || enemy2TakesMinorDamage()
-                                                || enemy3TakesMinorDamage()
-                                                || enemy4TakesMinorDamage()
-                                               )
-                                            )
-                                          )
-            }else{
-                array_push(attackLandedArray,once(
-                                            currentRobot==robot
-                                            && robotLastAttackIs(attack)
-                                            && robotIsVertical()
-                                            && (
-                                                enemyTakesDamage()
-                                                || enemy2TakesDamage()
-                                                || enemy3TakesDamage()
-                                                || enemy4TakesDamage()
-                                               )
-                                            )
-                                          )
-            }
+        if((robot==1 && attack==0x6d)
+                || (robot==0 && attack==0x6c)){
+            //If attack is 30mm/40mm/50mm cannon or pyro burner, track damage dealt that is less than 10
+            array_push(attackLandedArray,once(
+                                        currentRobot==robot
+                                        && robotLastAttackIs(attack)
+                                        && robotIsVertical()
+                                        && (
+                                            enemyTakesMinorDamage()
+                                            || enemy2TakesMinorDamage()
+                                            || enemy3TakesMinorDamage()
+                                            || enemy4TakesMinorDamage()
+                                           )
+                                        )
+                                      )
+        }else if(robot==1 && attack==0x6f){
+            //If attack is detonator, track damage dealt that is less than 10
+            array_push(attackLandedArray,once(
+                                        currentRobot==robot
+                                        && robotLastAttackIs(attack)
+                                        && robotIsVertical()
+                                        && (
+                                            enemyTakesDelayedDamage()
+                                            || enemy2TakesDelayedDamage()
+                                            || enemy3TakesDelayedDamage()
+                                            || enemy4TakesDelayedDamage()
+                                           )
+                                        )
+                                      )
+        }else{
+            array_push(attackLandedArray,once(
+                                        currentRobot==robot
+                                        && robotLastAttackIs(attack)
+                                        && robotIsVertical()
+                                        && (
+                                            enemyTakesDamage()
+                                            || enemy2TakesDamage()
+                                            || enemy3TakesDamage()
+                                            || enemy4TakesDamage()
+                                           )
+                                        )
+                                      )
+        }
     }  
     return attackLandedArray
 }
 
-//TODO: Include ultimate attacks in achievement, since they're always available in challenge mode
 function landAllAttacksAchievement(meganite){
     
     attackValueArray = get_keys(character_struct["last_attack"]["values"]["All"])
