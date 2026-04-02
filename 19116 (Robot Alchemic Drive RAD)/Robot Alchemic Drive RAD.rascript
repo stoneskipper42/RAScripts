@@ -1565,7 +1565,7 @@ function allAwardsAchievement(cityDamageLimit,achievementTitle,missionNumber,mis
     }else if(cityDamageLimit=="construction_minister_limit"){
         achievementDescription = "Complete episode "+missionNumber+" with the Construction Minister Award"+otherAwardsString+" in story or challenge mode"
     }else if(cityDamageLimit=="fifty_billion_limit"){
-        achievementDescription = "Complete episode "+missionNumber+" with less than 50 billion damage and all 4 building-specific awards in story or challenge mode"
+        achievementDescription = "Complete episode "+missionNumber+" with less than 50 billion damage to the city and all 4 building-specific awards in story or challenge mode"
     }
     
     achievement(
