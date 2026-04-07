@@ -1399,7 +1399,6 @@ function almostFullyUpgraded(upgrade_name_array){
     return upgradeDeltaTotal == upgradeMaxTotal - 1
 }
 
-//TODO: Why can't this use addSource again??
 function allUpgradesAchievement(upgradeType){
     allUpgradesAchievementDescription = "Purchase all "+upgradeType+" upgrades"
     if(upgradeType=="Vavel"){
@@ -1455,7 +1454,6 @@ function allUpgradesAchievement(upgradeType){
                         tally(length(upgradeArray),upgradeArray),when=storyMode()
                     )
                     && storyMode()
-                    //TODO: Look into better reset condition; values from last save are still shown on the main menu and load screens
                     && never(onLoadSavedGameMenu())
                     && never(onLoadSavedGameMenuUndub())
     )
@@ -2610,7 +2608,6 @@ rich_presence_conditional_display(challengeMode() && heroIsPresent(),
     rich_presence_value("Number",globalVar("building_collapse_point"))
     )
 
-//TODO: When not explicitly set, appears to default to the last played story mission; need to figure out how to detect this scenarion
 rich_presence_conditional_display(storyMode() && globalVar("map_type")!=0 && currentScenario<900,
     "{0} is in episode {2} ({3}) N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10}",
 //    "{0} is piloting {1} in Episode {2} ({3}) ⏲:{4} 🏠💥:{5} N♡:{6} E♡:{7} N$:{8} M$:{9} K$:{10} DMG:{11} BCP:{12} TE:{13}", //used for debugging
