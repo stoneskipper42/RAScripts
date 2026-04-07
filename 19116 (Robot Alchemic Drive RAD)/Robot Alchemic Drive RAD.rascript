@@ -402,7 +402,8 @@ values = {
      "bit2": "Nanao mentioned getting a job as a dancer", // 3rd time bakery is destroyed between ep 10 and 30 (vev-6)
      "bit3": "Nanao met with Misaki", // 4th time bakery is destroyed between ep 10 and 30 (vev-8)
      "bit4": "Misaki donated 100b yen", // 5th time bakery is destroyed between ep 10 and 30 (vev-24)
-     "bit6": "Date with Ellen", // Episode 42 if ellen_favor_flag>=3 (vev-47)
+     "bit5": "Dinner offer from Nanao", // After Episode 31 if Otawara is destroyed and Nanao didn't lose the bakery three time
+     "bit6": "Date with Ellen", // After Episode 42 if ellen_favor_flag>=3 (vev-47)
      "bit7": "Couldn't protect Misaki's company", // After ep39+, Misaki finance >= 10, destroy Misaki HQ (vev-66)
      "bit8": "Ellen discussed her broken engagement with Naoto/Ryo", // After ep26+, Misaki finance >= 9 - Naoto/Ryo only (vev-71)
      "bit9": "Misaki discussed his broken engagement with protag", // After ep26+, Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
