@@ -1662,6 +1662,26 @@ function destroyedNoSatellitesAchievement(){
     )
 }
 
+function protectBNNAchievement(){
+// Once level 43 starts
+// Reset if city damage exceeds construction minister limit
+// Reset if BNN is destroyed
+// Trigger on mission complete
+    protectBNNAchievementTrigger = once(missionStart() && currentScenario==43)
+                                    && never(missionIncomplete())
+                                    && never(missionIncompleteUndub())
+                                    && never(cityDamage>values["map_type"]["construction_minister_limit"][3])
+                                    && never(bnnSenjoBranchDestroyed())
+                                    && trigger_when(missionComplete(43) || missionCompleteUndub(43))
+    achievement(
+        title = "We Do NOT Interrupt this Broadcast",
+        description = "Complete episode 43 with the Construction Minister Award and BNN award in Story or Challenge mode",
+        points = 5,
+        id = 568257,
+        trigger = protectBNNAchievementTrigger
+    )
+}
+
 function paybackTimeAchievement(){
     achievement(
         title = "Payback Time",
@@ -2205,12 +2225,12 @@ allAwardsAchievement("construction_minister_limit","Kaiju Kiting",39,1) // Best 
 followTheScriptAchievement() //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
 allAwardsAchievement("senjo_peace_limit","Baron Beatdown",41,4)
 destroyedNoSatellitesAchievement() // Ep42 all awards achievement impossible, volgara can only be attacked by grenades until all satellites are destroyed
-allAwardsAchievement("senjo_peace_limit","Tower Defense",43,3) //Tough but possible; Volgara beelines to the tower, you can distract it with ranged attacks
 allAwardsAchievement("senjo_peace_limit","Watch Your Step",44,1)
 allAwardsAchievement("senjo_peace_limit","Rooftop Rescue",45,2)
 allAwardsAchievement("senjo_peace_limit","Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
 allAwardsAchievement("construction_minister_limit","Smoking the Competition",47,1) //Senjo award not possible; volgara deals 60 city damage while approaching the hosptial, narrow roads while walking, can't teleport/kite, and takes a while to take down
 allAwardsAchievement("construction_minister_limit","Rumble for the Cure",48,1) //Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
+protectBNNAchievement()
 allAwardsAchievement("senjo_peace_limit","Shipnapped",49,3)
 paybackTimeAchievement()
 allAwardsAchievement("senjo_peace_limit","Last Train out of Senjo",51,1)
