@@ -2196,44 +2196,44 @@ postMissionEventAchievement("Still Has a Part to Play","In story mode, speak wit
 //Mission-specific achievements
 allAwardsAchievement("construction_minister_limit","One Weird Hack to Double Your Income",8,1)
 allAwardsAchievement("senjo_peace_limit","Fray in the Bay",9,3)
-allAwardsAchievement("senjo_peace_limit","Standing the Heat",10,2)
-allAwardsAchievement("senjo_peace_limit","Ride the Cyclone",11,2)
+allAwardsAchievement("construction_minister_limit","Standing the Heat",10,2)
+allAwardsAchievement("construction_minister_limit","Ride the Cyclone",11,2)
 allAwardsAchievement("construction_minister_limit","He Came Outta Nowhere",13,1) //Top score: 100; volgara usually lands on a building when it appears, starts attacking buildings before you can launch
 allAwardsAchievement("construction_minister_limit","We Don't Need No Water",14,1) //Top score: 100; Volgara deals 80 city damage before player gets control, but construction minister seems doable
-allAwardsAchievement("senjo_peace_limit","Catch a Riiiiiide","15a",1)
+allAwardsAchievement("construction_minister_limit","Catch a Riiiiiide","15a",1)
 senjoWouldHaveBeenGratefulAchievement() //All achievements not possible for ep15b/18a; Peace/construction awards in Tokyo are 10/50 dmg and EVERYTHING is breakable
-allAwardsAchievement("senjo_peace_limit","Childhood Protector",16,2)
-allAwardsAchievement("senjo_peace_limit","You Want Misaki, You Go Through Me",17,1)
+allAwardsAchievement("construction_minister_limit","Childhood Protector",16,2)
+allAwardsAchievement("construction_minister_limit","You Want Misaki, You Go Through Me",17,1)
 riggedFightAchievement()
 allAwardsAchievement("fifty_billion_limit","Controlling the Battlefield","19b",1) 
-allAwardsAchievement("senjo_peace_limit","Double Jeopardy",20,2)
-allAwardsAchievement("senjo_peace_limit","Chicken Soup Run",21,2)
-allAwardsAchievement("senjo_peace_limit","Expertly Evacuated",22,2)
+allAwardsAchievement("construction_minister_limit","Double Jeopardy",20,2)
+allAwardsAchievement("construction_minister_limit","Chicken Soup Run",21,2)
+allAwardsAchievement("construction_minister_limit","Expertly Evacuated",22,2)
 allAwardsAchievement("construction_minister_limit","Wheels on the Bus Go Round and Round",23,1)
 assistanceNotRequiredAchievement()
-allAwardsAchievement("senjo_peace_limit","Bye Bye Third Wheel",25,2)
-allAwardsAchievement("senjo_peace_limit","Satellite Scrapper",26,1)
-allAwardsAchievement("senjo_peace_limit","Gllang Is Very Sick! Don't Be Mad!",27,2)
-allAwardsAchievement("senjo_peace_limit","Jamming up the Jammers",28,2)
-allAwardsAchievement("senjo_peace_limit","First Person View",29,1)
-allAwardsAchievement("senjo_peace_limit","Keep on Truckin",30,2)
-allAwardsAchievement("senjo_peace_limit","If Nanao Can Give 200% I Can Too",31,2)
-allAwardsAchievement("senjo_peace_limit","I'll \"Accidentally on Purpose\" Next Time",32,2)
+allAwardsAchievement("construction_minister_limit","Bye Bye Third Wheel",25,2)
+allAwardsAchievement("construction_minister_limit","Satellite Scrapper",26,1)
+allAwardsAchievement("construction_minister_limit","Gllang Is Very Sick! Don't Be Mad!",27,2)
+allAwardsAchievement("construction_minister_limit","Jamming up the Jammers",28,2)
+allAwardsAchievement("construction_minister_limit","First Person View",29,1)
+allAwardsAchievement("construction_minister_limit","Keep on Truckin",30,2)
+allAwardsAchievement("construction_minister_limit","If Nanao Can Give 200% I Can Too",31,2)
+allAwardsAchievement("construction_minister_limit","I'll \"Accidentally on Purpose\" Next Time",32,2)
 allAwardsAchievement("senjo_peace_limit","Almost A Fair Fight",33,4)
-allAwardsAchievement("senjo_peace_limit","We Are Vavel",38,2)
-allAwardsAchievement("construction_minister_limit","Kaiju Kiting",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
+allAwardsAchievement("construction_minister_limit","We Are Vavel",38,2)
+allAwardsAchievement("fifty_billion_limit","Kaiju Kiting",39,1) // Best score:160; Dantarion is VERY strong flame breath will destroy buildings even if he's following you down the widest streets, and pilot starts far from launch, and launch is delayed
 followTheScriptAchievement() //Fastest: 7m12s L, 7m22s V, 8m47s G; volgara is invincible until meganite damage limit or time limit, and immediately destroys city hall
 allAwardsAchievement("senjo_peace_limit","Baron Beatdown",41,4)
 destroyedNoSatellitesAchievement() // Ep42 all awards achievement impossible, volgara can only be attacked by grenades until all satellites are destroyed
-allAwardsAchievement("senjo_peace_limit","Watch Your Step",44,1)
-allAwardsAchievement("senjo_peace_limit","Rooftop Rescue",45,2)
-allAwardsAchievement("senjo_peace_limit","Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
-allAwardsAchievement("construction_minister_limit","Smoking the Competition",47,1) //Senjo award not possible; volgara deals 60 city damage while approaching the hosptial, narrow roads while walking, can't teleport/kite, and takes a while to take down
-allAwardsAchievement("construction_minister_limit","Rumble for the Cure",48,1) //Not possible; episode starts with 100 damage, but can do 140 damage limit (constr minister)
 protectBNNAchievement()
+allAwardsAchievement("construction_minister_limit","Watch Your Step",44,1)
+allAwardsAchievement("construction_minister_limit","Rooftop Rescue",45,2)
+allAwardsAchievement("construction_minister_limit","Staying Above It All",46,2) //Difficult; volgara won't dodge ranged attacks, but can be distracted from his path the the buildings
+allAwardsAchievement("fifty_billion_limit","Smoking the Competition",47,1) //Senjo/CM not possible; volgara deals 60 city damage while approaching the hosptial, narrow roads while walking, can't teleport/kite, and takes a while to take down
+allAwardsAchievement("fifty_billion_limit","Rumble for the Cure",48,1) //Senjo/CM not possible; episode starts with 100 damage, MAYBE could do 140 damage limit with Laguiole only
 allAwardsAchievement("senjo_peace_limit","Shipnapped",49,3)
 paybackTimeAchievement()
-allAwardsAchievement("senjo_peace_limit","Last Train out of Senjo",51,1)
+allAwardsAchievement("construction_minister_limit","Last Train out of Senjo",51,1)
 overconfidentAchievement()
 counterAsmodeusAchievement()
 
