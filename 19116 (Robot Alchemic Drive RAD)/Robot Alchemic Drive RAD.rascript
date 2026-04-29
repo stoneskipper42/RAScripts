@@ -1346,7 +1346,7 @@ function timeLeaderboard(mission_number){
     }
     start = start && missionStart()
     leaderboard(
-        "Episode "+mission_number,
+        "Episode "+mission_number+" - Fastest Time",
         "Successfully complete episode "+mission_number+" as fast as possible",
         start,
         missionIncomplete() || missionIncompleteUndub(),
