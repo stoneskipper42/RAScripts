@@ -868,13 +868,15 @@ character_struct = {
                 //0x65: "Deploy/retract Pyro Burner",
                 //0x66: "Deploy/retract Drill Gear",
                 0x68: "Harken Laser",
-                0x69: "Lava Stream / Volcanic Stream",
+                //0x69: "Lava Stream", // Don't need to count this AND Volcanic Stream
                 0x6a: "Vavel Missile",
                 0x6b: "Divine Upper",
                 0x6c: "Pyro Burner", //deals 2 dmg/frame
                 0x70: "Genesis Cry", // Ultimate attack
                 0x71: "Blast Hook",
-                0x74: "Meteor Dive / Angelic Fall",
+                0x72: "Volcanic Stream", 
+                //0x73: "Meteor Dive", // Don't need to count this AND Angelic Fall
+                0x74: "Angelic Fall",
                 0x75: "Gravity Zero",
                 //0x1f5: "Activate Genesis Mode",
                 0x258: "Dual Knuckle",
@@ -1029,6 +1031,21 @@ for value in get_keys(character_struct)
 function robotLastAttackIs(attack){
     //Allow left or right Assault Knuckle
     if(attack==0x259)   return robot["last_attack"]>=0x259 && robot["last_attack"]<=0x25a
+
+    //Allow Meteor Dive or Angelic Fall
+    if(attack==0x74)    return robot["last_attack"]>=0x73 && robot["last_attack"]<=0x74
+
+    //Allow Lava Stream or Volcanic Stream
+    if(attack==0x72)    return robot["last_attack"]>=0x69 && robot["last_attack"]<=0x72
+                            && robot["last_attack"]!=0x6a
+                            && robot["last_attack"]!=0x6b
+                            && robot["last_attack"]!=0x6c
+                            && robot["last_attack"]!=0x6d
+                            && robot["last_attack"]!=0x6e
+                            && robot["last_attack"]!=0x6f
+                            && robot["last_attack"]!=0x70
+                            && robot["last_attack"]!=0x71
+
     return robot["last_attack"]==attack
 }
 
