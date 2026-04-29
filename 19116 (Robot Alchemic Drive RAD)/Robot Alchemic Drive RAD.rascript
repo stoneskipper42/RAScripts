@@ -1941,7 +1941,7 @@ function blockAllAttacksAchievement(){
         title = "Keep Those Hands Up",
         description = "Complete an episode after blocking at least three attacks and taking no unblocked damage",
         points = 5,
-        trigger = measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking())),when=once(missionStart()))
+        trigger = measured(repeated(3,(robotIsPresent() && robotTakesDamage() && robotIsBlocking() && !versusMode())),when=once(missionStart() && !versusMode()))
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
                     && never(robotIsPresent() && robotTakesDamage() && !robotIsBlocking())
@@ -1977,7 +1977,7 @@ function useNormalControlsAchievement(){
         title = "Through This Controller, I Can Feel Every Beat of Its Heart",
         description = "Complete an episode after defeating all enemies using normal controls",
         points = 5,
-        trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission())
+        trigger = once(missionStart() && globalVar("control_type")==1 && isCombatMission() && !versusMode())
                     && never(missionIncomplete())
                     && never(missionIncompleteUndub())
                     && (
@@ -2001,7 +2001,7 @@ function attackDownedEnemyAchievement(){
         title = "Hit 'Em While They're Down",
         description = "As Vavel, hit a downed enemy three times before they get back up",
         points = 5,
-        trigger = inMission() && !trainingMode() && !versusMode() &&
+        trigger = inMission() && !versusMode() &&
                     (
                         (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robotIsVavel() && never(enemyIsPresent() && !enemyIsDown())), when=robotIsVavel() && enemyIsDown()))
                         || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robotIsVavel() && never(enemy2IsPresent() && !enemy2IsDown())), when=robotIsVavel() && enemy2IsDown()))
@@ -2016,7 +2016,7 @@ function attackFallingEnemyAchievement(){
         title = "Then You Have My Permission to Fall",
         description = "As Laguiole, hit a falling enemy three times before they hit the ground",
         points = 5,
-        trigger = inMission() && !trainingMode() && !versusMode() &&
+        trigger = inMission() && !versusMode() &&
                     (
                         (measured(tally(3,enemyTakesDamage() && enemyIsFalling() && robotIsLaguiole() && never(enemyIsPresent() && !enemyIsFalling())), when=robotIsLaguiole() && enemyIsFalling()))
                         || (measured(tally(3,enemy2TakesDamage() && enemy2IsFalling() && robotIsLaguiole() && never(enemy2IsPresent() && !enemy2IsFalling())), when=robotIsLaguiole() && enemy2IsFalling()))
@@ -2032,7 +2032,7 @@ function attackAfterGravityZeroAchievement(){
         description = "As Gllang, uppercut or straight punch a downed enemy three times without taking damage",
         points = 5,
         id=568362,
-        trigger = inMission() && !trainingMode() && !versusMode() &&
+        trigger = inMission() && !versusMode() &&
                     (
                         (measured(tally(3,enemyIsPresent() && enemyTakesDamage() && enemyIsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemyIsPresent()) && never(robotTakesDamage()))
                         || (measured(tally(3,enemy2IsPresent() && enemy2TakesDamage() && enemy2IsDown() && robot["last_attack"]>=2 &&robot["last_attack"]<=3 && robotIsGllang()), when=robotIsGllang() && enemy2IsPresent()) && never(robotTakesDamage()))
