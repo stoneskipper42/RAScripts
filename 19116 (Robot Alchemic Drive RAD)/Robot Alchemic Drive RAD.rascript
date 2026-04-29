@@ -1690,8 +1690,8 @@ function protectBNNAchievement(){
                                     && never(bnnSenjoBranchDestroyed())
                                     && trigger_when(missionComplete(43) || missionCompleteUndub(43))
     achievement(
-        title = "We Do NOT Interrupt this Broadcast",
-        description = "Complete episode 43 with the Construction Minister Award and BNN award in Story or Challenge mode",
+        title = "We Do NOT Interrupt This Broadcast",
+        description = "Complete episode 43 with the Construction Minister Award and BNN award in story or challenge mode",
         points = 5,
         id = 568257,
         trigger = protectBNNAchievementTrigger
