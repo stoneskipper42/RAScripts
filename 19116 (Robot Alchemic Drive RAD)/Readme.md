@@ -76,19 +76,18 @@ The key to combat in RAD is to fight dirty and hit the enemy when they're down o
 Some key locations provide awards if protected during missions, or have additional story impacts if destroyed.
 | Location | Map | Screenshot |Award|Additional Impact|
 |---|:---:|---|---|---|
-|Senjo City Center - Misaki HQ|||Misaki Award|+1 Misaki finance if destroyed|
-|Senjo City Center - Misaki Plant|||Misaki Plant Award|+1 Misaki finance if destroyed|
-|Senjo City Center - Senjo City Hall|||Senjo Mayor Award|
-|Senjo City Center - Senjo Hospital|||Redwing Cross Award|
-|Senjo City Center - Misaki Plant|||Misaki Plant Award|+1 Misaki finance if destroyed|
-|Downtown Senjo - School|||Education Award|
-|Downtown Senjo - Panda Bakery||||+1 Nanao finance if destroyed between ep8 and ep30|
-|Downtown Senjo - Coffee Shop||||+1 Nanao finance if destroyed ep31|
-|Downtown Senjo - Yaoya Grocery||||+1 Nanao finance if destroyed ep32+|
-|Downtown Senjo - Otawara Trading||||-1 Nanao finance if destroyed in ep31/ep32|
-|Downtown Senjo - Keiko’s Apartment||||+1 Keiko finance if destroyed ep8+|
-|Senjo Port - Observatory|||Lookout Point Award|
-|Senjo Port - BNN|||BNN Award|
+|Senjo City Center - Misaki HQ|![Location of Misaki HQ on map of Senjo City Center - slightly north of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20HQ.png)||Misaki Award|+1 Misaki finance if destroyed|
+|Senjo City Center - Misaki Plant|![Location of Misaki Plant on map of Senjo City Center - slightly northwest of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20plant.png)||Misaki Plant Award|+1 Misaki finance if destroyed|
+|Senjo City Center - Senjo City Hall|![Location of City Hall on map of Senjo City Center - southwest of dead center](./images/New%20Senjo%20City%20Center%20-%20City%20hall.png)||Senjo Mayor Award|
+|Senjo City Center - Senjo Hospital|![Location of Hospital on map of Senjo City Center - eastern side of map, somewhat north](./images/New%20Senjo%20City%20Center%20-%20Hospital.png)||Redwing Cross Award|
+|Downtown Senjo - School|![Location of School on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20School.png)||Education Award|
+|Downtown Senjo - Panda Bakery|![Location of Bakery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Panda%20bakery.png)|||+1 Nanao finance if destroyed between ep8 and ep30|
+|Downtown Senjo - Coffee Shop|![Location of Coffee Shop on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Coffee%20shop.png)|||+1 Nanao finance if destroyed ep31|
+|Downtown Senjo - Yaoya Grocery|![Location of Yaoya Grocery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Yaoya%20grocery.png)|||+1 Nanao finance if destroyed ep32+|
+|Downtown Senjo - Otawara Trading|![Location of Otawara Trading on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Otawara%20trading.png)|||-1 Nanao finance if destroyed in ep31/ep32|
+|Downtown Senjo - Keiko’s Apartment|![Location of Keiko Apartment on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Keiko's%20apartment.png)|||+1 Keiko finance if destroyed ep8+|
+|Senjo Port - Observatory|![Location of Observatory on map of Senjo Port](./images/Senjo%20Port%20-%20Observation%20tower.png)||Lookout Point Award|
+|Senjo Port - BNN|![Location of BNN building on map  of Senjo Port](./images/Senjo%20Port%20-%20BNN%20Senjo%20Branch.png)||BNN Award|
 
 
 ---
