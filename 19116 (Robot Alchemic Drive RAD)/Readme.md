@@ -76,24 +76,24 @@ The key to combat in RAD is to fight dirty and hit the enemy when they're down o
 Some key locations provide awards if protected during missions, or have additional story impacts if destroyed.
 | Location | Map | Screenshot |Award|Additional Impact|
 |---|:---:|---|---|---|
-|Senjo City Center - Misaki HQ|![Location of Misaki HQ on map of Senjo City Center - slightly north of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20HQ.png)||Misaki Award|+1 Misaki finance if destroyed|
-|Senjo City Center - Misaki Plant|![Location of Misaki Plant on map of Senjo City Center - slightly northwest of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20plant.png)||Misaki Plant Award|+1 Misaki finance if destroyed|
-|Senjo City Center - Senjo City Hall|![Location of City Hall on map of Senjo City Center - southwest of dead center](./images/New%20Senjo%20City%20Center%20-%20City%20hall.png)||Senjo Mayor Award|
-|Senjo City Center - Senjo Hospital|![Location of Hospital on map of Senjo City Center - eastern side of map, somewhat north](./images/New%20Senjo%20City%20Center%20-%20Hospital.png)||Redwing Cross Award|
-|Downtown Senjo - School|![Location of School on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20School.png)||Education Award|
-|Downtown Senjo - Panda Bakery|![Location of Bakery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Panda%20bakery.png)|||+1 Nanao finance if destroyed between ep8 and ep30|
-|Downtown Senjo - Coffee Shop|![Location of Coffee Shop on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Coffee%20shop.png)|||+1 Nanao finance if destroyed ep31|
-|Downtown Senjo - Yaoya Grocery|![Location of Yaoya Grocery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Yaoya%20grocery.png)|||+1 Nanao finance if destroyed ep32+|
-|Downtown Senjo - Otawara Trading|![Location of Otawara Trading on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Otawara%20trading.png)|||-1 Nanao finance if destroyed in ep31/ep32|
-|Downtown Senjo - Keiko’s Apartment|![Location of Keiko Apartment on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Keiko's%20apartment.png)|||+1 Keiko finance if destroyed ep8+|
-|Senjo Port - Observatory|![Location of Observatory on map of Senjo Port](./images/Senjo%20Port%20-%20Observation%20tower.png)||Lookout Point Award|
-|Senjo Port - BNN|![Location of BNN building on map  of Senjo Port](./images/Senjo%20Port%20-%20BNN%20Senjo%20Branch.png)||BNN Award|
+|Senjo City Center - Misaki HQ|![Location of Misaki HQ on map of Senjo City Center - slightly north of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20HQ.png)|![Screenshot of Misaki HQ](./images/city_center-miaski-hq.png)|Misaki Award|+1 Misaki finance if destroyed|
+|Senjo City Center - Misaki Plant|![Location of Misaki Plant on map of Senjo City Center - slightly northwest of dead center](./images/New%20Senjo%20City%20Center%20-%20Misaki%20plant.png)|![Screenshot of Misaki Plant](./images/city_center-misaki-plant.png)|Misaki Plant Award|+1 Misaki finance if destroyed|
+|Senjo City Center - Senjo City Hall|![Location of City Hall on map of Senjo City Center - southwest of dead center](./images/New%20Senjo%20City%20Center%20-%20City%20hall.png)|![Screenshot of City Hall](./images/city_center-senjo_city_hall.png)|Senjo Mayor Award|
+|Senjo City Center - Senjo Hospital|![Location of Hospital on map of Senjo City Center - eastern side of map, somewhat north](./images/New%20Senjo%20City%20Center%20-%20Hospital.png)|![Screenshot of Senjo Hospital](./images/city_center-senjo_hospital.png)|Redwing Cross Award|
+|Downtown Senjo - School|![Location of School on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20School.png)|![Screenshot of Senjo School](./images/downtown-school.png)|Education Award|
+|Downtown Senjo - Panda Bakery|![Location of Bakery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Panda%20bakery.png)|![Screenshot of Panda Bakery](./images/downtown-panda_bakery.png)||+1 Nanao finance if destroyed between ep8 and ep30|
+|Downtown Senjo - Coffee Shop|![Location of Coffee Shop on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Coffee%20shop.png)|![Screenshot of Baron Cafe](./images/downtown-baron_cafe.png)||+1 Nanao finance if destroyed ep31|
+|Downtown Senjo - Yaoya Grocery|![Location of Yaoya Grocery on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Yaoya%20grocery.png)|![Screenshot of Yaoya Grocery](./images/downtown-yaoya_grocery.png)||+1 Nanao finance if destroyed ep32+|
+|Downtown Senjo - Otawara Trading|![Location of Otawara Trading on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Otawara%20trading.png)|![Screenshot of Otawara Trading](./images/downtown-otawara_trading.png)||-1 Nanao finance if destroyed in ep31/ep32|
+|Downtown Senjo - Keiko’s Apartment|![Location of Keiko Apartment on map of Downtown Senjo](./images/Downtown%20Senjo%20-%20Keiko's%20apartment.png)|![Screenshot of Keiko's Apartment](./images/downtown-keiko_apartment.png)||+1 Keiko finance if destroyed ep8+|
+|Senjo Port - Observatory|![Location of Observatory on map of Senjo Port](./images/Senjo%20Port%20-%20Observation%20tower.png)|![Screenshot of Observation Tower](./images/port-observation_tower.png)|Lookout Point Award|
+|Senjo Port - BNN|![Location of BNN building on map  of Senjo Port](./images/Senjo%20Port%20-%20BNN%20Senjo%20Branch.png)|![Screenshot of BNN Senjo Branch](./images/port-bnn.png)|BNN Award|
 
 
 ---
 
 
-<h1 id=Challenges>
+<h1 id=Progression>
     🏆 Progression and Missables 
 </h1>
 
@@ -239,13 +239,15 @@ Combat achievements can be obtained at any time during training, story or challe
 
 Most challenge achievements require completing missions while minimizing damage to the city, and can be completed in story or challenge mode. In missions where the enemy targets specific buildings and not the meganite (Controlling the Battlefield, Tower Defense) use weak ranged attacks to force the volgara to phantom away from the building.
 
+> [!CAUTION]
+> In challenge mode you can skip the intro to levels using start+select to jump straight to the mission briefing. Start+select will **also** skip the rest of the mission to bring you back to the mission select screen.
+
 ### Damage limits
 + Downtown Senjo: 190 dmg or less for the Construction Minister Award
 +  Senjo City Center: 190 dmg or less for the Construction Minister Award
 + Senjo City Center 50 Billion yen missions: For ep 19b, 39, 47, 48 you only need to stay under 450 dmg
 + Senjo Port: 50 dmg or less for the Senjo Peace Award
 + Mt Chihaya: 60 dmg or less for the Senjo Peace Award
-
 
 ### Challenge Achievement List
 
