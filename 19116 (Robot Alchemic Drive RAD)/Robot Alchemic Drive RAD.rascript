@@ -409,9 +409,9 @@ values = {
      "bit9": "Misaki discussed his broken engagement with protag", // After ep26+, Misaki finance >= 9 - Naoto/Ryo must have already met with Ellen (vev-84)
      "bit10": "Misaki discussed MHI's recovery after the broken engagement", // After ep39+, Misaki finance >= 11, destroy Misaki HQ
      "bit11": "Misaki remains positive about MHI's destruction", // After ep39+, Misaki finance >= 12, destroy Misaki HQ
-     "bit12": "Keiko found living in CFP HQ", //Keiko's apartment destroyed (vev-129)
-     "bit13": "Keiko living in CPF HQ again", //Keiko's apartment destroyed 2nd time (vev-137)
-     "bit14": "Keiko living in CFP HQ - don't try anything funny" //Keiko's apartment destroyed 3rd time (vev-154)
+     "bit12": "Keiko found living in CFP HQ", // After ep10+, 1st time Keiko's apartment is destroyed (vev-129)
+     "bit13": "Keiko living in CPF HQ again", // After ep10+, 2nd time Keiko's apartment destroyed (vev-137)
+     "bit14": "Keiko living in CFP HQ - don't try anything funny" // After ep10+, 3rd time Keiko's apartment destroyed (vev-154)
  },
  "map_type": {
     "title": {
@@ -1761,7 +1761,8 @@ function stringCompare(string,address){
     }else if(string=="vev\31-1"){
         stringArray = [0x76,0x65,0x76,0x5c,0x33,0x31,0x2d,0x31] //To the tune of one hundred billion yen
     }else if(string=="vev\44"){
-        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x34]
+        stringArray = [0x76,0x65,0x76,0x5c,0x34,0x34] //vev-44a-1 (Bread and water soup...)
+                                                      //vev-44b-1 (Bread and water soup?)
     }else if(string=="vev\53-4"){
         stringArray = [0x76,0x65,0x76,0x5c,0x35,0x33,0x2d,0x34] //vev\53-4 Naoto\Ryo dialog
         stringArray2 = [0x76,0x65,0x76,0x5c,0x36,0x30,0x2d,0x32] //vev\60-2 Yui dialog
@@ -1771,9 +1772,9 @@ function stringCompare(string,address){
     }else if(string=="vev\83-1"){
         stringArray = [0x76,0x65,0x76,0x5C,0x38,0x33,0x2D,0x31] //Because it was with you...
     }else if(string=="vev\101a-1"){
-        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x61,0x2D,0x31] //vev\101a-1 Naoto dialog 'So there's more to him than just a spoiled brat.'
-        stringArray2 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x62,0x2D,0x31] //vev\101b-1 Ryo dialog 'So there's more to him than just a spoiled brat...'
-        stringArray3 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x32,0x2D,0x31] //vev\102-1 Yui dialog 'So there's more to him than just a spoiled jerk...'
+        stringArray = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x61,0x2D,0x31] //vev\101a-1 Naoto dialog (So there's more to him than just a spoiled brat.)
+        stringArray2 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x31,0x62,0x2D,0x31] //vev\101b-1 Ryo dialog (So there's more to him than just a spoiled brat...)
+        stringArray3 = [0x76,0x65,0x76,0x5C,0x31,0x30,0x32,0x2D,0x31] //vev\102-1 Yui dialog (So there's more to him than just a spoiled jerk...)
         string_count = 3
     }else if(string=="vev\113-2"){
         stringArray = [0x76,0x65,0x76,0x5C,0x31,0x31,0x33,0x2D,0x32] //vev\113-2 Misaki dialogue to Naoto/Ryo 'I'll do what I can, the only way I know how'
