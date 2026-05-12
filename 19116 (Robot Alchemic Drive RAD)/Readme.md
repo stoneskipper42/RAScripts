@@ -105,7 +105,7 @@ Curry Ellen's favor and avoid Nanao's, and aim for post-mission events. This wil
 - After episode 8, destroy Keiko’s apartment in Downtown Senjo until all 3 post-mission Keiko events are unlocked
 - Keep destroying Misaki HQ and at least one Misaki plant anytime you're in New Senjo City; you want Misaki's $ count to be 9+ before you hit ep26
 - Put out fires at city hall in ep14
-- Do not go to/help passed-out Nanao in ep16
+- Do NOT go to/help passed-out Nanao in ep16
 - Do NOT talk to Nanao twice in ep 20
 - Do NOT get to school on time in ep 20
 - Do NOT talk to Ellen until she gets mad in ep22
@@ -207,7 +207,7 @@ Avoid doing anything to get Nanao or Ellen to like you. Destroy the city as litt
     🏆 Combat <i><sub><sup>(12 achievements - 75 points)</sup></sub></i>
 </h1>
 
-Combat achievements can be obtained at any time during training, story or challenge mode.
+Combat achievements can be obtained at any time during training, story or challenge mode. See [Weltall_Zero](https://gamefaqs.gamespot.com/community/Weltall_Zero)'s [Move List on Gamefaqs](https://gamefaqs.gamespot.com/ps2/561096-robot-alchemic-drive/faqs/19179) for shorthand on attack inputs for the "Use all combat command" achievements.
 
 
 ### Combat Achievement List
@@ -240,7 +240,7 @@ Combat achievements can be obtained at any time during training, story or challe
 Most challenge achievements require completing missions while minimizing damage to the city, and can be completed in story or challenge mode. In missions where the enemy targets specific buildings and not the meganite (Controlling the Battlefield, Tower Defense) use weak ranged attacks to force the volgara to phantom away from the building.
 
 > [!CAUTION]
-> In challenge mode you can skip the intro to levels using start+select to jump straight to the mission briefing. Start+select will **also** skip the rest of the mission to bring you back to the mission select screen.
+> In challenge mode you can skip the episode intro by using start+select to jump straight to the mission briefing. Be careful as during a mission start+select will **also** skip the rest of the mission, bringing you back to the mission select screen.
 
 ### Damage limits
 + Downtown Senjo: 190 dmg or less for the Construction Minister Award
