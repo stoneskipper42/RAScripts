@@ -529,7 +529,7 @@ values = {
     "max":1
 },
 "vvl_dive":{
-    // Angelic Fall upgrade is only available after mission 40, and only if Vavel was the starting meganite
+    // Angelic Fall upgrade is only available after mission 40
     1: "Meteor Dive",
     2: "Angelic fall",
     "max":2
