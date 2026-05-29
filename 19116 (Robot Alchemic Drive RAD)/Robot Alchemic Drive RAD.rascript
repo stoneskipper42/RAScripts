@@ -1520,8 +1520,11 @@ function missionProgressionAchievement(achievementTitle,missionRangeStart,missio
     if(missionRangeEnd==53){
         achievementType = "win_condition"
         achievementPoints = 25
-    }else{
+    }else if(startingMeganite==""){
         achievementType = "progression"
+        achievementPoints = 10
+    }else{
+        achievementType = ""
         achievementPoints = 10
     }
     achievement(
