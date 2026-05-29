@@ -30,7 +30,7 @@ This guide provides comprehensive details on how to unlock each achievement with
 ```
 Set consists of 101 achievements worth 705 points
 
-Set released on DD MMMM 2026
+Set released on 27 May 2026
 ```
 
 <h4 id=WalkthroughsResources>
