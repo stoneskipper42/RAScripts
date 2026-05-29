@@ -1101,6 +1101,7 @@ function enemy2IsDown() => enemy2["falling_status"]==0x1 || enemy2["falling_stat
 function enemy3IsDown() => enemy3["falling_status"]==0x1 || enemy3["falling_status"]==0x2
 function enemy4IsDown() => enemy4["falling_status"]==0x1 || enemy4["falling_status"]==0x2
 
+function robotAbilityIsActive() => robot["three_minute_ability"] == 0xcdcdcd01
 function robotAbilityActivated() => robot["three_minute_ability"] == 0xcdcdcd01 && prev(robot["three_minute_ability"]) == 0xcdcdcd00
 
 function enemyDestroyed() => enemy["health"]==0 && prev(enemy["health"])>0 && enemyPointer==prev(enemyPointer) && enemyIsPresent()
@@ -2049,12 +2050,14 @@ function attackAfterGravityZeroAchievement(){
 
 function singleAttackAchievement(achTitle,upgrade_name){
     achievementTrigger = inMission() && robotIsPresent()
+    ep40trigger = 1==0
 
     if(upgrade_name=="vvl_available_genesis_cry"){
         robotIndex=0
         attackIndex=0x70
         healthLimit=1000
         achievementTrigger = achievementTrigger && currentRobot==robotIndex && initialRobot==robotIndex
+        ep40trigger = currentScenario==40 && enemyIsPresent() && enemy["health"]>=healthLimit && robotAbilityIsActive() && trigger_when(always_false())
     }else if(upgrade_name=="glg_iron_tusk"){
         robotIndex=1
         attackIndex=0x70
@@ -2077,31 +2080,33 @@ function singleAttackAchievement(achTitle,upgrade_name){
 
     achievement(
         title = achTitle,
-        description = "As "+robotName+", kill a Volgara with over "+healthLimit+" health using only \""+attackName+"\"",
+        description = "As "+robotName+", kill a Volgara with "+healthLimit+" or more health using only \""+attackName+"\"",
         points = 5,
         trigger = achievementTrigger
                     && never(prev(robot["last_attack"])==attackIndex && robot["last_attack"]!=attackIndex)
                     && (
-                        (once(enemy["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        (once(enemy["health"]>=healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy["health"]==0 && prev(enemy["health"])>0)
                         )
-                        || (once(enemy2["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy2["health"]>=healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy2["health"]==0 && prev(enemy2["health"])>0)
                         )
-                        || (once(enemy3["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy3["health"]>=healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy3["health"]==0 && prev(enemy3["health"])>0)
                         )
-                        || (once(enemy4["health"]>healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
+                        || (once(enemy4["health"]>=healthLimit && robot["last_attack"]==attackIndex && prev(robot["last_attack"])==attackIndex)
                             && trigger_when(enemy4["health"]==0 && prev(enemy4["health"])>0)
                         )
                         || //If player has the capability to earn this achievment, show an indicator; these alts should never be able to trigger
-                        enemyIsPresent() && enemy["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemyIsPresent() && enemy["health"]>=healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy2IsPresent() && enemy2["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy2IsPresent() && enemy2["health"]>=healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy3IsPresent() && enemy3["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy3IsPresent() && enemy3["health"]>=healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
                             ||
-                        enemy4IsPresent() && enemy4["health"]>healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                        enemy4IsPresent() && enemy4["health"]>=healthLimit && globalVar(upgrade_name)==1 && trigger_when(always_false())
+                            ||
+                        ep40trigger
                     )
 
     )
