@@ -34,6 +34,7 @@ cur_year = word_be(0x4d8c)
 last_command = 0x50e9 // 100-byte ASCII array
 
 //Functions
+function bronze_door_unlocked() => byte(0x4d99)==0
 function secret_door_revealed() => bit3(0x3662)==0x0 && prev(bit3(0x3662))==0x1 //0=visible, 1=invisible
 function is_invisible() => byte(0x4d19)==0x1
 function ring_retrieved_from_seat() => byte(0x4d85)==0 && prev(byte(0x4d85))==1
@@ -152,7 +153,7 @@ ga("Trial of Patience","Retrieve an item from the Royal Puzzle",3,(has_item("boo
 ga("Trial of Kindness","Aid a weary traveler",1,secret_door_revealed(),ach_type="progression")
 ga("Trial of Valor","Avoid the notice of the Guardians",3,enter_location(0x90,0x9e) || enter_location(0x90,0xad),ach_type="")
 ga("The Final Test","Prove yourself worthy of the final test",3,enter_location(0xb2,0x90),ach_type="progression")
-ga("Dungeon Master","Discover the Treasury of Zork",10,enter_location(0x85,0x87),ach_type="win_condition")
+ga("Dungeon Master","Discover the Treasury of Zork",10,enter_location(0x85,0x87) && bronze_door_unlocked(),ach_type="win_condition")
 ga("Nothing Happens Here","Get the attention of a lone mariner",1,vial_appears(),ach_type="missable")
 ga("Extreme Valor","Stare into the face of danger while passing the Guardians",1,enter_location(0xad,0xac),ach_type="missable")
 ga("Contempt of Swiftness","Recover the strange key after jumping off the aqueduct",1,contempt_prereqs() && get_item("key",0x1d) && not_in_key_locations(),ach_type="missable")
@@ -162,7 +163,7 @@ ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors i
 ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork 2 ended up in a volcano",1,ring_stolen_plaque_read(),prevent_restore=false)
 ga("#3 Just Has a Nice Ring To It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",1,overheard_flathead())
 
-leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=false)
+leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87) && bronze_door_unlocked(), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=false)
 
 RPvalues={
     "location":{
