@@ -163,7 +163,7 @@ ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors i
 ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork 2 ended up in a volcano",1,ring_stolen_plaque_read(),prevent_restore=false)
 ga("#3 Just Has a Nice Ring to It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",1,overheard_flathead())
 
-leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87) && bronze_door_unlocked(), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=false)
+leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87) && bronze_door_unlocked(), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=true)
 
 RPvalues={
     "location":{
