@@ -164,23 +164,23 @@ leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_lo
 
 RPvalues={
     "location":{
-        0x00:"Uninitialized", //items only
+        0x00:"Uninitialized", // items only
         0x09:"Water Slide",
         0x0a:"High Arch",
         0x0b:"Aqueduct",
         0x0c:"Key Room",
-        0x0d:"Dark Place", // (S)
-        0x0e:"Dark Place", // (N)
+        0x0d:"Dark Place", // S
+        0x0e:"Dark Place", // N
         0x0f:"Southern Shore",
-        0x10:"Sacrificial Altar",
-        0x12:"Room 8",
-        0x13:"Timber Room", //NEED TO CONFIRM
-        0x14:"Drafty Room",
-        0x15:"Dead End", // (Zork I)
-        0x16:"Ladder Bottom",
-        0x18:"Ladder Top",
-        0x19:"Timber Room",
-        0x1d:"Inside Chest", //items only
+        0x10:"Sacrificial Altar", // Enchanter
+        0x12:"Room 8", // Zork II
+        0x13:"Machine Room", // Zork 1
+        0x14:"Drafty Room", // Zork 1
+        0x15:"Dead End", // Zork I
+        0x16:"Ladder Bottom", // Zork 1
+        0x18:"Ladder Top", // Zork 1
+        0x19:"Timber Room", // Zork 1
+        0x1d:"Inside Chest", // items only
         0x2b:"Scenic Vista",
         0x2d:"Western Shore",
         0x2e:"Underwater",
@@ -195,36 +195,36 @@ RPvalues={
         0x3e:"Barren Area",
         0x3f:"Junction",
         0x40:"Endless Stair",
-        0x43:"Hooded figure", //items only
+        0x43:"Hooded figure", // items only
         0x44:"Flathead Ocean",
-        0x45:"Land of Shadow", // (NW)
-        0x46:"Land of Shadow", // (W)
-        0x47:"Land of Shadow", // (SW)
-        0x48:"Land of Shadow", // (Quicksand)
-        0x49:"Land of Shadow", // (S)
-        0x4a:"Land of Shadow", // (Center)
-        0x4c:"Land of Shadow", // (N)
-        0x4d:"Land of Shadow", // (E)
+        0x45:"Land of Shadow", // NW
+        0x46:"Land of Shadow", // W
+        0x47:"Land of Shadow", // SW
+        0x48:"Land of Shadow", // Quicksand
+        0x49:"Land of Shadow", // S
+        0x4a:"Land of Shadow", // Center
+        0x4c:"Land of Shadow", // N
+        0x4d:"Land of Shadow", // E
         0x4e:"Creepy Crawl",
-        0x54:"Pedestal", //items only
+        0x54:"Pedestal", // items only
         0x5b:"Sitting in Gold Machine",
-        0x5c:"Museum Entrance", // (776 GUE)
-        0x5d:"Jewel Room", // (776 GUE)
-        0x5f:"Technology Museum", // (776 GUE)
-        0x60:"Technology Museum", // (883-947 GUE)
-        0x61:"Jewel Room", // (883-947 GUE)
-        0x62:"Museum Entrance", // (883-947 GUE)
-        0x63:"Side Room", // (883-947 GUE)
-        0x64:"Royal Puzzle Entrance", // (883-947 GUE)
-        0x65:"Technology Museum", // (948-999 GUE)
-        0x66:"Jewel Room", // (948-999 GUE)
-        0x69:"Museum Entrance", // (948-999 GUE)
+        0x5c:"Museum Entrance", // 776 GUE
+        0x5d:"Jewel Room", // 776 GUE
+        0x5f:"Technology Museum", // 776 GUE
+        0x60:"Technology Museum", // 883-947 GUE
+        0x61:"Jewel Room", // 883-947 GUE
+        0x62:"Museum Entrance", // 883-947 GUE
+        0x63:"Side Room", // 883-947 GUE
+        0x64:"Royal Puzzle Entrance", // 883-947 GUE
+        0x65:"Technology Museum", // 948-999 GUE
+        0x66:"Jewel Room", // 948-999 GUE
+        0x69:"Museum Entrance", // 948-999 GUE
         0x6c:"Great Door",
         0x6e:"Royal Hall",
         0x70:"Crystal Grotto",
         0x71:"Tight Squeeze",
         0x85:"Treasury of Zork",
-        0x87:"Prison Cell", // Rotated cell w/ bronze door; exit s to Treasury
+        0x87:"Prison Cell", // Rotated cell w/ bronze door; exits to Treasury
         0x89:"Prison Cell", // Rotated cell w/o bronze door; no exit
         0x8a:"Prison Cell", // From North Corridor
         0x8b:"Parapet",
@@ -239,24 +239,25 @@ RPvalues={
         0x9b:"Beam Room",
         0x9d:"Button Room",
         0x9e:"Inside Mirror",
-        0x9f:"Narrow Room", // (W of Hallway 1)
-        0xa0:"Narrow Room", // (E of Hallway 1)
-        0xa1:"Narrow Room", // (W of Hallway 2)
-        0xa2:"Narrow Room", // (E of Hallway 2)
-        0xa3:"Narrow Room", // (W of Hallway 3)
-        0xa4:"Narrow Room", // (E of Hallway 3)
-        0xa7:"Narrow Room", // (W of Hallway 5)
-        0xa8:"Narrow Room", // (E of Hallway 5)
-        0xa9:"Hallway", // (1)
-        0xaa:"Hallway", // (2)
-        0xab:"Hallway", // (3)
-        0xac:"Hallway", // (4)
-        0xad:"Hallway", // (5)
+        0x9f:"Narrow Room", // W of Hallway 1
+        0xa0:"Narrow Room", // E of Hallway 1
+        0xa1:"Narrow Room", // W of Hallway 2
+        0xa2:"Narrow Room", // E of Hallway 2
+        0xa3:"Narrow Room", // W of Hallway 3
+        0xa4:"Narrow Room", // E of Hallway 3
+        0xa7:"Narrow Room", // W of Hallway 5
+        0xa8:"Narrow Room", // E of Hallway 5
+        0xa9:"Hallway", // 1
+        0xaa:"Hallway", // 2
+        0xab:"Hallway", // 3
+        0xac:"Hallway", // 4
+        0xad:"Hallway", // 5
         0xb2:"Narrow Corridor",
         0xc1:"Room in a Puzzle",
-        0xc3:"Side Room", // (948-999 GUE)
+        0xc3:"Side Room", // 948-999 GUE
         0xc9:"Royal Puzzle Entrance",
-        0xca:"In inventory" //items only
+        0xca:"In inventory", // items only
+        0xc4:"Stone", // items only
     }
 }
 
