@@ -161,7 +161,7 @@ ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit
 ga("OZMOO SELF","Enter the sacrificial altar without an exit plan",1,enter_location(0x10,0x2b))
 ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",1,robot_appeared(),prevent_restore=false)
 ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork 2 ended up in a volcano",1,ring_stolen_plaque_read(),prevent_restore=false)
-ga("#3 Just Has a Nice Ring To It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",1,overheard_flathead())
+ga("#3 Just Has a Nice Ring to It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",1,overheard_flathead())
 
 leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87) && bronze_door_unlocked(), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=false)
 
