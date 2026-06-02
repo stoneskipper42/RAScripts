@@ -34,7 +34,7 @@ cur_year = word_be(0x4d8c)
 last_command = 0x50e9 // 100-byte ASCII array
 
 //Functions
-function secret_door_revealed() => byte(0x3662)==0x0 && prev(byte(0x3662))==0x8 //0=visible, 8=invisible
+function secret_door_revealed() => bit3(0x3662)==0x0 && prev(bit3(0x3662))==0x1 //0=visible, 1=invisible
 function is_invisible() => byte(0x4d19)==0x1
 function ring_retrieved_from_seat() => byte(0x4d85)==0 && prev(byte(0x4d85))==1
 function ring_stolen() => byte(0x4d7b)==1 && prev(byte(0x4d7b))==0
