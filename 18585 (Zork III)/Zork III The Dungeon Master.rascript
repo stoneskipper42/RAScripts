@@ -25,6 +25,8 @@ point_flags={
 }
 
 //Other
+mode_selected = byte(0x22)
+starting_up = byte(0x37fa)
 score = byte(0x4d13)
 move_counter = word_be(0x4d14)
 failure_counter = byte(0x4e01)
@@ -261,7 +263,8 @@ RPvalues={
     }
 }
 
-rich_presence_conditional_display(cur_year!=948,
+
+rich_presence_conditional_display(cur_year!=948 && mode_selected==1 && starting_up!=0xca,
     "{0} ({3} GUE) {1}/7 in {2} moves",
     rich_presence_lookup("Location",cur_location["player"],RPvalues["location"],"???"),
     rich_presence_value("Number",score),
@@ -269,8 +272,11 @@ rich_presence_conditional_display(cur_year!=948,
     rich_presence_value("Number",cur_year)
     )
 
-rich_presence_display("{0} {1}/7 in {2} moves",
+rich_presence_conditional_display(mode_selected==1 && starting_up!=0xca,
+    "{0} {1}/7 in {2} moves",
     rich_presence_lookup("Location",cur_location["player"],RPvalues["location"],"???"),
     rich_presence_value("Number",score),
     rich_presence_value("Number",move_counter)
 )
+
+rich_presence_display("Tumbling down a great, dark staircase ...")
