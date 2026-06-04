@@ -47,8 +47,7 @@ function in_location(place) => cur_location["player"]==place
 function location_changes() => cur_location["player"]!=prev(cur_location["player"])
 function ring_stolen_plaque_read() => (dword(0x20c)==0xf4e9f7ae && dword(0x210)==0xa0eee9e8 && dword(0x214)==0xefeca0e1 && prev(dword(0x20c))!=0xf4e9f7ae) //80 lines
                                    || (dword(0x20c)==0xd2d5d0a0 && dword(0x210)==0xc5d3cfd0 && dword(0x214)==0xc6c9c3ae && prev(dword(0x20c))!=0xd2d5d0a0) //40 lines
-function flathead_sentence() => (dword(0x20c)==0xa0e5f6e1 && dword(0x210)==0xe4e5e9e4 && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xa0e5f6e1) //80 lines
-                             || (dword(0x20c)==0xcfc9d3d3 && dword(0x210)==0xadada0ce && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xcfc9d3d3) //40 lines
+function flathead_sentence() => (dword(0x20c)==0xcfc9d3d3 && dword(0x210)==0xadada0ce && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xcfc9d3d3) //40/80 lines
 function robot_appeared() => (dword(0x20c)==0xe5f2e1a0 && dword(0x210)==0xf3f4e9a0 && dword(0x214)==0xf3e1eca0 && prev(dword(0x20c))!=0xe5f2e1a0) //80 lines
                           || (dword(0x20c)==0xcfd2a0c5 && dword(0x210)==0xa0accdcf && dword(0x214)==0xd3cfccc3 && prev(dword(0x20c))!=0xcfd2a0c5) //40 lines
 function failure_counter_increment() => failure_counter==prev(failure_counter)+1
@@ -144,24 +143,24 @@ ga("Leave the Lantern","Earn a point for taking a plunge",1,flag_change("lake"),
 ga("Blue Skidoo","Earn a point for immersing yourself in the experience",1,flag_change("table"),ach_type="progression")
 ga("We Don't Need Roads","Earn a point for working backwards",1,flag_change("tm"),ach_type="progression")
 ga("Pushing Your Luck","Earn a point for ignoring written warnings",1,flag_change("puzzle"),ach_type="progression")
-ga("Trial of Trust","Receive a reward for helping a \"friend\"",3,get_item("staff",0x00),ach_type="progression")
+ga("Trial of Trust","Receive a reward for helping a \"friend\"",5,get_item("staff",0x00),ach_type="progression")
 ga("Trial of Compassion","Reveal the identity of the hooded figure",3,get_item("hood",0x43),ach_type="progression")
-ga("Trial of Fortune","Recover an underwater treasure",3,get_item("amulet",0x00),ach_type="progression")
-ga("Trial of Swiftness","Obtain a strange key and return safely",3,has_item("key") && enter_location(0x98,0x09))
-ga("Trial of Ingenuity","Steal a priceless artifact",3,ring_stolen(),ach_type="progression")
-ga("Trial of Patience","Retrieve an item from the Royal Puzzle",3,(has_item("book") || cur_location["book"]==0xc3) && enter_location(0xc9,0xc1),ach_type="progression")
-ga("Trial of Kindness","Aid a weary traveler",1,secret_door_revealed(),ach_type="progression")
-ga("Trial of Valor","Avoid the notice of the Guardians",3,enter_location(0x90,0x9e) || enter_location(0x90,0xad),ach_type="")
+ga("Trial of Fortune","Recover an underwater treasure",2,get_item("amulet",0x00),ach_type="progression")
+ga("Trial of Swiftness","Obtain a strange key and return safely",5,has_item("key") && enter_location(0x98,0x09))
+ga("Trial of Ingenuity","Steal a priceless artifact",5,ring_stolen(),ach_type="progression")
+ga("Trial of Patience","Retrieve an item from the Royal Puzzle",5,(has_item("book") || cur_location["book"]==0xc3) && enter_location(0xc9,0xc1),ach_type="progression")
+ga("Trial of Kindness","Aid a weary traveler",3,secret_door_revealed(),ach_type="progression")
+ga("Trial of Valor","Avoid the notice of the Guardians",5,enter_location(0x90,0x9e) || enter_location(0x90,0xae),ach_type="")
 ga("The Final Test","Prove yourself worthy of the final test",3,enter_location(0xb2,0x90),ach_type="progression")
-ga("Dungeon Master","Discover the Treasury of Zork",10,enter_location(0x85,0x87) && bronze_door_unlocked(),ach_type="win_condition")
-ga("Nothing Happens Here","Get the attention of a lone mariner",1,vial_appears(),ach_type="missable")
-ga("Extreme Valor","Stare into the face of danger while passing the Guardians",1,enter_location(0xad,0xac),ach_type="missable")
-ga("Contempt of Swiftness","Recover the strange key after jumping off the aqueduct",1,contempt_prereqs() && get_item("key",0x1d) && not_in_key_locations(),ach_type="missable")
-ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit Flathead",1,flathead_sentence(),prevent_restore=false)
+ga("Dungeon Master","Discover the Treasury of Zork",25,enter_location(0x85,0x87) && bronze_door_unlocked(),ach_type="win_condition")
+ga("Nothing Happens Here","Get the attention of a lone mariner",5,vial_appears(),ach_type="missable")
+ga("Extreme Valor","Stare into the face of danger while passing the Guardians",5,enter_location(0xae,0xac),ach_type="missable")
+ga("Contempt of Swiftness","Recover the strange key after jumping off the aqueduct",5,contempt_prereqs() && get_item("key",0x1d) && not_in_key_locations(),ach_type="missable")
+ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit Flathead",3,flathead_sentence(),prevent_restore=false)
 ga("OZMOO SELF","Enter the sacrificial altar without an exit plan",1,enter_location(0x10,0x2b))
-ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",1,robot_appeared(),prevent_restore=false)
-ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork 2 ended up in a volcano",1,ring_stolen_plaque_read(),prevent_restore=false)
-ga("#3 Just Has a Nice Ring to It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",1,overheard_flathead())
+ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",5,robot_appeared(),prevent_restore=false)
+ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork 2 ended up in a volcano",3,ring_stolen_plaque_read(),prevent_restore=false)
+ga("#3 Just Has a Nice Ring to It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",5,overheard_flathead())
 
 leaderboard("Master Initiate","Complete the game in the fewest moves.", enter_location(0x85,0x87) && bronze_door_unlocked(), always_false(), always_true(), move_counter, format="VALUE", lower_is_better=true)
 
@@ -254,7 +253,7 @@ RPvalues={
         0xaa:"Hallway", // 2
         0xab:"Hallway", // 3
         0xac:"Hallway", // 4
-        0xad:"Hallway", // 5
+        0xae:"Hallway", // 5
         0xb2:"Narrow Corridor",
         0xc1:"Room in a Puzzle",
         0xc3:"Side Room", // 948-999 GUE
