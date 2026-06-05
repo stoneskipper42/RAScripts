@@ -10,7 +10,7 @@ Information in this guide courtesy of:<br>
 [Zork III Source Code Collection](https://github.com/historicalsource/zork3)<br>
 [Zork Wiki](https://zork.fandom.com/wiki/)
 
-This guide mirrors the one available on the achievement set developer's [Github](https://github.com/stoneskipper42/RAScripts/edit/main/18585%20(Zork%20III)/Readme.md)
+This guide mirrors the one available on the achievement set developer's [Github](https://github.com/stoneskipper42/RAScripts/tree/main/18585%20(Zork%20III))
 
 ***
 
