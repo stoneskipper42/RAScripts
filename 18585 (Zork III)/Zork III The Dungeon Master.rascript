@@ -152,7 +152,7 @@ ga("Trial of Swiftness","Obtain a strange key and return safely",5,has_item("key
 ga("Trial of Ingenuity","Steal a priceless artifact",5,ring_stolen(),ach_type="progression")
 ga("Trial of Patience","Retrieve an item from the Royal Puzzle",5,(has_item("book") || cur_location["book"]==0xc3) && enter_location(0xc9,0xc1),ach_type="progression")
 ga("Trial of Kindness","Aid a weary traveler",3,secret_door_revealed(),ach_type="progression")
-ga("Trial of Valor","Avoid the notice of the Guardians",5,enter_location(0x90,0x9e) || enter_location(0x90,0xae),ach_type="")
+ga("Trial of Valor","Solve the puzzle of the mirror box",5,enter_location(0x90,0x9e),ach_type="")
 ga("The Final Test","Prove yourself worthy of the final test",3,enter_location(0xb2,0x90),ach_type="progression")
 ga("Dungeon Master","Discover the Treasury of Zork",25,enter_location(0x85,0x87) && bronze_door_unlocked(),ach_type="win_condition")
 ga("Nothing Happens Here","Get the attention of a lone mariner",5,vial_appears(),ach_type="missable")
