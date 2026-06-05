@@ -1,6 +1,6 @@
 **Retro Achievements Missables Guide** <br> 🔶 ***_Zork III_*** <sub><sup> (_Apple II_) </sup></sub>
 
-For progression achievements, you can refer to [Zork III Invisiclues](https://zedlopez.github.io/invisiclue/zorkiii.html). For all other achievements, read on!
+This guide covers missable and optional achievements for [Zork III on Retroachievements](https://retroachievements.org/game/18585). For progression achievements, you can refer to [Zork III Invisiclues](https://zedlopez.github.io/invisiclue/zorkiii.html). For all other achievements, read on!
 
 Since Zork III is a puzzle game, this guide uses a system similar to Invisiclues where you can get hints rather than an outright solution for any given achivement. Click on the question you have for the achievement, and it should display the next hint. If you're still stuck you can keep clicking to expand the next hints until you'll eventually see the solution, which will appear in bold.
 
