@@ -112,6 +112,8 @@ function game_restore_complete(){
 
 function restore_successful() => byte(0x3f)==0x5b
 
+function game_active() => mode_selected==1 && starting_up!=0xca
+
 function player_just_died(){
     return once(failure_counter_increment())
         && never(
@@ -264,7 +266,7 @@ RPvalues={
 }
 
 
-rich_presence_conditional_display(cur_year!=948 && mode_selected==1 && starting_up!=0xca,
+rich_presence_conditional_display(cur_year!=948 && game_active(),
     "{0} ({3} GUE) {1}/7 in {2} moves",
     rich_presence_lookup("Location",cur_location["player"],RPvalues["location"],"???"),
     rich_presence_value("Number",score),
@@ -272,7 +274,7 @@ rich_presence_conditional_display(cur_year!=948 && mode_selected==1 && starting_
     rich_presence_value("Number",cur_year)
     )
 
-rich_presence_conditional_display(mode_selected==1 && starting_up!=0xca,
+rich_presence_conditional_display(game_active(),
     "{0} {1}/7 in {2} moves",
     rich_presence_lookup("Location",cur_location["player"],RPvalues["location"],"???"),
     rich_presence_value("Number",score),
