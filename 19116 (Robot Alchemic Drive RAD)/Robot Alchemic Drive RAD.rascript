@@ -1166,7 +1166,7 @@ function onChallengeMissionMenu() => menuScreenIndex==0x33aa2
 function onChallengeMissionMenuUndub() => menuScreenIndex==0x10f75
 function missionIncomplete() => missionFailed() || onChallengeMissionMenu()
 function missionIncompleteUndub() => missionFailedUndub() || onChallengeMissionMenuUndub()
-function startClosingCredits() => (menuScreenIndex==0x11185 && prev(menuScreenIndex)!=0x11185) || (menuScreenIndex==0x33cb2 && prev(menuScreenIndex)==0x33cb2)
+function startClosingCredits() => (menuScreenIndex==0x11185 && prev(menuScreenIndex)!=0x11185) || (menuScreenIndex==0x33cb2 && prev(menuScreenIndex)!=0x33cb2)
 //Determine if mission qualifies as a combat mission, or does not result in a battle or "Mission Clear" condition
 function isCombatMission(){
     return currentScenario!=2
@@ -1824,15 +1824,19 @@ function stringCompare(string,address){
 
 function postMissionEventAchievement(achievementTitle,achievementDescription,points,varName,minValue,voiceIndex){
     if(varName=="no_ellen_or_nanao_yui"){
-        globalVarCheck = globalVar("nanao_favor_flag")<4 &&
+        globalVarCheck = (globalVar("nanao_favor_flag")<4 &&
                             globalVar("ellen_favor_flag")<3 &&
-                            globalVar("main_character_number")==2
+                            globalVar("main_character_number")==2)
+                      || (globalVar("nanao_favor_flag")<4 &&
+                            globalVar("ellen_favor_flag")==-1 &&
+                            globalVar("main_character_number")==2)
     }else if(varName=="ellen_epilogue"){
         globalVarCheck = globalVar("nanao_favor_flag")<6 &&
-                            globalVar("ellen_favor_flag")>=3
+                            globalVar("ellen_favor_flag")>=3 &&
+                            globalVar("ellen_favor_flag")!=-1
     }else if(varName=="nanao_epilogue"){
         globalVarCheck = globalVar("nanao_favor_flag")>=4 &&
-                            (globalVar("nanao_favor_flag")>=6 || globalVar("ellen_favor_flag")<3)
+                            (globalVar("nanao_favor_flag")>=6 || globalVar("ellen_favor_flag")<3 || globalVar("ellen_favor_flag")==-1) //adding one to avoid bad comparisons if Ellen's favor goes negative
     }else{
         globalVarCheck = globalVar(varName)>=minValue
     }
