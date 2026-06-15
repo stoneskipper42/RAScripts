@@ -10,7 +10,8 @@ cur_location={
     "amulet":byte(0x3246),
     "ring":byte(0x33c9),
     "key":byte(0x3126),
-    "vial":byte(0x3102)
+    "vial":byte(0x3102),
+    "tm":byte(0x341a)
 }
 
 //Point flags
@@ -40,16 +41,19 @@ function is_invisible() => byte(0x4d19)==0x1
 function ring_retrieved_from_seat() => byte(0x4d85)==0 && prev(byte(0x4d85))==1
 function ring_stolen() => byte(0x4d7b)==1 && prev(byte(0x4d7b))==0
 function vial_appears() => cur_location["vial"]==0x44 && prev(cur_location["vial"])==0x0
+function time_machine_returned() => cur_location["tm"] == 0x65 && prev(cur_location["tm"]) == 0x66
 function overheard_flathead() => byte(0x4d7d)==1 && prev(byte(0x4d7d))==0
 function has_item(item) => cur_location[item]==0xca
 function had_item(item) => prev(cur_location[item])==0xca
 function in_location(place) => cur_location["player"]==place
 function location_changes() => cur_location["player"]!=prev(cur_location["player"])
+function time_changes() => cur_year != prev(cur_year)
 function ring_stolen_plaque_read() => (dword(0x20c)==0xf4e9f7ae && dword(0x210)==0xa0eee9e8 && dword(0x214)==0xefeca0e1 && prev(dword(0x20c))!=0xf4e9f7ae) //80 lines
                                    || (dword(0x20c)==0xd2d5d0a0 && dword(0x210)==0xc5d3cfd0 && dword(0x214)==0xc6c9c3ae && prev(dword(0x20c))!=0xd2d5d0a0) //40 lines
 function flathead_sentence() => (dword(0x20c)==0xcfc9d3d3 && dword(0x210)==0xadada0ce && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xcfc9d3d3) //40/80 lines
 function robot_appeared() => (dword(0x20c)==0xe5f2e1a0 && dword(0x210)==0xf3f4e9a0 && dword(0x214)==0xf3e1eca0 && prev(dword(0x20c))!=0xe5f2e1a0) //80 lines
                           || (dword(0x20c)==0xcfd2a0c5 && dword(0x210)==0xa0accdcf && dword(0x214)==0xd3cfccc3 && prev(dword(0x20c))!=0xcfd2a0c5) //40 lines
+function robot_appeared_2() => in_location(0x66) && !location_changes() && time_machine_returned() && !time_changes()
 function failure_counter_increment() => failure_counter==prev(failure_counter)+1
 
 function flag_change(flag){
@@ -160,7 +164,7 @@ ga("Extreme Valor","Stare into the face of danger while passing the Guardians",5
 ga("Contempt of Swiftness","Recover the strange key after jumping off the aqueduct",5,contempt_prereqs() && get_item("key",0x1d) && not_in_key_locations(),ach_type="missable")
 ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit Flathead",3,flathead_sentence(),prevent_restore=false)
 ga("OZMOO SELF","Enter the sacrificial altar without an exit plan",1,enter_location(0x10,0x2b))
-ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",5,robot_appeared(),prevent_restore=false)
+ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",5,robot_appeared_2(),prevent_restore=false)
 ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork II ended up in a volcano",3,ring_stolen_plaque_read(),prevent_restore=false)
 ga("#3 Just Has a Nice Ring to It","Overhear an omnipotent local tyrant discussing the creation of a very impressive structure",5,overheard_flathead())
 
