@@ -32,6 +32,7 @@ score = byte(0x4d13)
 move_counter = word_be(0x4d14)
 failure_counter = byte(0x4e01)
 cur_year = word_be(0x4d8c)
+dial_position = word_be(0x4d86)
 last_command = 0x50e9 // 100-byte ASCII array
 
 //Functions
@@ -42,6 +43,8 @@ function ring_retrieved_from_seat() => byte(0x4d85)==0 && prev(byte(0x4d85))==1
 function ring_stolen() => byte(0x4d7b)==1 && prev(byte(0x4d7b))==0
 function vial_appears() => cur_location["vial"]==0x44 && prev(cur_location["vial"])==0x0
 function time_machine_returned() => cur_location["tm"] == 0x65 && prev(cur_location["tm"]) == 0x66
+function tm_at_museum_entrance() => cur_location["tm"] == 0x5d || cur_location["tm"] == 0x61 || cur_location["tm"] == 0x69
+function tm_at_jewel_room() => cur_location["tm"] == 0x5c || cur_location["tm"] == 0x62 || cur_location["tm"] == 0x66
 function overheard_flathead() => byte(0x4d7d)==1 && prev(byte(0x4d7d))==0
 function has_item(item) => cur_location[item]==0xca
 function had_item(item) => prev(cur_location[item])==0xca
@@ -50,7 +53,7 @@ function location_changes() => cur_location["player"]!=prev(cur_location["player
 function time_changes() => cur_year != prev(cur_year)
 function ring_stolen_plaque_read() => (dword(0x20c)==0xf4e9f7ae && dword(0x210)==0xa0eee9e8 && dword(0x214)==0xefeca0e1 && prev(dword(0x20c))!=0xf4e9f7ae) //80 lines
                                    || (dword(0x20c)==0xd2d5d0a0 && dword(0x210)==0xc5d3cfd0 && dword(0x214)==0xc6c9c3ae && prev(dword(0x20c))!=0xd2d5d0a0) //40 lines
-function flathead_sentence() => (dword(0x20c)==0xcfc9d3d3 && dword(0x210)==0xadada0ce && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xcfc9d3d3) //40/80 lines
+function permanently_dead() => (dword(0x20c)==0xcfc9d3d3 && dword(0x210)==0xadada0ce && dword(0x214)==0xaaaaa0a0 && prev(dword(0x20c))!=0xcfc9d3d3) //40/80 lines
 function robot_appeared() => (dword(0x20c)==0xe5f2e1a0 && dword(0x210)==0xf3f4e9a0 && dword(0x214)==0xf3e1eca0 && prev(dword(0x20c))!=0xe5f2e1a0) //80 lines
                           || (dword(0x20c)==0xcfd2a0c5 && dword(0x210)==0xa0accdcf && dword(0x214)==0xd3cfccc3 && prev(dword(0x20c))!=0xcfd2a0c5) //40 lines
 function robot_appeared_2() => in_location(0x66) && !location_changes() && time_machine_returned() && !time_changes()
@@ -162,7 +165,7 @@ ga("Dungeon Master","Discover the Treasury of Zork",25,enter_location(0x85,0x87)
 ga("Nothing Happens Here","Get the attention of a lone mariner",5,vial_appears(),ach_type="missable")
 ga("Extreme Valor","Stare into the face of danger while passing the Guardians",5,enter_location(0xae,0xac),ach_type="missable")
 ga("Contempt of Swiftness","Recover the strange key after jumping off the aqueduct",5,contempt_prereqs() && get_item("key",0x1d) && not_in_key_locations(),ach_type="missable")
-ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit Flathead",3,flathead_sentence(),prevent_restore=false)
+ga("Personalized Accommodations","Receive custom-built lodgings from Lord Dimwit Flathead",3,permanently_dead() && dial_position==777 && (tm_at_museum_entrance() || tm_at_jewel_room()),prevent_restore=false)
 ga("OZMOO SELF","Enter the sacrificial altar without an exit plan",1,enter_location(0x10,0x2b))
 ga("Must Be a Lot of Open Windows Somewhere","Find out who keeps closing doors in the museum",5,robot_appeared_2(),prevent_restore=false)
 ga("A Hell of a Mystery No One Thought Was a Mystery","Discover how one of the treasures of Zork II ended up in a volcano",3,ring_stolen_plaque_read(),prevent_restore=false)
